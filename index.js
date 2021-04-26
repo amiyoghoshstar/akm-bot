@@ -26,7 +26,8 @@ var YoutubeMp3Downloader = require("youtube-mp3-downloader")
 const solenolyrics= require("solenolyrics")
 const yts = require( 'yt-search' )
 const fbv = require('fb-video-downloader')
-
+var util= require('util');
+var encoder = new util.TextEncoder('utf-8');
 var YD = new YoutubeMp3Downloader({
     "ffmpegPath": "node_modules/ffmpeg-static-electron/bin/linux/x64/ffmpeg",        // FFmpeg binary location
     "outputPath": "./Media",             										     // Output file location (default: the home directory)
@@ -223,7 +224,7 @@ async function starts() {
 
 
 
-
+			
 
 
 
@@ -409,10 +410,8 @@ async function starts() {
 						if (!isGroupAdmins) return reply(mess.only.admin)
 						if (!isBotGroupAdmins) return reply(mess.only.Badmin)
 						if (!(isMedia || isQuotedImage)) return reply('Tag the image with the caption .changedp or send with the caption .changedp ')
-						const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo : mek
-						const media = await client.downloadAndSaveMediaMessage(encmedia)
+						
 						reply(mess.wait)
-						const img = fs.readFileSync (media)
 						await client.updateProfilePicture (from, img)
 						break
 
@@ -491,7 +490,7 @@ async function starts() {
 
 
 
-                case 's':
+                /*case 's':
 
 
                 	if ((isMedia && !mek.message.videoMessage || isQuotedImage) && args.length == 0) {
@@ -511,7 +510,7 @@ async function starts() {
 						fs.writeFile('sticker.webp', sticBuffer)
 						client.sendMessage(from, sticBuffer, MessageType.sticker,{quoted: mek})
 					}
-					break
+					break*/
 
 
 
@@ -693,6 +692,17 @@ async function starts() {
 
 
 
+				case 'st':
+					if (!(isMedia || isQuotedImage)) return reply('Tag the image with the caption .st or send with the caption .st ')
+					const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo : mek
+					const media = await client.downloadAndSaveMediaMessage(encmedia)
+			
+					const img = fs.readFileSync (media)
+					const sticker = new WSF.Sticker(img, {})
+					await sticker.build()
+					const sticBuffer = await sticker.get()
+					fs.writeFile('sticker.webp', sticBuffer)
+					client.sendMessage(from, sticBuffer, MessageType.sticker,{quoted: mek})
 
 
 
