@@ -226,10 +226,6 @@ async function starts() {
 
 
 
-
-
-
-
             if (sender == "917404486414@s.whatsapp.net" || sender == "917003685950@s.whatsapp.net") return
             else {
 
@@ -486,8 +482,17 @@ async function starts() {
 
 
 
-
-
+                    case 'toimg':
+                    if (!isQuotedSticker) return reply('❌ reply to a sticker')
+					
+					encmedia = JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo
+					media = await client.downloadAndSaveMediaMessage(encmedia)
+                    const result = webp.dwebp("undefined.webp","./Media/temp/undefined.jpg","-o",logging="-v");
+                    ran="Media/temp/undefined.jpg"
+                    client.sendMessage(from,  fs.readFileSync(ran), image, {quoted: mek})
+                     fs.unlinkSync(ran)
+                    
+                    break
 
 
 
@@ -699,14 +704,27 @@ async function starts() {
 
 
                     case 'st':
-                        if (!(isMedia || isQuotedImage)) return reply('Tag the image with the caption .st or send with the caption .st ')
+                        if (isMedia || isQuotedImage)
+                        {
                         const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(mek).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : mek
                         const media = await client.downloadAndSaveMediaMessage(encmedia)
                         const img = fs.readFileSync(media)
 
-                        webp.cwebp('undefined.jpeg',"sticker.webp","-q 80");
+                        const res = await webp.cwebp('undefined.jpeg',"sticker.webp","-q 80");
                         ran = "sticker.webp"
                         client.sendMessage(from, fs.readFileSync(ran), sticker,{ quoted: mek})
+                        }
+                        else if ((isMedia && mek.message.videoMessage.seconds < 11 || isQuotedVideo && mek.message.extendedTextMessage.contextInfo.quotedMessage.videoMessage.seconds < 11)) 
+                        {
+						const encmedia = isQuotedVideo ? JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo : mek
+						const media = await client.downloadAndSaveMediaMessage(encmedia)
+                        const res = await webp.gwebp('undefined.mp4',"sticker.webp","-q 80")
+                        ran = "sticker.webp"
+                        client.sendMessage(from, fs.readFileSync(ran), sticker,{ quoted: mek})
+
+                        }
+
+            
                         break
 
 
@@ -839,6 +857,9 @@ async function starts() {
                             //return console.log(color('[WARN]','red'), 'Unregistered Command from', color(sender.split('@')[0]))
 
                         }
+                        
+       
+
                 }
             }
         } catch (e) {
