@@ -25,6 +25,7 @@ const opts = {maxResults: 10,key: 'AIzaSyA1S1jM8KxdPAqb2DUXg2AQDNqbOcS2btE'}
 var YoutubeMp3Downloader = require("youtube-mp3-downloader")
 const solenolyrics= require("solenolyrics")
 const yts = require( 'yt-search' )
+require('fb-video-downloader').getInfo('https://www.facebook.com/welaxvideo/videos/2123584921233057/').then((info) => console.log(JSON.stringify(info, null, 2)));
 
 var YD = new YoutubeMp3Downloader({
     "ffmpegPath": "node_modules/ffmpeg-static-electron/bin/linux/x64/ffmpeg",        // FFmpeg binary location

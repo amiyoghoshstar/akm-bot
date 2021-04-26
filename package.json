@@ -26,6 +26,7 @@
     "convert-to-audio": "^1.0.0",
     "escape-string-regexp": "^4.0.0",
     "fake-useragent": "^1.0.1",
+    "fb-video-downloader": "^1.0.3",
     "file-type": "^16.2.0",
     "findthelyrics": "^1.0.10",
     "fluent-ffmpeg": "^2.1.2",

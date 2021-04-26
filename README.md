@@ -19,7 +19,7 @@
 ## Clone this project
 
 ```bash
-> https://github.com/am29237/termux-wabot
+> https://github.com/akm/akm-bot
 ```
 
 ## Install the dependencies:
@@ -27,7 +27,7 @@ Before running the below command, make sure you're in the project directory that
 you've just cloned!!
 
 ```bash
-> cd termux-wabot
+> cd akm-bot
 > bash install.sh
 ```
 
@@ -40,8 +40,7 @@ you've just cloned!!
 ```json
 {
 	"prefix": ".",
-	"ownerNumber": "62858xxxxx",
-	"apiKey": "Your ApiKey here"
+	"ownerNumber": "97090xxxxx",
 }
 ```
 
