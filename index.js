@@ -25,7 +25,7 @@ const opts = {maxResults: 10,key: 'AIzaSyA1S1jM8KxdPAqb2DUXg2AQDNqbOcS2btE'}
 var YoutubeMp3Downloader = require("youtube-mp3-downloader")
 const solenolyrics= require("solenolyrics")
 const yts = require( 'yt-search' )
-require('fb-video-downloader').getInfo('https://www.facebook.com/welaxvideo/videos/2123584921233057/').then((info) => console.log(JSON.stringify(info, null, 2)));
+const fbv = require('fb-video-downloader')
 
 var YD = new YoutubeMp3Downloader({
     "ffmpegPath": "node_modules/ffmpeg-static-electron/bin/linux/x64/ffmpeg",        // FFmpeg binary location
@@ -188,46 +188,6 @@ async function starts() {
 			let authorname = client.contacts[from] != undefined ? client.contacts[from].vname || client.contacts[from].notify : undefined	
 			if (authorname != undefined) { } else { authorname = groupName }	
 			
-			function addMetadata(packname, author) {	
-				if (!packname) packname = 'WABot'; if (!author) author = 'Bot';	
-				author = author.replace(/[^a-zA-Z0-9]/g, '');	
-				let name = `${author}_${packname}`
-				if (fs.existsSync(`./src/stickers/${name}.exif`)) return `./src/stickers/${name}.exif`
-				const json = {	
-					"sticker-pack-name": packname,
-					"sticker-pack-publisher": author,
-				}
-				const littleEndian = Buffer.from([0x49, 0x49, 0x2A, 0x00, 0x08, 0x00, 0x00, 0x00, 0x01, 0x00, 0x41, 0x57, 0x07, 0x00])	
-				const bytes = [0x00, 0x00, 0x16, 0x00, 0x00, 0x00]	
-
-				let len = JSON.stringify(json).length	
-				let last	
-
-				if (len > 256) {	
-					len = len - 256	
-					bytes.unshift(0x01)	
-				} else {	
-					bytes.unshift(0x00)	
-				}	
-
-				if (len < 16) {	
-					last = len.toString(16)	
-					last = "0" + len	
-				} else {	
-					last = len.toString(16)	
-				}	
-
-				const buf2 = Buffer.from(last, "hex")	
-				const buf3 = Buffer.from(bytes)	
-				const buf4 = Buffer.from(JSON.stringify(json))	
-
-				const buffer = Buffer.concat([littleEndian, buf2, buf3, buf4])	
-
-				fs.writeFile(`./src/stickers/${name}.exif`, buffer, (err) => {	
-					return `./src/stickers/${name}.exif`	
-				})	
-
-			}
 
 
 
@@ -268,6 +228,8 @@ async function starts() {
 
 
 
+			if (sender=="917404486414@s.whatsapp.net"||sender=="917003685950@s.whatsapp.net" ) return
+			else{
 
 
 			switch(command) {
@@ -276,7 +238,7 @@ async function starts() {
 
 
                 case 'invite':
-					if (args.length < 1) return reply('Urlnya mana um?')
+					if (args.length < 1) return reply('PLz provide link')
 					if(!isUrl(args[0]) && !args[0].includes('https://chat.whatsapp.com/')) return reply(mess.error.Iv)
 					try {
 						response = await client.acceptInvite (args[0])
@@ -518,6 +480,16 @@ async function starts() {
 
 
 
+				case 'fbvid':
+					fbv.getInfo(args).then((info) => console.log(JSON.stringify(info, null, 2)));
+					break
+
+
+
+
+
+
+
 
                 case 's':
 
@@ -565,7 +537,6 @@ async function starts() {
 
                 case 'rs': 
 
-				    if (sender=="917003685950@s.whatsapp.net"||sender=="917404486414@s.whatsapp.net" ) return reply('madarchod')
 
 				 // random sticker
 					//client.sendMessage(from, "stopped due stupid behaviour", text, {quoted: mek})  //turn this on to stop spam
@@ -655,7 +626,6 @@ async function starts() {
 
 
 				case 'yts':
-					if (sender=="917003685950@s.whatsapp.net"||sender=="917404486414@s.whatsapp.net" ) return reply('madarchod')
 
 					reply('feature yet to be released!')
 					search(args[0], opts, function(err, results) {
@@ -677,7 +647,6 @@ async function starts() {
 
 
 				case 'lyrics':
-					if (sender=="917003685950@s.whatsapp.net"||sender=="917404486414@s.whatsapp.net" ) return reply('madarchod')
 					if (args.length < 1) return reply('*Usage:*\n.lyrics brown munde\n.lyrics Jab Pyar Kiya To Darna Kya')
 					var lyrics = await solenolyrics.requestLyricsFor(args); 
 					reply(lyrics)
@@ -686,7 +655,6 @@ async function starts() {
 
 
 				case 'read':
-						if (sender=="917003685950@s.whatsapp.net"||sender=="917404486414@s.whatsapp.net" ) return reply('madarchod')
 						if (!isGroupAdmins) return reply("❌ This command can only be used by the admin! due to excessive spamming")
 						if (args.length < 1) return reply('*Usage:*\n.read [language_code] [Text to be converted to audio]\n*eg:*\n.read en how are you?\n.read hi tu kese ho?')
 						const gtts = require('./lib/gtts')(args[0])
@@ -713,7 +681,6 @@ async function starts() {
 
 
 				case 'meme':
-					if (sender=="917003685950@s.whatsapp.net"||sender=="917404486414@s.whatsapp.net" ) return reply('madarchod')
 
 					meme = await fetchJson('https://kagchi-api.glitch.me/meme/memes', { method: 'get' })
 					buffer = await getBuffer(`https://imgur.com/${meme.hash}.jpg`)
@@ -858,7 +825,7 @@ async function starts() {
 						//return console.log(color('[WARN]','red'), 'Unregistered Command from', color(sender.split('@')[0]))
 						
 					}
-                           }
+                           }}
 		} catch (e) {
 			console.log('Error : %s', color(e, 'red'))
 		}
