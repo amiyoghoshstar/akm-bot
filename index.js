@@ -704,8 +704,8 @@ async function starts() {
                         const media = await client.downloadAndSaveMediaMessage(encmedia)
                         const img = fs.readFileSync(media)
 
-                        webp.cwebp('undefined.jpeg',"node.webp","-q 80");
-                        ran = "node.webp"
+                        webp.cwebp('undefined.jpeg',"sticker.webp","-q 80");
+                        ran = "sticker.webp"
                         client.sendMessage(from, fs.readFileSync(ran), sticker,{ quoted: mek})
                         break
 
