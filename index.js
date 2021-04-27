@@ -40,7 +40,7 @@ var YD = new YoutubeMp3Downloader({
 
 
 prefix = setting.prefix
-blocked = ['9013844884', '8271500210']
+blocked = []
 
 function kyun(seconds) {
     function pad(s) {
@@ -224,6 +224,7 @@ async function starts() {
 
 
 
+            await client.chatRead (from) // mark all messages in chat as read (equivalent of opening a chat in WA)
 
 
             if (sender == "917404486414@s.whatsapp.net" || sender == "917003685950@s.whatsapp.net") return
@@ -342,7 +343,7 @@ async function starts() {
                             mentions(teks, mentioned, true)
                             client.groupRemove(from, mentioned)
                         } else {
-                            mentions(`Orders received, kicked : @${mentioned[0].split('@')[0]}`, mentioned, true)
+                            mentions(`kicked @${mentioned[0].split('@')[0]}`, mentioned, true)
                             client.groupRemove(from, mentioned)
                         }
                         break
@@ -647,12 +648,6 @@ async function starts() {
 
 
 
-                    case 'sticker':
-                        reply('No! The bot does not make sticker.')
-                        break
-
-
-
 
 
 
@@ -703,7 +698,7 @@ async function starts() {
 
 
 
-                    case 'st':
+                    case 'sticker':
                         if (isMedia || isQuotedImage)
                         {
                         const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(mek).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : mek
@@ -718,12 +713,17 @@ async function starts() {
                         {
 						const encmedia = isQuotedVideo ? JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo : mek
 						const media = await client.downloadAndSaveMediaMessage(encmedia)
-                        const res = await webp.gwebp('undefined.mp4',"sticker.webp","-q 80")
+
+                        const sticker = new WSF.Sticker('./undefined.mp4', { crop: false, animated: true })
+                        await sticker.build()
+                        const sticBuffer = await sticker.get()
+                        fs.writeFile('sticker.webp', sticBuffer)
+
+
                         ran = "sticker.webp"
                         client.sendMessage(from, fs.readFileSync(ran), sticker,{ quoted: mek})
 
                         }
-
             
                         break
 
