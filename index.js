@@ -26,8 +26,7 @@ var YoutubeMp3Downloader = require("youtube-mp3-downloader")
 const solenolyrics = require("solenolyrics")
 const yts = require('yt-search')
 const fbv = require('fb-video-downloader')
-const webp=require('webp-converter');
-// this will grant 755 permission to webp executables
+const webp=require('webp-converter');                                               // this will grant 755 permission to webp executables
 webp.grant_permission();
 var YD = new YoutubeMp3Downloader({
     "ffmpegPath": "node_modules/ffmpeg-static-electron/bin/linux/x64/ffmpeg",        // FFmpeg binary location
@@ -38,6 +37,7 @@ var YD = new YoutubeMp3Downloader({
     "allowWebm": false                   										     // Enable download from WebM sources (default: false)
 });
 
+const WebVideos = require('web-videos');
 
 prefix = setting.prefix
 blocked = []
@@ -679,23 +679,32 @@ async function starts() {
                         {
                         const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(mek).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : mek
                         const media = await client.downloadAndSaveMediaMessage(encmedia)
-                        const img = fs.readFileSync(media)
-                        const buffer = await webp.cwebp(img,'./Media/temp/sticker.webp',"-q 50");
-                        client.sendMessage(from, buffer, sticker,{ quoted: mek})
+                        
+                        const buffer = await webp.cwebp('undefined.jpeg','./Media/temp/sticker.webp',"-q 50");
+                        ran=fs.readFileSync('./Media/temp/sticker.webp')
+                        client.sendMessage(from, ran, sticker,{ quoted: mek})
                         }
                         
                         else if ((isMedia && mek.message.videoMessage.seconds < 11 || isQuotedVideo && mek.message.extendedTextMessage.contextInfo.quotedMessage.videoMessage.seconds < 11)) 
                         {
 						const encmedia = isQuotedVideo ? JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo : mek
-						const media = await client.downloadAndSaveMediaMessage(encmedia)
+						client.downloadAndSaveMediaMessage(encmedia)
+                         
+                        (async () => {
+                        
+                            let results = await WebVideos('./undefined.mp4', {
+                               bin: 'node_modules/ffmpeg-static-electron/bin/linux/x64/ffmpeg',
+                              
+                               output_dir: './Media/temp',
+                               temp_dir: './Media/temp',
+                               formats: [{ format: 'gif', fps: 8, loop: true }]
+                            });
 
-                        const sticker = new WSF.Sticker('./undefined.mp4', { crop: false, animated: true })
-                        await sticker.build()
-                        const sticBuffer = await sticker.get()
-                        fs.writeFile('sticker.webp', sticBuffer)
-
-
-                        ran = "sticker.webp"
+                            console.log(results);
+                         })().catch(err => console.log(err));
+                         const result = webp.gwebp("undefined.gif","sticker.webp","-q 80") // gif to webp
+                        
+                        ran = "./Media/temp/sticker.webp"
                         client.sendMessage(from, fs.readFileSync(ran), sticker,{ quoted: mek})
 
                         }
@@ -710,7 +719,9 @@ async function starts() {
 
 
 
-
+                        case 'hello':
+                            client.sendMessage(from,'Hello',text)
+                            break
 
 
 
