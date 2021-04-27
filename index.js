@@ -674,41 +674,40 @@ async function starts() {
 
 
 
-                    case 'sticker':
-                        if (isMedia || isQuotedImage)
-                        {
-                        const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(mek).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : mek
-                        const media = await client.downloadAndSaveMediaMessage(encmedia)
-                        
-                        const buffer = await webp.cwebp('undefined.jpeg','./Media/temporary/sticker.webp',"-q 50");
-                        ran=fs.readFileSync('./Media/temporary/sticker.webp')
-                        client.sendMessage(from, ran, sticker,{ quoted: mek})
-                        }
-                        
-                        else if ((isMedia && mek.message.videoMessage.seconds < 11 || isQuotedVideo && mek.message.extendedTextMessage.contextInfo.quotedMessage.videoMessage.seconds < 11)) 
-                        {
-						const encmedia = isQuotedVideo ? JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo : mek
-                        const media = await client.downloadAndSaveMediaMessage(encmedia)
-                        (async () => {
+
+
+                        case 'sticker':
+                            if (isMedia || isQuotedImage)
+                            {
+                            const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(mek).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : mek
+                            const media = await client.downloadAndSaveMediaMessage(encmedia)
+                            
+                            const buffer = await webp.cwebp('undefined.jpeg','./Media/temporary/sticker.webp',"-q 50");
+                            ran=fs.readFileSync('./Media/temporary/sticker.webp')
+                            client.sendMessage(from, ran, sticker,{ quoted: mek})
+                            }
+                            
+                            else if ((isMedia && mek.message.videoMessage.seconds < 11 || isQuotedVideo && mek.message.extendedTextMessage.contextInfo.quotedMessage.videoMessage.seconds < 11)) 
+                            {
+                            const encmedia = isQuotedVideo ? JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo : mek
+                            const media = await client.downloadAndSaveMediaMessage(encmedia)
+                         
                             let results = await WebVideos('./undefined.mp4', {
-                               bin: 'node_modules/ffmpeg-static-electron/bin/linux/x64/ffmpeg',
-                               output_dir: './Media/temporary',
-                               temp_dir: './Media/temporary',
-                               formats: [{ format: 'gif', fps: 20, loop: true }]
-                            });
-
-                            console.log(results);
-                         })().catch(err => console.log(err));
-                         const result = webp.gwebp("Media/temporary/*.gif","sticker.webp","-q 80") // gif to webp
-                        
-                        ran = "./Media/temporary/sticker.webp"
-                        client.sendMessage(from, fs.readFileSync(ran), sticker,{ quoted: mek})
-
-                        }
-            
-                        break
-
-
+                                   bin: 'node_modules/ffmpeg-static-electron/bin/linux/x64/ffmpeg',
+                                   output_dir: './Media/temporary/',
+                                   temp_dir: './Media/temporary',
+                                   formats: [{ format: 'gif', fps: 8 , loop: true }]
+                                   })
+                            await webp.gwebp(results[0],"sticker.webp","-q 80") // gif to webp
+                            
+                            ran = "./sticker.webp"
+                            client.sendMessage(from, fs.readFileSync(ran), sticker,{ quoted: mek})
+    
+                            }
+                
+                            break
+    
+    
 
 
 
@@ -864,3 +863,51 @@ async function starts() {
     })
 }
 starts()
+
+
+
+
+/////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+case 'mp':
+    (async () => {
+
+        let results = await WebVideos('undefined.mp4', {
+           bin: 'node_modules/ffmpeg-static-electron/bin/linux/x64/ffmpeg',
+          
+           output_dir: 'Media/temporary',
+           temp_dir: 'Media/temporary',
+           formats: [{ format: 'gif', fps: 8, loop: true }]
+        });
+
+        console.log(results[0]);
+     })().catch(err => console.log(err));
+         const files = fs.readdirSync('./Media/temporary')
+     for (const file of files) {
+  if (file.endsWith('.gif')) {
+      var ss =file
+    //console.log(file)
+  }
+}
+     break
+
+
+
+
+
+
+
+
+
+
+
+
