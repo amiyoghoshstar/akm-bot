@@ -489,7 +489,7 @@ async function starts() {
 					encmedia = JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo
 					media = await client.downloadAndSaveMediaMessage(encmedia)
 
-                    const buffer = webp.dwebp("undefined.webp","./Media/temp/undefined.jpg","-o",logging="-v");
+                    const buffer = webp.dwebp("undefined.webp","./Media/temporary/undefined.jpg","-o",logging="-v");
                     
                     client.sendMessage(from,  buffer, image, {quoted: mek})
                     
@@ -572,12 +572,12 @@ async function starts() {
                         if (args.length < 1) return reply('*Usage:*\n.yta https://youtu.be/wui0YweevtY\n.yta https://youtu.be/ByH9LuSILxU')
                         if (!isUrl(args[0]) && !args[0].includes('youtu')) return reply(mess.error.Iv)
 
-                        YD.download(ytdl.getVideoID(args[0]), 'temp/audio.mp3');
+                        YD.download(ytdl.getVideoID(args[0]), 'temporary/audio.mp3');
 
                         function function24() {
                             client.sendMessage(
                                 from,
-                                { url: "./Media/temp/audio.mp3" }, // can send mp3, mp4, & ogg
+                                { url: "./Media/temporary/audio.mp3" }, // can send mp3, mp4, & ogg
                                 MessageType.audio,
                                 { mimetype: Mimetype.mp4Audio })
                         }
@@ -595,10 +595,10 @@ async function starts() {
                         if (args.length < 1) return reply('*Usage:*\n.ytv https://youtu.be/wui0YweevtY\n.ytv https://youtu.be/ByH9LuSILxU')
                         if (!isUrl(args[0]) && !args[0].includes('youtu')) return reply(mess.error.Iv)
 
-                        ytdl(args[0]).pipe(fs.createWriteStream('./Media/temp/video.mp4'));
+                        ytdl(args[0]).pipe(fs.createWriteStream('./Media/temporary/video.mp4'));
                         reply(mess.wait)
                         function function2() {
-                            client.sendMessage(from, fs.readFileSync("./Media/temp/video.mp4"), MessageType.video, { quoted: mek, caption: 'Hers is the video.' })
+                            client.sendMessage(from, fs.readFileSync("./Media/temporary/video.mp4"), MessageType.video, { quoted: mek, caption: 'Hers is the video.' })
                         }
                         setTimeout(function2, 15000);
                         break
@@ -680,8 +680,8 @@ async function starts() {
                         const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(mek).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : mek
                         const media = await client.downloadAndSaveMediaMessage(encmedia)
                         
-                        const buffer = await webp.cwebp('undefined.jpeg','./Media/temp/sticker.webp',"-q 50");
-                        ran=fs.readFileSync('./Media/temp/sticker.webp')
+                        const buffer = await webp.cwebp('undefined.jpeg','./Media/temporary/sticker.webp',"-q 50");
+                        ran=fs.readFileSync('./Media/temporary/sticker.webp')
                         client.sendMessage(from, ran, sticker,{ quoted: mek})
                         }
                         
@@ -692,16 +692,16 @@ async function starts() {
                         (async () => {
                             let results = await WebVideos('./undefined.mp4', {
                                bin: 'node_modules/ffmpeg-static-electron/bin/linux/x64/ffmpeg',
-                               output_dir: './Media/temp',
-                               temp_dir: './Media/temp',
+                               output_dir: './Media/temporary',
+                               temp_dir: './Media/temporary',
                                formats: [{ format: 'gif', fps: 20, loop: true }]
                             });
 
                             console.log(results);
                          })().catch(err => console.log(err));
-                         const result = webp.gwebp("Media/temp/*.gif","sticker.webp","-q 80") // gif to webp
+                         const result = webp.gwebp("Media/temporary/*.gif","sticker.webp","-q 80") // gif to webp
                         
-                        ran = "./Media/temp/sticker.webp"
+                        ran = "./Media/temporary/sticker.webp"
                         client.sendMessage(from, fs.readFileSync(ran), sticker,{ quoted: mek})
 
                         }
@@ -731,8 +731,8 @@ async function starts() {
                                 let results = await WebVideos('undefined.mp4', {
                                    bin: 'node_modules/ffmpeg-static-electron/bin/linux/x64/ffmpeg',
                                   
-                                   output_dir: 'Media/temp',
-                                   temp_dir: 'Media/temp',
+                                   output_dir: 'Media/temporary',
+                                   temp_dir: 'Media/temporary',
                                    formats: [{ format: 'gif', fps: 8, loop: true }]
                                 });
     
