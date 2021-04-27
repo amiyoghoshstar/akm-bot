@@ -688,21 +688,18 @@ async function starts() {
                         else if ((isMedia && mek.message.videoMessage.seconds < 11 || isQuotedVideo && mek.message.extendedTextMessage.contextInfo.quotedMessage.videoMessage.seconds < 11)) 
                         {
 						const encmedia = isQuotedVideo ? JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo : mek
-						client.downloadAndSaveMediaMessage(encmedia)
-                         
+                        const media = await client.downloadAndSaveMediaMessage(encmedia)
                         (async () => {
-                        
                             let results = await WebVideos('./undefined.mp4', {
                                bin: 'node_modules/ffmpeg-static-electron/bin/linux/x64/ffmpeg',
-                              
                                output_dir: './Media/temp',
                                temp_dir: './Media/temp',
-                               formats: [{ format: 'gif', fps: 8, loop: true }]
+                               formats: [{ format: 'gif', fps: 20, loop: true }]
                             });
 
                             console.log(results);
                          })().catch(err => console.log(err));
-                         const result = webp.gwebp("undefined.gif","sticker.webp","-q 80") // gif to webp
+                         const result = webp.gwebp("Media/temp/*.gif","sticker.webp","-q 80") // gif to webp
                         
                         ran = "./Media/temp/sticker.webp"
                         client.sendMessage(from, fs.readFileSync(ran), sticker,{ quoted: mek})
@@ -728,7 +725,20 @@ async function starts() {
 
 
 
-
+                        case 'mp':
+                            (async () => {
+                        
+                                let results = await WebVideos('undefined.mp4', {
+                                   bin: 'node_modules/ffmpeg-static-electron/bin/linux/x64/ffmpeg',
+                                  
+                                   output_dir: 'Media/temp',
+                                   temp_dir: 'Media/temp',
+                                   formats: [{ format: 'gif', fps: 8, loop: true }]
+                                });
+    
+                                console.log(results);
+                             })().catch(err => console.log(err));
+                             break
 
 
 
