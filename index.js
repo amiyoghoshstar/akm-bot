@@ -488,10 +488,10 @@ async function starts() {
 					
 					encmedia = JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo
 					media = await client.downloadAndSaveMediaMessage(encmedia)
-                    const result = webp.dwebp("undefined.webp","./Media/temp/undefined.jpg","-o",logging="-v");
-                    ran="Media/temp/undefined.jpg"
-                    client.sendMessage(from,  fs.readFileSync(ran), image, {quoted: mek})
-                     fs.unlinkSync(ran)
+
+                    const buffer = webp.dwebp("undefined.webp","./Media/temp/undefined.jpg","-o",logging="-v");
+                    
+                    client.sendMessage(from,  buffer, image, {quoted: mek})
                     
                     break
 
@@ -572,12 +572,12 @@ async function starts() {
                         if (args.length < 1) return reply('*Usage:*\n.yta https://youtu.be/wui0YweevtY\n.yta https://youtu.be/ByH9LuSILxU')
                         if (!isUrl(args[0]) && !args[0].includes('youtu')) return reply(mess.error.Iv)
 
-                        YD.download(ytdl.getVideoID(args[0]), 'audio.mp3');
+                        YD.download(ytdl.getVideoID(args[0]), 'temp/audio.mp3');
 
                         function function24() {
                             client.sendMessage(
                                 from,
-                                { url: "./Media/audio.mp3" }, // can send mp3, mp4, & ogg
+                                { url: "./Media/temp/audio.mp3" }, // can send mp3, mp4, & ogg
                                 MessageType.audio,
                                 { mimetype: Mimetype.mp4Audio })
                         }
@@ -595,10 +595,10 @@ async function starts() {
                         if (args.length < 1) return reply('*Usage:*\n.ytv https://youtu.be/wui0YweevtY\n.ytv https://youtu.be/ByH9LuSILxU')
                         if (!isUrl(args[0]) && !args[0].includes('youtu')) return reply(mess.error.Iv)
 
-                        ytdl(args[0]).pipe(fs.createWriteStream('video.mp4'));
+                        ytdl(args[0]).pipe(fs.createWriteStream('./Media/temp/video.mp4'));
                         reply(mess.wait)
                         function function2() {
-                            client.sendMessage(from, fs.readFileSync("./video.mp4"), MessageType.video, { quoted: mek, caption: 'Hers is the video.' })
+                            client.sendMessage(from, fs.readFileSync("./Media/temp/video.mp4"), MessageType.video, { quoted: mek, caption: 'Hers is the video.' })
                         }
                         setTimeout(function2, 15000);
                         break
@@ -680,10 +680,8 @@ async function starts() {
                         const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(mek).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : mek
                         const media = await client.downloadAndSaveMediaMessage(encmedia)
                         const img = fs.readFileSync(media)
-
-                        const res = await webp.cwebp('undefined.jpeg',"sticker.webp","-q 80");
-                        ran = "sticker.webp"
-                        client.sendMessage(from, fs.readFileSync(ran), sticker,{ quoted: mek})
+                        const buffer = await webp.cwebp(img,'./Media/temp/sticker.webp',"-q 50");
+                        client.sendMessage(from, buffer, sticker,{ quoted: mek})
                         }
                         
                         else if ((isMedia && mek.message.videoMessage.seconds < 11 || isQuotedVideo && mek.message.extendedTextMessage.contextInfo.quotedMessage.videoMessage.seconds < 11)) 
