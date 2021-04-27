@@ -497,30 +497,6 @@ async function starts() {
 
 
 
-                    /*case 's':
-    
-    
-                        if ((isMedia && !mek.message.videoMessage || isQuotedImage) && args.length == 0) {
-                            const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo : mek
-                            const media = await client.downloadAndSaveMediaMessage(encmedia)
-                            const sticker = new WSF.Sticker('undefined.jpg', {})
-                            await sticker.build()
-                            const sticBuffer = await sticker.get()
-                            fs.writeFile('sticker.webp', sticBuffer)
-                            client.sendMessage(from, sticBuffer, MessageType.sticker,{quoted: mek})
-                        }else if ((isMedia && mek.message.videoMessage.seconds < 11 || isQuotedVideo && mek.message.extendedTextMessage.contextInfo.quotedMessage.videoMessage.seconds < 11) && args.length == 0) {
-                            const encmedia = isQuotedVideo ? JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo : mek
-                            const media = await client.downloadAndSaveMediaMessage(encmedia)
-                            const sticker = new WSF.Sticker(media, { crop: false, animated: true })
-                            await sticker.build()
-                            const sticBuffer = await sticker.get()
-                            fs.writeFile('sticker.webp', sticBuffer)
-                            client.sendMessage(from, sticBuffer, MessageType.sticker,{quoted: mek})
-                        }
-                        break*/
-
-
-
 
 
 
@@ -709,6 +685,7 @@ async function starts() {
                         ran = "sticker.webp"
                         client.sendMessage(from, fs.readFileSync(ran), sticker,{ quoted: mek})
                         }
+                        
                         else if ((isMedia && mek.message.videoMessage.seconds < 11 || isQuotedVideo && mek.message.extendedTextMessage.contextInfo.quotedMessage.videoMessage.seconds < 11)) 
                         {
 						const encmedia = isQuotedVideo ? JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo : mek
