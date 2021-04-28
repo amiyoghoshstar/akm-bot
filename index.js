@@ -54,7 +54,7 @@ var latestTweets = require("latest-tweets");
 const WebVideos = require("web-videos");
 
 prefix = setting.prefix;
-blocked = [];
+blocked = ['919523577371','9709094733'];
 
 function kyun(seconds) {
   function pad(s) {
@@ -314,44 +314,7 @@ async function starts() {
       } else {
         authorname = groupName;
       }
-      function addMetadata(packname, author) {	
-				if (!packname) packname = 'WABot'; if (!author) author = 'Bot';	
-				author = author.replace(/[^a-zA-Z0-9]/g, '');	
-				let name = `${author}_${packname}`
-				if (fs.existsSync(`./src/stickers/${name}.exif`)) return `./src/stickers/${name}.exif`
-				const json = {	
-					"sticker-pack-name": packname,
-					"sticker-pack-publisher": author,
-				}
-				const littleEndian = Buffer.from([0x49, 0x49, 0x2A, 0x00, 0x08, 0x00, 0x00, 0x00, 0x01, 0x00, 0x41, 0x57, 0x07, 0x00])	
-				const bytes = [0x00, 0x00, 0x16, 0x00, 0x00, 0x00]	
-
-				let len = JSON.stringify(json).length	
-				let last	
-
-				if (len > 256) {	
-					len = len - 256	
-					bytes.unshift(0x01)	
-				} else {	
-					bytes.unshift(0x00)	
-				}	
-
-				if (len < 16) {	
-					last = len.toString(16)	
-					last = "0" + len	
-				} else {	
-					last = len.toString(16)	
-				}	
-
-				const buf2 = Buffer.from(last, "hex")	
-				const buf3 = Buffer.from(bytes)	
-				const buf4 = Buffer.from(JSON.stringify(json))	
-
-				const buffer = Buffer.concat([littleEndian, buf2, buf3, buf4])	
-
-				fs.writeFile(`./src/stickers/${name}.exif`, buffer, (err) => {	
-					return `./src/stickers/${name}.exif`	
-				})	
+      
 
       // await client.chatRead (from) // mark all messages in chat as read (equivalent of opening a chat in WA)
 
@@ -820,7 +783,7 @@ async function starts() {
 
           //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  general  $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
-          case "delete":
+          case "del":
             if (!(isQuotedImage||isQuotedSticker||isQuotedVideo)) reply("```Tag the msg to be deleted.```");
             const mencmedia = isQuotedImage? JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message.extendedTextMessage.contextInfo:mek;       
               await client.deleteMessage (from, {id: mencmedia.jid, remoteJid: from, fromMe: true}) // will delete the sent message for everyone!
@@ -829,8 +792,14 @@ async function starts() {
 
           case "menu":
           case "help":
-            client.sendMessage(from, "🤖 *BOT Command List* 🤖\n\n*Bot currently under development.*\n*May have to face bugs or downtime!*\n\n🎀 *Prefix* .\n\n📗 *General*\n ```help, group, adminlist```\n\n👑 *Admin*\n```tagall, promote, demote,kick, add, botleave, grouplink, changedp, changedesc, allsticker```\n\n📱 *Media*\n```sticker, rashmika, read, ytaudio, ytvideo, lyrics, meme, toimg, randomsticker```\n\n📃 *updates*\n```1) read:    removed admin only permission\n2) sticker: sticker can now be made using the bot\n3) toimg:   added  sticker to image conversion feature```", text, { quoted: mek });
+            client.sendMessage(from, "🤖 *BOT Command List* 🤖\n\n*Bot currently under development.*\n*May have to face bugs or downtime!*\n\n🎀 *Prefix* .\n\n📗 *General*\n ```help, group, adminlist, contactme```\n\n👑 *Admin*\n```tagall, promote, demote, kick, add, botleave, grouplink, changedp, changedesc, allsticker```\n\n📱 *Media*\n```sticker, rashmika, read, ytaudio, ytvideo, lyrics, meme, toimg, randomsticker```\n\n📃 *Issues*\n```1) read:    removed admin only permission\n2) sticker: sticker can now be made using the bot\n3) toimg:   fixing bugs in sticker to image conversion feature\n4) promote demote: fixed bugs```", text, { quoted: mek });
             break;
+
+            case 'contactme':
+                if (isGroup) return reply('works only in inox');
+                reply('Why do u want to contact?')
+                break
+
 
           case "group":
             const ppUrl = await client.getProfilePicture(from); // leave empty to get your own
