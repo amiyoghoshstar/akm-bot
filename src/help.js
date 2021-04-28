@@ -1,10 +1,8 @@
 const help = (prefix) => {
 	return ` 🤖 *BOT Command List* 🤖
 
-
 *Bot currently under development.*
 *May have to face bugs or downtime!*
-
 
 
 📗 *General* 
