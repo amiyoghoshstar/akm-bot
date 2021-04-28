@@ -54,7 +54,7 @@ var latestTweets = require("latest-tweets");
 const WebVideos = require("web-videos");
 
 prefix = setting.prefix;
-blocked = ['919523577371','9709094733'];
+const blocked = ['919523577371','917003685950','917404486414'];
 
 function kyun(seconds) {
   function pad(s) {
@@ -319,9 +319,7 @@ async function starts() {
       // await client.chatRead (from) // mark all messages in chat as read (equivalent of opening a chat in WA)
 
       if (
-        sender == "919523577371@s.whatsapp.net" ||
-        sender == "917404486414@s.whatsapp.net" ||
-        sender == "917003685950@s.whatsapp.net"
+        blocked.includes(sender.split("@")[0])
       )
         return;
       else {
@@ -796,7 +794,7 @@ async function starts() {
             break;
 
             case 'contactme':
-                if (isGroup) return reply('works only in inox');
+                if (isGroup) return reply('works only in inbox');
                 reply('Why do u want to contact?')
                 break
 
@@ -819,7 +817,7 @@ async function starts() {
             break;
 
           case "tagall": //tag everyone in the group
-            if (!isGroup) return reply('No one is here except you and me 🌑');
+            if (!isGroup) return reply('```No one is here except you and me``` 🌑');
             if (!isGroupAdmins) return reply(mess.only.admin);
             members_id = [];
             teks = args.length > 1 ? body.slice(8).trim() : "";
