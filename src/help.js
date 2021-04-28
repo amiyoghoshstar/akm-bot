@@ -1,17 +1,19 @@
 const help = (prefix) => {
 	return ` 🤖 *BOT Command List* 🤖
+
 *Bot currently under development.*
 *May have to face bugs or downtime!*
+
 💡 *Prefix:*  ${prefix}
 
 📗 *General* 
-help, adminlist, tagall
+help, adminlist
 
 👑 *Admin* 
-promote, demote, kick, add, botleave, grouplink, setprefix, close, open, purge, changedp, changedesc
+tagall, promote, demote, kick, add, botleave, grouplink, changedp, changedesc
 
 ⚓ *Media* 
-sticker, read, ytv, yta, lyrics, meme
+sticker, read, ytv, yta, lyrics, meme, toimg, rs
 
 Rashmika stickers💖
 👧 *Total*: 458

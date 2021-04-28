@@ -238,7 +238,7 @@ async function starts() {
 
 
                     case 'tweet':
-                        
+
 
 
 
@@ -393,7 +393,7 @@ async function starts() {
                         break
 
 
-                    case 'boleave':
+                    case 'botleave':
                         if (!isGroup) return reply(mess.only.group)
                         if (isGroupAdmins || isOwner) {
                             client.groupLeave(from)
