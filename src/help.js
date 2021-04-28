@@ -1,19 +1,20 @@
 const help = (prefix) => {
 	return ` 🤖 *BOT Command List* 🤖
 
+
 *Bot currently under development.*
 *May have to face bugs or downtime!*
 
-💡 *Prefix:*  ${prefix}
+
 
 📗 *General* 
-help, group, adminlist
+${prefix}help, ${prefix}group, ${prefix}adminlist
 
 👑 *Admin* 
-tagall, promote, demote, kick, add, botleave, grouplink, changedp, changedesc
+${prefix}tagall, ${prefix}promote, ${prefix}demote, ${prefix}kick, ${prefix}add, ${prefix}botleave, ${prefix}grouplink, ${prefix}changedp, ${prefix}changedesc, ${prefix}allsticker
 
 📱 *Media* 
-sticker, rashmika, read, ytaudio, ytvideo, lyrics, meme, toimg, randomsticker
+${prefix}sticker, ${prefix}rashmika, ${prefix}read, ${prefix}ytaudio, ${prefix}ytvideo, ${prefix}lyrics, ${prefix}meme, ${prefix}toimg, ${prefix}randomsticker
 
 📃 *updates*
 1) read:    removed admin only permission
