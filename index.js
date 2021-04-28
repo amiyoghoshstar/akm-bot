@@ -156,7 +156,7 @@ async function starts() {
       const content = JSON.stringify(mek.message);
       const from = mek.key.remoteJid;
       const type = Object.keys(mek.message)[0];
-      const apiKey = setting.apiKey; // contact me on whatsapp wa.me/6285892766102
+      const apiKey = setting.apiKey;
       const {
         text,
         extendedText,
@@ -207,8 +207,7 @@ async function starts() {
           ownerG: "💎 This command can only be used by the owner of the group!",
           ownerB: "🎩 This command can only be used by the owner of the bot!",
           admin: "🤷‍♂️ This command can only be used by the admins",
-          Badmin:
-            "🤖 This command can only be used when the bot has admin rights!",
+          Badmin:"🤖 This command can only be used when the bot has admin rights!",
         },
       };
 
@@ -315,6 +314,44 @@ async function starts() {
       } else {
         authorname = groupName;
       }
+      function addMetadata(packname, author) {	
+				if (!packname) packname = 'WABot'; if (!author) author = 'Bot';	
+				author = author.replace(/[^a-zA-Z0-9]/g, '');	
+				let name = `${author}_${packname}`
+				if (fs.existsSync(`./src/stickers/${name}.exif`)) return `./src/stickers/${name}.exif`
+				const json = {	
+					"sticker-pack-name": packname,
+					"sticker-pack-publisher": author,
+				}
+				const littleEndian = Buffer.from([0x49, 0x49, 0x2A, 0x00, 0x08, 0x00, 0x00, 0x00, 0x01, 0x00, 0x41, 0x57, 0x07, 0x00])	
+				const bytes = [0x00, 0x00, 0x16, 0x00, 0x00, 0x00]	
+
+				let len = JSON.stringify(json).length	
+				let last	
+
+				if (len > 256) {	
+					len = len - 256	
+					bytes.unshift(0x01)	
+				} else {	
+					bytes.unshift(0x00)	
+				}	
+
+				if (len < 16) {	
+					last = len.toString(16)	
+					last = "0" + len	
+				} else {	
+					last = len.toString(16)	
+				}	
+
+				const buf2 = Buffer.from(last, "hex")	
+				const buf3 = Buffer.from(bytes)	
+				const buf4 = Buffer.from(JSON.stringify(json))	
+
+				const buffer = Buffer.concat([littleEndian, buf2, buf3, buf4])	
+
+				fs.writeFile(`./src/stickers/${name}.exif`, buffer, (err) => {	
+					return `./src/stickers/${name}.exif`	
+				})	
 
       // await client.chatRead (from) // mark all messages in chat as read (equivalent of opening a chat in WA)
 
@@ -371,6 +408,7 @@ async function starts() {
               mek.message.extendedTextMessage === null
             )
               return reply("*Usage:*\n.promote @bot\n.promote @shreya");
+              mentioned = mek.message.extendedTextMessage.contextInfo.mentionedJid
             if (mentioned.length > 1) {
               teks = "Promote success\n";
               for (let _ of mentioned) {
@@ -396,8 +434,9 @@ async function starts() {
               mek.message.extendedTextMessage === undefined ||
               mek.message.extendedTextMessage === null
             )
-              return;
-            reply("*Usage:*\n.demote @bot\n.demote @shreya");
+              return             reply("*Usage:*\n.demote @bot\n.demote @shreya");
+
+            mentioned = mek.message.extendedTextMessage.contextInfo.mentionedJid
             if (mentioned.length > 1) {
               teks = "Successfully demoted\n";
               for (let _ of mentioned) {
@@ -597,13 +636,11 @@ async function starts() {
             break;
 
           case "allsticker": // all sticker
-            client.sendMessage(
-              from,
-              "No more sticker due to stupid behaviour",
-              text,
-              { quoted: mek }
-            ); //turn this on to stop spam
-            /* if (isGroupAdmins || isOwner||!isGroup) {
+          if (args[0]!='akm')
+              return reply(
+                "No more sticker due to stupid behaviour"
+              ) //turn this on to stop spam
+             if (isGroupAdmins || isOwner||!isGroup) {
                             for (var i = 1; i < 1000; i++) {
                                 ran = "./Media/stickers/s (" + i + ").webp"
                                 client.sendMessage(from, fs.readFileSync(ran), sticker)
@@ -611,7 +648,7 @@ async function starts() {
                         }
                         else {
                             reply(mess.error.admin)
-                        }*/
+                        }
             break;
 
           case "rall": // all rashmika stickers in group
@@ -702,7 +739,7 @@ async function starts() {
               );
 
             if (args[0] != "en" && args[0] != "hi" && args[0] != "ta")
-              return reply(`Unsupported language : ${args[0]}`);
+              return reply(`Unsupported lang : ${args[0]}`);
             const gtts = require("./lib/gtts")(args[0]);
             if (args.length < 2)
               return client.sendMessage(from, "Where is the text?", text, {
@@ -726,8 +763,8 @@ async function starts() {
             meme = await fetchJson("https://kagchi-api.glitch.me/meme/memes", {
               method: "get",
             });
-            buffer = await getBuffer(`https://imgur.com/${meme.hash}.jpg`);
-            client.sendMessage(from, buffer, image, {
+            im = await getBuffer(`https://imgur.com/${meme.hash}.jpg`);
+            client.sendMessage(from, im, image, {
               quoted: mek,
               caption: "maymay",
             });
@@ -748,6 +785,7 @@ async function starts() {
               );
               ran = fs.readFileSync("./Media/temporary/sticker.webp");
               client.sendMessage(from, ran, sticker, { quoted: mek });
+              console.log(encmedia.jid)
             } else if (
               (isMedia && mek.message.videoMessage.seconds < 11) ||
               (isQuotedVideo &&
@@ -783,16 +821,15 @@ async function starts() {
           //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  general  $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
           case "delete":
-            if (message.extendedTextMessage) reply("u replied to msg");
-            //  if(!(isQuotedSticker||isQuotedImage||isQuotedVideo) ) return reply("Tag the messae to be deleted.")
-            // const v=
-            //   await client.deleteMessage (from, {id: v, remoteJid: from, fromMe: true}) // will delete the sent message for everyone!
+            if (!(isQuotedImage||isQuotedSticker||isQuotedVideo)) reply("```Tag the msg to be deleted.```");
+            const mencmedia = isQuotedImage? JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message.extendedTextMessage.contextInfo:mek;       
+              await client.deleteMessage (from, {id: mencmedia.jid, remoteJid: from, fromMe: true}) // will delete the sent message for everyone!
 
             break;
 
           case "menu":
           case "help":
-            client.sendMessage(from, help(prefix), text, { quoted: mek });
+            client.sendMessage(from, "🤖 *BOT Command List* 🤖\n\n*Bot currently under development.*\n*May have to face bugs or downtime!*\n\n🎀 *Prefix* .\n\n📗 *General*\n ```help, group, adminlist```\n\n👑 *Admin*\n```tagall, promote, demote,kick, add, botleave, grouplink, changedp, changedesc, allsticker```\n\n📱 *Media*\n```sticker, rashmika, read, ytaudio, ytvideo, lyrics, meme, toimg, randomsticker```\n\n📃 *updates*\n```1) read:    removed admin only permission\n2) sticker: sticker can now be made using the bot\n3) toimg:   added  sticker to image conversion feature```", text, { quoted: mek });
             break;
 
           case "group":
@@ -813,8 +850,7 @@ async function starts() {
             break;
 
           case "tagall": //tag everyone in the group
-            if (!isGroup) return reply(mess.only.group);
-
+            if (!isGroup) return reply('No one is here except you and me 🌑');
             if (!isGroupAdmins) return reply(mess.only.admin);
             members_id = [];
             teks = args.length > 1 ? body.slice(8).trim() : "";
@@ -854,31 +890,3 @@ async function starts() {
   });
 }
 starts();
-
-/////////////////////////////////////////////////////////////////
-
-/*
-case 'mp':
-    (async () => {
-
-        let results = await WebVideos('undefined.mp4', {
-           bin: 'node_modules/ffmpeg-static-electron/bin/linux/x64/ffmpeg',
-          
-           output_dir: 'Media/temporary',
-           temp_dir: 'Media/temporary',
-           formats: [{ format: 'gif', fps: 8, loop: true }]
-        });
-
-        console.log(results[0]);
-     })().catch(err => console.log(err));
-         const files = fs.readdirSync('./Media/temporary')
-     for (const file of files) {
-  if (file.endsWith('.gif')) {
-      var ss =file
-    //console.log(file)
-  }
-}
-     break
-
-
-*/
