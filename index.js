@@ -36,6 +36,7 @@ var YD = new YoutubeMp3Downloader({
     "progressTimeout": 2000,             										     // Interval in ms for the progress reports (default: 1000)
     "allowWebm": false                   										     // Enable download from WebM sources (default: false)
 });
+var latestTweets = require('latest-tweets')
 
 const WebVideos = require('web-videos');
 
@@ -234,6 +235,37 @@ async function starts() {
                 switch (command) {
 
                     //################################  Admin  COMMANDS   ##################################################
+
+
+                    case 'tweet':
+                        
+
+
+
+
+
+                        break
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
                     case 'invite':
@@ -877,7 +909,7 @@ starts()
 
 
 
-
+/*
 case 'mp':
     (async () => {
 
@@ -901,7 +933,7 @@ case 'mp':
      break
 
 
-
+*/
 
 
 
