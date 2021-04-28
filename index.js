@@ -225,7 +225,7 @@ async function starts() {
 
 
 
-            await client.chatRead (from) // mark all messages in chat as read (equivalent of opening a chat in WA)
+            // await client.chatRead (from) // mark all messages in chat as read (equivalent of opening a chat in WA)
 
 
             if (sender == "919523577371@s.whatsapp.net" || sender == "917404486414@s.whatsapp.net" || sender == "917003685950@s.whatsapp.net") return
@@ -396,7 +396,7 @@ async function starts() {
                     case 'botleave':
                         if (!isGroup) return reply(mess.only.group)
                         if (isGroupAdmins || isOwner) {
-                            client.sendMessage("Miss YOU ALL 🤧")
+                            await client.sendMessage(from, "Miss YOU ALL 🤧", text)
                             client.groupLeave(from)
                         } else {
                             reply("Only admins can ask me to leave 🌚")        
@@ -544,7 +544,7 @@ async function starts() {
 
                     case 'rashmika': // random rashmika stickers
                         //client.sendMessage(from, "stopped due stupid behaviour", text, {quoted: mek})  //turn this on to stop spam
-                        var ccc = Math.floor((Math.random() * 90) + 1);
+                        var ccc = Math.floor((Math.random() * 312) + 1);
                         ran = "./Media/rashmika_stickers/rashmika (" + ccc + ").webp"
                         client.sendMessage(from, fs.readFileSync(ran), sticker, { quoted: mek })
                         break
@@ -579,7 +579,7 @@ async function starts() {
                     case 'rall':  // all rashmika stickers in group
                         //client.sendMessage(from, "stopped due stupid behaviour", text)  //turn this on to stop spam
                         if (!(isGroupAdmins || isOwner)) return reply(mess.error.ownerB)
-                        for (var i = 1; i < 420; i++) {
+                        for (var i = 1; i < 312; i++) {
                             ran = "./Media/rashmika_stickers/rashmika (" + i + ").webp"
                             client.sendMessage(from, fs.readFileSync(ran), sticker)
                         }
@@ -590,7 +590,7 @@ async function starts() {
 
                     case 'rashu':  // all rashmika stickers in inbox
                         if (isGroup) return reply('Command works in inbox')
-                        for (var i = 1; i < 420; i++) {
+                        for (var i = 1; i < 312; i++) {
                             ran = "./Media/rashmika_stickers/rashmika (" + i + ").webp"
                             client.sendMessage(from, fs.readFileSync(ran), sticker)
                         }
@@ -669,11 +669,10 @@ async function starts() {
 
 
                     case 'read':
-                        if (!isGroupAdmins) return reply("❌ This command can only be used by the admin! due to excessive spamming")
                         if (args.length < 1) return reply('*Usage:*\n.read [lang_code] [Text]\n*eg:*\n.read en who are you?\n.read hi tum kon ho??')
+                       
+                        if (args[0]!='en' && args[0]!='hi' &&args[0]!='ta') return reply(`Unsupported language : ${args[0]}`   )
                         const gtts = require('./lib/gtts')(args[0])
-                        if (args[0]!='en'|| args[0]!='hi'||args[0]!='ja'||args[0]!='ta') return reply(`Unsupported language ${args[0]}`   )
-
                         if (args.length < 2) return client.sendMessage(from, 'Where is the text?', text, { quoted: mek })
                         dtt = body.slice(9)
                         ranm = getRandom('.mp3')
@@ -800,7 +799,7 @@ async function starts() {
                     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  general  $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 
-
+                    case 'menu':         
                     case 'help':
                         client.sendMessage(from, help(prefix), text, { quoted: mek })
                         break
@@ -809,23 +808,11 @@ async function starts() {
 
                     case 'group':
                         const ppUrl = await client.getProfilePicture(from) // leave empty to get your own
-                        console.log("download profile picture from: " + ppUrl)
-                        //client.sendMessage(from, ppUrl ,MessageType.image ,{ mimetype: Mimetype.jpeg, caption: "hello!" })
+                        //console.log("download profile picture from: " + ppUrl)
+                       // teks = `\n💮 *Title*: ${groupMetadata.subject}\n\n👑 *Created By*: ${groupMetadata.owner.split('@')[0]}\n\n🏊 *Participiants*: ${groupMetadata.participants.length}\n\n🏅 *Admins*:${groupAdmins.length}\n\n🌏 *Description*:\n${groupMetadata.desc}`
+                        client.sendMessage(from, client.getProfilePicture(from) ,MessageType.image)
 
-
-                        const metadata = await client.groupMetadata(from)
-                        console.log(json.id + ", title: " + json.subject + ", description: " + json.desc)
-
-                        break
-
-
-
-
-
-
-
-                    case 'intro':
-
+                      //  client.sendMessage(from,teks,text,{quoted:mek})
                         break
 
 
@@ -854,7 +841,7 @@ async function starts() {
 
                     case 'adminlist':
                         if (!isGroup) return reply(mess.only.group)
-                        teks = `List admin of group *${groupMetadata.subject}*\nTotal : ${groupAdmins.length}\n\n`
+                        teks = `*${groupMetadata.subject}*\n\n`
                         no = 0
                         for (let admon of groupAdmins) {
                             no += 1

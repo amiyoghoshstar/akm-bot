@@ -7,17 +7,18 @@ const help = (prefix) => {
 💡 *Prefix:*  ${prefix}
 
 📗 *General* 
-help, adminlist
+help, group, adminlist
 
 👑 *Admin* 
 tagall, promote, demote, kick, add, botleave, grouplink, changedp, changedesc
 
-⚓ *Media* 
-sticker, read, ytaudio, ytvideo, lyrics, meme, toimg, randomsticker
+📱 *Media* 
+sticker, rashmika, read, ytaudio, ytvideo, lyrics, meme, toimg, randomsticker
 
-Rashmika stickers💖
-👧 *Total*: 458
-🏗  *Usage:*  ${prefix}rashmika`
+📃 *updates*
+1) read:    removed admin only permission
+2) sticker: sticker can now be made using the bot
+3) toimg:   added  sticker to image conversion feature`
 }
 
 exports.help = help
