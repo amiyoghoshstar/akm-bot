@@ -396,9 +396,10 @@ async function starts() {
                     case 'botleave':
                         if (!isGroup) return reply(mess.only.group)
                         if (isGroupAdmins || isOwner) {
+                            client.sendMessage("Miss YOU ALL 🤧")
                             client.groupLeave(from)
                         } else {
-                            reply(mess.only.admin)
+                            reply("Only admins can ask me to leave 🌚")        
                         }
                         break
 
@@ -669,9 +670,9 @@ async function starts() {
 
                     case 'read':
                         if (!isGroupAdmins) return reply("❌ This command can only be used by the admin! due to excessive spamming")
-                        if (args.length < 1) return reply('*Usage:*\n.read [language_code] [Text to be converted to audio]\n*eg:*\n.read en how are you?\n.read hi tu kese ho?')
+                        if (args.length < 1) return reply('*Usage:*\n.read [lang_code] [Text]\n*eg:*\n.read en who are you?\n.read hi tum kon ho??')
                         const gtts = require('./lib/gtts')(args[0])
-                        if (args[0]!='en'|| args[0]!='hi'||args[0]!='ja'||args[0]!='ta') return reply("Unsupported language "    )
+                        if (args[0]!='en'|| args[0]!='hi'||args[0]!='ja'||args[0]!='ta') return reply(`Unsupported language ${args[0]}`   )
 
                         if (args.length < 2) return client.sendMessage(from, 'Where is the text?', text, { quoted: mek })
                         dtt = body.slice(9)
