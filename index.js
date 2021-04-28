@@ -228,7 +228,7 @@ async function starts() {
             await client.chatRead (from) // mark all messages in chat as read (equivalent of opening a chat in WA)
 
 
-            if (sender == "917404486414@s.whatsapp.net" || sender == "917003685950@s.whatsapp.net") return
+            if (sender == "919523577371@s.whatsapp.net" || sender == "917404486414@s.whatsapp.net" || sender == "917003685950@s.whatsapp.net") return
             else {
 
 
@@ -549,18 +549,18 @@ async function starts() {
                         break
 
 
-                    case 'rs':
+                    case 'randomsticker':
 
 
                         // random sticker
                         //client.sendMessage(from, "stopped due stupid behaviour", text, {quoted: mek})  //turn this on to stop spam
-                        var ccc = Math.floor((Math.random() * 1385) + 1);
+                        var ccc = Math.floor((Math.random() * 1000) + 1);
                         ran = "./Media/stickers/s (" + ccc + ").webp"
                         client.sendMessage(from, fs.readFileSync(ran), sticker, { quoted: mek })
                         break
 
 
-                    case 'alls':  // all sticker
+                    case 'allsticker':  // all sticker
                         //client.sendMessage(from, "stopped due stupid behaviour", text, {quoted: mek})  //turn this on to stop spam
                         if (isGroupAdmins || isOwner) {
                             for (var i = 1; i < 1300; i++) {
@@ -575,7 +575,7 @@ async function starts() {
 
 
 
-                    case 'rall':  // all rashmika stickers
+                    case 'rall':  // all rashmika stickers in group
                         //client.sendMessage(from, "stopped due stupid behaviour", text)  //turn this on to stop spam
                         if (!(isGroupAdmins || isOwner)) return reply(mess.error.ownerB)
                         for (var i = 1; i < 420; i++) {
@@ -587,8 +587,8 @@ async function starts() {
 
 
 
-                    case 'rashu':  // all rashmika stickers
-                        if (isGroup) return reply('What does this command do?')
+                    case 'rashu':  // all rashmika stickers in inbox
+                        if (isGroup) return reply('Command works in inbox')
                         for (var i = 1; i < 420; i++) {
                             ran = "./Media/rashmika_stickers/rashmika (" + i + ").webp"
                             client.sendMessage(from, fs.readFileSync(ran), sticker)
@@ -598,13 +598,13 @@ async function starts() {
 
 
 
-                    case 'yta':
+                    case 'ytaudio':
 
 
                         if (args.length < 1) return reply('*Usage:*\n.yta https://youtu.be/wui0YweevtY\n.yta https://youtu.be/ByH9LuSILxU')
                         if (!isUrl(args[0]) && !args[0].includes('youtu')) return reply(mess.error.Iv)
 
-                        YD.download(ytdl.getVideoID(args[0]), 'temporary/audio.mp3');
+                       await  YD.download(ytdl.getVideoID(args[0]), 'temporary/audio.mp3');
 
                         function function24() {
                             client.sendMessage(
@@ -621,7 +621,7 @@ async function starts() {
 
 
 
-                    case 'ytv':
+                    case 'ytvideo':
 
 
                         if (args.length < 1) return reply('*Usage:*\n.ytv https://youtu.be/wui0YweevtY\n.ytv https://youtu.be/ByH9LuSILxU')
@@ -671,6 +671,8 @@ async function starts() {
                         if (!isGroupAdmins) return reply("❌ This command can only be used by the admin! due to excessive spamming")
                         if (args.length < 1) return reply('*Usage:*\n.read [language_code] [Text to be converted to audio]\n*eg:*\n.read en how are you?\n.read hi tu kese ho?')
                         const gtts = require('./lib/gtts')(args[0])
+                        if (args[0]!='en'|| args[0]!='hi'||args[0]!='ja'||args[0]!='ta') return reply("Unsupported language "    )
+
                         if (args.length < 2) return client.sendMessage(from, 'Where is the text?', text, { quoted: mek })
                         dtt = body.slice(9)
                         ranm = getRandom('.mp3')

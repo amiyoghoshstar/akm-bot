@@ -13,7 +13,7 @@ help, adminlist
 tagall, promote, demote, kick, add, botleave, grouplink, changedp, changedesc
 
 ⚓ *Media* 
-sticker, read, ytv, yta, lyrics, meme, toimg, rs
+sticker, read, ytaudio, ytvideo, lyrics, meme, toimg, randomsticker
 
 Rashmika stickers💖
 👧 *Total*: 458
