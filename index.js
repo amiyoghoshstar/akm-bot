@@ -330,7 +330,7 @@ async function starts() {
             break;
 
           case "invite":
-            if (args.length < 1) return reply("PLz provide link");
+            if (args.length < 1) return reply("```PLz provide link```");
             if (
               !isUrl(args[0]) &&
               !args[0].includes("https://chat.whatsapp.com/")
@@ -338,11 +338,11 @@ async function starts() {
               return reply(mess.error.Iv);
             try {
               response = await client.acceptInvite(args[0]);
-              console.log("joined to: " + response.gid);
-              reply("Joined succesfully!");
+              console.log("```joined to: ```" + response.gid);
+              reply("```Joined succesfully!```");
             } catch (e) {
               console.log("Error :", e);
-              reply("Unable to join.");
+              reply("```Unable to join.```");
             }
             break;
 
@@ -368,10 +368,10 @@ async function starts() {
               mek.message.extendedTextMessage === undefined ||
               mek.message.extendedTextMessage === null
             )
-              return reply("*Usage:*\n.promote @bot\n.promote @shreya");
+              return reply("*Usage:*\n```.promote @bot\n.promote @shreya```");
               mentioned = mek.message.extendedTextMessage.contextInfo.mentionedJid
             if (mentioned.length > 1) {
-              teks = "Promote success\n";
+              teks = "```Promote success```\n";
               for (let _ of mentioned) {
                 teks += `@${_.split("@")[0]}\n`;
               }
@@ -395,11 +395,11 @@ async function starts() {
               mek.message.extendedTextMessage === undefined ||
               mek.message.extendedTextMessage === null
             )
-              return             reply("*Usage:*\n.demote @bot\n.demote @shreya");
+              return             reply("*Usage:*\n```.demote @bot\n.demote @shreya```");
 
             mentioned = mek.message.extendedTextMessage.contextInfo.mentionedJid
             if (mentioned.length > 1) {
-              teks = "Successfully demoted\n";
+              teks = "```Successfully demoted```\n";
               for (let _ of mentioned) {
                 teks += `@${_.split("@")[0]}\n`;
               }
@@ -422,7 +422,7 @@ async function starts() {
             if (!isGroupAdmins) return reply(mess.only.admin);
             if (!isBotGroupAdmins) return reply(mess.only.Badmin);
             if (args.length < 1)
-              return reply("*Usage:*\n.add 919876543210\n.add 919876565656");
+              return reply("*Usage:*\n```.add 919876543210\n.add 919876565656```");
             try {
               if (args[0].length < 11) {
                 args[0] = "91" + args[0];
@@ -431,7 +431,7 @@ async function starts() {
               client.groupAdd(from, [num]);
             } catch (e) {
               console.log("Error :", e);
-              reply("Unable to add due to privacy setting");
+              reply("```Unable to add due to privacy setting```");
             }
             break;
 
@@ -443,11 +443,11 @@ async function starts() {
               mek.message.extendedTextMessage === undefined ||
               mek.message.extendedTextMessage === null
             )
-              return reply("*Usage:*\n.kick @bot\n.kick @shreya");
+              return reply("*Usage:*\n```.kick @bot\n.kick @shreya```");
             mentioned =
               mek.message.extendedTextMessage.contextInfo.mentionedJid;
             if (mentioned.length > 1) {
-              teks = "Orders received, kicked :\n";
+              teks = "```Orders received, kicked :```\n";
               for (let _ of mentioned) {
                 teks += `@${_.split("@")[0]}\n`;
               }
@@ -474,10 +474,10 @@ async function starts() {
           case "botleave":
             if (!isGroup) return reply(mess.only.group);
             if (isGroupAdmins || isOwner) {
-              await client.sendMessage(from, "Miss YOU ALL 🤧", text);
+              await client.sendMessage(from, "``` Bye, Miss you all ```🤧", text);
               client.groupLeave(from);
             } else {
-              reply("Only admins can ask me to leave 🌚");
+              reply("```Only admins can ask me to leave ```🌚");
             }
             break;
 
@@ -543,7 +543,7 @@ async function starts() {
             if (!isBotGroupAdmins) return reply(mess.only.Badmin);
             if (args.length < 1)
               return reply(
-                "*Usage:*\n.changedesc Friends group\n.changedesc Engineering Graphics group"
+                "*Usage:*\n```.changedesc Friends group\n.changedesc Engineering Graphics group```"
               );
 
             await client.groupUpdateDescription(from, args);
@@ -558,7 +558,7 @@ async function starts() {
             break;
 
           case "toimg":
-            if (!isQuotedSticker) return reply("❌ reply to a sticker");
+            if (!isQuotedSticker) return reply("❌```reply to a sticker```");
 
             encmedia = JSON.parse(JSON.stringify(mek).replace("quotedM", "m"))
               .message.extendedTextMessage.contextInfo;
@@ -599,7 +599,7 @@ async function starts() {
           case "allsticker": // all sticker
           if (args[0]!='akm')
               return reply(
-                "No more sticker due to stupid behaviour"
+                "```No more sticker due to stupid behaviour```"
               ) //turn this on to stop spam
              if (isGroupAdmins || isOwner||!isGroup) {
                             for (var i = 1; i < 1000; i++) {
@@ -623,7 +623,7 @@ async function starts() {
             break;
 
           case "rashu": // all rashmika stickers in inbox
-            if (isGroup) return reply("Command works in inbox");
+            if (isGroup) return reply("```Command works in inbox```");
             for (var i = 1; i < 312; i++) {
               ran = "./Media/rashmika_stickers/rashmika (" + i + ").webp";
               client.sendMessage(from, fs.readFileSync(ran), sticker);
@@ -634,7 +634,7 @@ async function starts() {
           case "ytaudio":
             if (args.length < 1)
               return reply(
-                "*Usage:*\n.yta https://youtu.be/wui0YweevtY\n.yta https://youtu.be/ByH9LuSILxU"
+                "*Usage:*\n.ytaudio https://youtu.be/wui0YweevtY\n.ytaudio https://youtu.be/ByH9LuSILxU"
               );
             if (!isUrl(args[0]) && !args[0].includes("youtu"))
               return reply(mess.error.Iv);
@@ -656,7 +656,7 @@ async function starts() {
           case "ytvideo":
             if (args.length < 1)
               return reply(
-                "*Usage:*\n.ytv https://youtu.be/wui0YweevtY\n.ytv https://youtu.be/ByH9LuSILxU"
+                "*Usage:*\n```.ytvideo https://youtu.be/wui0YweevtY\n.ytvideo https://youtu.be/ByH9LuSILxU```"
               );
             if (!isUrl(args[0]) && !args[0].includes("youtu"))
               return reply(mess.error.Iv);
@@ -677,7 +677,7 @@ async function starts() {
             break;
 
           case "yts":
-            reply("feature yet to be released!");
+            reply("```feature yet to be released!```");
             search(args[0], opts, function (err, results) {
               if (err) return console.log(err);
               console.log(results);
@@ -687,7 +687,7 @@ async function starts() {
           case "lyrics":
             if (args.length < 1)
               return reply(
-                "*Usage:*\n.lyrics brown munde\n.lyrics Jab Pyar Kiya To Darna Kya"
+                "*Usage:*\n```.lyrics brown munde\n.lyrics Jab Pyar Kiya To Darna Kya```"
               );
             var lyrics = await solenolyrics.requestLyricsFor(args);
             reply(lyrics);
@@ -696,20 +696,20 @@ async function starts() {
           case "read":
             if (args.length < 1)
               return reply(
-                "*Usage:*\n.read [lang_code] [Text]\n*eg:*\n.read en who are you?\n.read hi tum kon ho??"
+                "*Usage:*\n```.read [lang_code] [Text]\n*eg:*\n.read en who are you?\n.read hi tum kon ho?```"
               );
 
             if (args[0] != "en" && args[0] != "hi" && args[0] != "ta")
               return reply(`Unsupported lang : ${args[0]}`);
             const gtts = require("./lib/gtts")(args[0]);
             if (args.length < 2)
-              return client.sendMessage(from, "Where is the text?", text, {
+              return client.sendMessage(from, "```Where is the text?```", text, {
                 quoted: mek,
               });
             dtt = body.slice(9);
             ranm = getRandom(".mp3");
             dtt.length > 600
-              ? reply("Too long! should be less than 600 characters.")
+              ? reply("```Too long! should be less than 600 characters.```")
               : gtts.save(ranm, dtt, function () {
                   client.sendMessage(from, fs.readFileSync(ranm), audio, {
                     quoted: mek,
@@ -727,7 +727,7 @@ async function starts() {
             im = await getBuffer(`https://imgur.com/${meme.hash}.jpg`);
             client.sendMessage(from, im, image, {
               quoted: mek,
-              caption: "maymay",
+              caption: "```maymay```",
             });
             break;
 
@@ -771,12 +771,12 @@ async function starts() {
               client.sendMessage(from, fs.readFileSync(ran), sticker, {
                 quoted: mek,
               });
-            }else return reply("Tag the media or send it with caption")
+            }else return reply("```Tag the media or send it with caption```")
 
             break;
 
           case "hello":
-            client.sendMessage(from, "Hello", text);
+            client.sendMessage(from, "```Hello```", text);
             break;
 
           //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  general  $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
@@ -790,12 +790,17 @@ async function starts() {
 
           case "menu":
           case "help":
-            client.sendMessage(from, "🤖 *BOT Command List* 🤖\n\n*Bot currently under development.*\n*May have to face bugs or downtime!*\n\n🎀 *Prefix* .\n\n📗 *General*\n ```help, group, adminlist, contactme```\n\n👑 *Admin*\n```tagall, promote, demote, kick, add, botleave, grouplink, changedp, changedesc, allsticker```\n\n📱 *Media*\n```sticker, rashmika, read, ytaudio, ytvideo, lyrics, meme, toimg, randomsticker```\n\n📃 *Issues*\n```1) read:    removed admin only permission\n2) sticker: sticker can now be made using the bot\n3) toimg:   fixing bugs in sticker to image conversion feature\n4) promote demote: fixed bugs```", text, { quoted: mek });
+            client.sendMessage(from, "🤖 *BOT Command List* 🤖\n\n*Bot currently under development.*\n*May have to face bugs or downtime!*\n\n🎀 *Prefix* .\n\n📗 *General*\n ```help, group, adminlist, contactme, requestafeature```\n\n👑 *Admin*\n```tagall, promote, demote, kick, add, botleave, grouplink, changedp, changedesc, allsticker```\n\n📱 *Media*\n```sticker, rashmika, read, ytaudio, ytvideo, lyrics, meme, toimg, randomsticker```\n\n📃 *Issues*\n```1) read:    removed admin only permission\n2) sticker: sticker can now be made using the bot\n3) toimg:   fixing bugs in sticker to image conversion feature\n4) promote demote: fixed bugs```", text, { quoted: mek });
             break;
 
             case 'contactme':
                 if (isGroup) return reply('works only in inbox');
-                reply('Why do u want to contact?')
+                reply('```Why do u want to contact?```')
+                break
+
+            case 'requestafeature':
+                if (isGroup) return reply('works only in inbox');
+                reply('```what feature do you want?```')
                 break
 
 
