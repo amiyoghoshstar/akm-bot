@@ -599,7 +599,7 @@ async function starts() {
 
         case "rashmika": // random rashmika stickers
           //client.sendMessage(from, "stopped due stupid behaviour", text, {quoted: mek})  //turn this on to stop spam
-          var ccc = Math.floor(Math.random() * 312 + 1);
+          var ccc = Math.floor(Math.random() * 304 + 1);
           ran = "./Media/rashmika_stickers/rashmika (" + ccc + ").webp";
           client.sendMessage(from, fs.readFileSync(ran), sticker, {
             quoted: mek,
@@ -632,7 +632,7 @@ async function starts() {
         case "rall": // all rashmika stickers in group
           //client.sendMessage(from, "stopped due stupid behaviour", text)  //turn this on to stop spam
           if (!(isGroupAdmins || isOwner)) return reply(mess.error.ownerB);
-          for (var i = 1; i < 312; i++) {
+          for (var i = 1; i < 304; i++) {
             ran = "./Media/rashmika_stickers/rashmika (" + i + ").webp";
             client.sendMessage(from, fs.readFileSync(ran), sticker);
           }
@@ -641,7 +641,7 @@ async function starts() {
 
         case "rashu": // all rashmika stickers in inbox
           if (isGroup) return reply("```Command works in inbox```");
-          for (var i = 1; i < 312; i++) {
+          for (var i = 1; i < 304; i++) {
             ran = "./Media/rashmika_stickers/rashmika (" + i + ").webp";
             client.sendMessage(from, fs.readFileSync(ran), sticker);
           }
@@ -712,7 +712,7 @@ async function starts() {
 
         case "read":
           reply(
-            "```Feature suspended bcoz of 1000 request in a day, will be continued soon!```"
+            "```Will continue only after adding abuse detection feature!```"
           );
           break;
 
