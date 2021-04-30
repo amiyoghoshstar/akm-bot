@@ -23,7 +23,6 @@ const {
   close,
 } = require("./lib/functions");
 const { fetchJson, fetchText } = require("./lib/fetcher");
-const { recognize } = require("./lib/ocr");
 const fs = require("fs");
 const moment = require("moment-timezone");
 const { exec } = require("child_process");
@@ -49,13 +48,13 @@ var YD = new YoutubeMp3Downloader({
   progressTimeout: 2000, // Interval in ms for the progress reports (default: 1000)
   allowWebm: false, // Enable download from WebM sources (default: false)
 });
-var findInFiles = require('find-in-files');
+var findInFiles = require("find-in-files");
 const WebVideos = require("web-videos");
-const readline = require('readline');
+const readline = require("readline");
 const readInterface = readline.createInterface({
-  input: fs.createReadStream('./src/ban.txt'),
+  input: fs.createReadStream("./src/ban.txt"),
   output: process.stdout,
-  console: false
+  console: false,
 });
 
 prefix = setting.prefix;
@@ -326,477 +325,404 @@ async function starts() {
       // await client.chatRead (from) // mark all messages in chat as read (equivalent of opening a chat in WA)
       if (blocked.includes(sender.split("@")[0])) return;
 
+      // if (args.length > 0)
+      // {
+      //   try {
+      //     for(var i=0;i<args.length;i++)
+      //     {
+      //       for(var ir=1;i<3;ir++)
+      //     {
+      //       readInterface.on(ir, function(line) {
+      //         console.log(line);
+      //         if(args[i].toLowerCase()==line.toLowerCase())
+      //         {
 
+      //           return   reply("⚠``` Warning```")
+      //         }
+      //        });
+      //       }};
+      // } catch (error) {
+      //     console.log(error)
+      // }
+      // }
 
+      switch (command) {
+        //################################  Admin  COMMANDS   ##################################################
 
+        case "tweet":
+          break;
 
+        case "invite":
+          if (args.length < 1) return reply("```PLz provide link```");
+          if (
+            !isUrl(args[0]) &&
+            !args[0].includes("https://chat.whatsapp.com/")
+          )
+            return reply(mess.error.Iv);
+          try {
+            response = await client.acceptInvite(args[0]);
+            console.log("```joined to: ```" + response.gid);
+            reply("```Joined succesfully!```");
+          } catch (e) {
+            console.log("Error :", e);
+            reply("```Unable to join.```");
+          }
+          break;
 
+        case "tagall": //tag everyone in the group
+          if (!isGroup) return reply(mess.only.group);
 
+          if (!isGroupAdmins) return reply(mess.only.admin);
+          members_id = [];
+          teks = args.length > 1 ? body.slice(8).trim() : "";
+          teks += "\n\n";
+          for (let mem of groupMembers) {
+            teks += `🍥 @${mem.jid.split("@")[0]}\n`;
+            members_id.push(mem.jid);
+          }
+          mentions(teks, members_id, true);
+          break;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-     
-      if (args.length > 0) 
-      {
-        try {
-          for(var i=1;i<args.length;i++)
-          {
-            for(var ir=0;i<95;ir++)
-          {
-            readInterface.on(ir, function(line) {
-              console.log(line);
-              if(args[i].toLowerCase()==line.toLowerCase())
-              {
-              
-                return   reply("⚠``` Warning```")
-              }
-             });
-            }};
-      } catch (error) {
-          console.log(error)
-      }
-      } 
-     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-     
-        switch (command) {
-          //################################  Admin  COMMANDS   ##################################################
-
-          case "tweet":
-            break;
-
-          case "invite":
-            if (args.length < 1) return reply("```PLz provide link```");
-            if (
-              !isUrl(args[0]) &&
-              !args[0].includes("https://chat.whatsapp.com/")
-            )
-              return reply(mess.error.Iv);
-            try {
-              response = await client.acceptInvite(args[0]);
-              console.log("```joined to: ```" + response.gid);
-              reply("```Joined succesfully!```");
-            } catch (e) {
-              console.log("Error :", e);
-              reply("```Unable to join.```");
+        case "promote": //promote someone to admin
+          if (!isGroup) return reply(mess.only.group);
+          if (!isGroupAdmins) return reply(mess.only.admin);
+          if (!isBotGroupAdmins) return reply(mess.only.Badmin);
+          if (
+            mek.message.extendedTextMessage === undefined ||
+            mek.message.extendedTextMessage === null
+          )
+            return reply("*Usage:*\n```.promote @bot\n.promote @shreya```");
+          mentioned = mek.message.extendedTextMessage.contextInfo.mentionedJid;
+          if (mentioned.length > 1) {
+            teks = "```Promote success```\n";
+            for (let _ of mentioned) {
+              teks += `@${_.split("@")[0]}\n`;
             }
-            break;
-
-          case "tagall": //tag everyone in the group
-            if (!isGroup) return reply(mess.only.group);
-
-            if (!isGroupAdmins) return reply(mess.only.admin);
-            members_id = [];
-            teks = args.length > 1 ? body.slice(8).trim() : "";
-            teks += "\n\n";
-            for (let mem of groupMembers) {
-              teks += `🍥 @${mem.jid.split("@")[0]}\n`;
-              members_id.push(mem.jid);
-            }
-            mentions(teks, members_id, true);
-            break;
-
-          case "promote": //promote someone to admin
-            if (!isGroup) return reply(mess.only.group);
-            if (!isGroupAdmins) return reply(mess.only.admin);
-            if (!isBotGroupAdmins) return reply(mess.only.Badmin);
-            if (
-              mek.message.extendedTextMessage === undefined ||
-              mek.message.extendedTextMessage === null
-            )
-              return reply("*Usage:*\n```.promote @bot\n.promote @shreya```");
-            mentioned =
-              mek.message.extendedTextMessage.contextInfo.mentionedJid;
-            if (mentioned.length > 1) {
-              teks = "```Promote success```\n";
-              for (let _ of mentioned) {
-                teks += `@${_.split("@")[0]}\n`;
-              }
-              mentions(from, mentioned, true);
-              client.groupRemove(from, mentioned);
-            } else {
-              mentions(
-                `Promoted @${mentioned[0].split("@")[0]} as a Group Admin!`,
-                mentioned,
-                true
-              );
-              client.groupMakeAdmin(from, mentioned);
-            }
-            break;
-
-          case "demote":
-            if (!isGroup) return reply(mess.only.group);
-            if (!isGroupAdmins) return reply(mess.only.admin);
-            if (!isBotGroupAdmins) return reply(mess.only.Badmin);
-            if (
-              mek.message.extendedTextMessage === undefined ||
-              mek.message.extendedTextMessage === null
-            )
-              return reply("*Usage:*\n```.demote @bot\n.demote @shreya```");
-
-            mentioned =
-              mek.message.extendedTextMessage.contextInfo.mentionedJid;
-            if (mentioned.length > 1) {
-              teks = "```Successfully demoted```\n";
-              for (let _ of mentioned) {
-                teks += `@${_.split("@")[0]}\n`;
-              }
-              mentions(teks, mentioned, true);
-              client.groupRemove(from, mentioned);
-            } else {
-              mentions(
-                `successfully demoted @${
-                  mentioned[0].split("@")[0]
-                } Became a Group Member!`,
-                mentioned,
-                true
-              );
-              client.groupDemoteAdmin(from, mentioned);
-            }
-            break;
-
-          case "add":
-            if (!isGroup) return reply(mess.only.group);
-            if (!isGroupAdmins) return reply(mess.only.admin);
-            if (!isBotGroupAdmins) return reply(mess.only.Badmin);
-            if (args.length < 1)
-              return reply(
-                "*Usage:*\n```.add 919876543210\n.add 919876565656```"
-              );
-            try {
-              if (args[0].length < 11) {
-                args[0] = "91" + args[0];
-              }
-              num = `${args[0].replace(/ /g, "")}@s.whatsapp.net`;
-              client.groupAdd(from, [num]);
-            } catch (e) {
-              console.log("Error :", e);
-              reply("```Unable to add due to privacy setting```");
-            }
-            break;
-
-          case "kick":
-            if (!isGroup) return reply(mess.only.group);
-            if (!isGroupAdmins) return reply(mess.only.admin);
-            if (!isBotGroupAdmins) return reply(mess.only.Badmin);
-            if (
-              mek.message.extendedTextMessage === undefined ||
-              mek.message.extendedTextMessage === null
-            )
-              return reply("*Usage:*\n```.kick @bot\n.kick @shreya```");
-            mentioned =
-              mek.message.extendedTextMessage.contextInfo.mentionedJid;
-            if (mentioned.length > 1) {
-              teks = "```Orders received, kicked :```\n";
-              for (let _ of mentioned) {
-                teks += `@${_.split("@")[0]}\n`;
-              }
-              mentions(teks, mentioned, true);
-              client.groupRemove(from, mentioned);
-            } else {
-              mentions(
-                `kicked @${mentioned[0].split("@")[0]}`,
-                mentioned,
-                true
-              );
-              client.groupRemove(from, mentioned);
-            }
-            break;
-
-          case "grouplink":
-            if (!isGroup) return reply(mess.only.group);
-            if (!isGroupAdmins) return reply(mess.only.admin);
-            if (!isBotGroupAdmins) return reply(mess.only.Badmin);
-            linkgc = await client.groupInviteCode(from);
-            reply("https://chat.whatsapp.com/" + linkgc);
-            break;
-
-          case "botleave":
-            if (!isGroup) return reply(mess.only.group);
-            if (isGroupAdmins || isOwner) {
-              await client.sendMessage(
-                from,
-                "``` Bye, Miss you all ```🤧",
-                text
-              );
-              client.groupLeave(from);
-            } else {
-              reply("```Only admins can ask me to leave ```🌚");
-            }
-            break;
-
-          case "setprefix":
-            if (args.length < 1) return;
-            if (!isOwner) return reply(mess.only.ownerB);
-            prefix = args[0];
-            setting.prefix = prefix;
-            fs.writeFileSync(
-              "./src/settings.json",
-              JSON.stringify(setting, null, "\t")
+            mentions(from, mentioned, true);
+            client.groupRemove(from, mentioned);
+          } else {
+            mentions(
+              `Promoted @${mentioned[0].split("@")[0]} as a Group Admin!`,
+              mentioned,
+              true
             );
-            reply(`The prefix has been successfully changed to : ${prefix}`);
-            break;
+            client.groupMakeAdmin(from, mentioned);
+          }
+          break;
 
-          case "close":
-            reply("feature yet to be released!");
-            break;
+        case "demote":
+          if (!isGroup) return reply(mess.only.group);
+          if (!isGroupAdmins) return reply(mess.only.admin);
+          if (!isBotGroupAdmins) return reply(mess.only.Badmin);
+          if (
+            mek.message.extendedTextMessage === undefined ||
+            mek.message.extendedTextMessage === null
+          )
+            return reply("*Usage:*\n```.demote @bot\n.demote @shreya```");
 
-          case "open":
-            reply("feature yet to be released!");
-            break;
-          case "purge":
-            reply("feature yet to be released!");
-            break;
+          mentioned = mek.message.extendedTextMessage.contextInfo.mentionedJid;
+          if (mentioned.length > 1) {
+            teks = "```Successfully demoted```\n";
+            for (let _ of mentioned) {
+              teks += `@${_.split("@")[0]}\n`;
+            }
+            mentions(teks, mentioned, true);
+            client.groupRemove(from, mentioned);
+          } else {
+            mentions(
+              `successfully demoted @${
+                mentioned[0].split("@")[0]
+              } Became a Group Member!`,
+              mentioned,
+              true
+            );
+            client.groupDemoteAdmin(from, mentioned);
+          }
+          break;
 
-          case "q":
-            reply("feature yet to be released!");
-            break;
+        case "add":
+          if (!isGroup) return reply(mess.only.group);
+          if (!isGroupAdmins) return reply(mess.only.admin);
+          if (!isBotGroupAdmins) return reply(mess.only.Badmin);
+          if (args.length < 1)
+            return reply(
+              "*Usage:*\n```.add 919876543210\n.add 919876565656```"
+            );
+          try {
+            if (args[0].length < 11) {
+              args[0] = "91" + args[0];
+            }
+            num = `${args[0].replace(/ /g, "")}@s.whatsapp.net`;
+            client.groupAdd(from, [num]);
+          } catch (e) {
+            console.log("Error :", e);
+            reply("```Unable to add due to privacy setting```");
+          }
+          break;
 
-          case "w":
-            reply("feature yet to be released!");
-            break;
+        case "kick":
+          if (!isGroup) return reply(mess.only.group);
+          if (!isGroupAdmins) return reply(mess.only.admin);
+          if (!isBotGroupAdmins) return reply(mess.only.Badmin);
+          if (
+            mek.message.extendedTextMessage === undefined ||
+            mek.message.extendedTextMessage === null
+          )
+            return reply("*Usage:*\n```.kick @bot\n.kick @shreya```");
+          mentioned = mek.message.extendedTextMessage.contextInfo.mentionedJid;
+          if (mentioned.length > 1) {
+            teks = "```Orders received, kicked :```\n";
+            for (let _ of mentioned) {
+              teks += `@${_.split("@")[0]}\n`;
+            }
+            mentions(teks, mentioned, true);
+            client.groupRemove(from, mentioned);
+          } else {
+            mentions(`kicked @${mentioned[0].split("@")[0]}`, mentioned, true);
+            client.groupRemove(from, mentioned);
+          }
+          break;
 
-          case "changedp":
-            if (!isGroup) return reply(mess.only.group);
-            if (!isGroupAdmins) return reply(mess.only.admin);
-            if (!isBotGroupAdmins) return reply(mess.only.Badmin);
-            if (!(isMedia || isQuotedImage))
-              return reply(
-                "```Tag the image with the caption .changedp or send with the caption .changedp ```"
-              );
-            const encmedia = isQuotedImage
-              ? JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message
-                  .extendedTextMessage.contextInfo
-              : mek;
-            const media = await client.downloadAndSaveMediaMessage(encmedia);
-            const img = fs.readFileSync(media);
-            await client.updateProfilePicture(from, img);
-            break;
+        case "grouplink":
+          if (!isGroup) return reply(mess.only.group);
+          if (!isGroupAdmins) return reply(mess.only.admin);
+          if (!isBotGroupAdmins) return reply(mess.only.Badmin);
+          linkgc = await client.groupInviteCode(from);
+          reply("https://chat.whatsapp.com/" + linkgc);
+          break;
 
-          case "title":
-            /*if (!isGroup) return reply(mess.only.group)
+        case "botleave":
+          if (!isGroup) return reply(mess.only.group);
+          if (isGroupAdmins || isOwner) {
+            await client.sendMessage(from, "``` Bye, Miss you all ```🤧", text);
+            client.groupLeave(from);
+          } else {
+            reply("```Only admins can ask me to leave ```🌚");
+          }
+          break;
+
+        case "setprefix":
+          if (args.length < 1) return;
+          if (!isOwner) return reply(mess.only.ownerB);
+          prefix = args[0];
+          setting.prefix = prefix;
+          fs.writeFileSync(
+            "./src/settings.json",
+            JSON.stringify(setting, null, "\t")
+          );
+          reply(`The prefix has been successfully changed to : ${prefix}`);
+          break;
+
+        case "close":
+          reply("feature yet to be released!");
+          break;
+
+        case "open":
+          reply("feature yet to be released!");
+          break;
+        case "purge":
+          reply("feature yet to be released!");
+          break;
+
+        case "q":
+          reply("feature yet to be released!");
+          break;
+
+        case "w":
+          reply("feature yet to be released!");
+          break;
+
+        case "changedp":
+          if (!isGroup) return reply(mess.only.group);
+          if (!isGroupAdmins) return reply(mess.only.admin);
+          if (!isBotGroupAdmins) return reply(mess.only.Badmin);
+          if (!(isMedia || isQuotedImage))
+            return reply(
+              "```Tag the image with the caption .changedp or send with the caption .changedp ```"
+            );
+          const encmedia = isQuotedImage
+            ? JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message
+                .extendedTextMessage.contextInfo
+            : mek;
+          const media = await client.downloadAndSaveMediaMessage(encmedia);
+          const img = fs.readFileSync(media);
+          await client.updateProfilePicture(from, img);
+          break;
+
+        case "title":
+          /*if (!isGroup) return reply(mess.only.group)
 						if (!isGroupAdmins) return reply(mess.only.admin)
 						if (!isBotGroupAdmins) return reply(mess.only.Badmin)
 						if (args.length < 1) return reply('*Usage:*\n.title Friends group\n.title Engineering Graphics group')
 						client.groupUpdateSubject(from, args)*/
-            break;
+          break;
 
-          case "changedesc":
-            if (!isGroup) return reply(mess.only.group);
-            if (!isGroupAdmins) return reply(mess.only.admin);
-            if (!isBotGroupAdmins) return reply(mess.only.Badmin);
-            if (args.length < 1)
-              return reply(
-                "*Usage:*\n```.changedesc Friends group\n.changedesc Engineering Graphics group```"
-              );
-
-            await client.groupUpdateDescription(from, args);
-            break;
-
-          //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ Media $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-
-          case "fbvid":
-            fbv
-              .getInfo(args)
-              .then((info) => console.log(JSON.stringify(info, null, 2)));
-            break;
-
-          case "toimg":
-            if (!isQuotedSticker) return reply("❌``` reply to a sticker```");
-
-            encmedia = JSON.parse(JSON.stringify(mek).replace("quotedM", "m"))
-              .message.extendedTextMessage.contextInfo;
-            media = await client.downloadAndSaveMediaMessage(encmedia);
-            const result = webp.dwebp(
-              "undefined.webp",
-              "./Media/temporary/undefined.jpg",
-              "-o",
-              (logging = "-v")
+        case "changedesc":
+          if (!isGroup) return reply(mess.only.group);
+          if (!isGroupAdmins) return reply(mess.only.admin);
+          if (!isBotGroupAdmins) return reply(mess.only.Badmin);
+          if (args.length < 1)
+            return reply(
+              "*Usage:*\n```.changedesc Friends group\n.changedesc Engineering Graphics group```"
             );
-            ran = "Media/temp/undefined.jpg";
-            client.sendMessage(from, fs.readFileSync(ran), image, {
-              quoted: mek,
-            });
-            fs.unlinkSync(ran);
 
-            break;
+          await client.groupUpdateDescription(from, args);
+          break;
 
-          case "rashmika": // random rashmika stickers
-            //client.sendMessage(from, "stopped due stupid behaviour", text, {quoted: mek})  //turn this on to stop spam
-            var ccc = Math.floor(Math.random() * 312 + 1);
-            ran = "./Media/rashmika_stickers/rashmika (" + ccc + ").webp";
-            client.sendMessage(from, fs.readFileSync(ran), sticker, {
-              quoted: mek,
-            });
-            break;
+        //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ Media $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
-          case "randomsticker":
-            // random sticker
-            //client.sendMessage(from, "stopped due stupid behaviour", text, {quoted: mek})  //turn this on to stop spam
-            var ccc = Math.floor(Math.random() * 1000 + 1);
-            ran = "./Media/stickers/s (" + ccc + ").webp";
-            client.sendMessage(from, fs.readFileSync(ran), sticker, {
-              quoted: mek,
-            });
-            break;
+        case "fbvid":
+          fbv
+            .getInfo(args)
+            .then((info) => console.log(JSON.stringify(info, null, 2)));
+          break;
 
-          case "allsticker": // all sticker
-            if (args[0] != "akm")
-              return reply("```No more sticker due to stupid behaviour```"); //turn this on to stop spam
-            if (isGroupAdmins || isOwner || !isGroup) {
-              for (var i = 1; i < 1000; i++) {
-                ran = "./Media/stickers/s (" + i + ").webp";
-                client.sendMessage(from, fs.readFileSync(ran), sticker);
-              }
-            } else {
-              reply(mess.error.admin);
-            }
-            break;
+        case "toimg":
+          if (!isQuotedSticker) return reply("❌``` reply to a sticker```");
 
-          case "rall": // all rashmika stickers in group
-            //client.sendMessage(from, "stopped due stupid behaviour", text)  //turn this on to stop spam
-            if (!(isGroupAdmins || isOwner)) return reply(mess.error.ownerB);
-            for (var i = 1; i < 312; i++) {
-              ran = "./Media/rashmika_stickers/rashmika (" + i + ").webp";
+          encmedia = JSON.parse(JSON.stringify(mek).replace("quotedM", "m"))
+            .message.extendedTextMessage.contextInfo;
+          media = await client.downloadAndSaveMediaMessage(encmedia);
+          const result = webp.dwebp(
+            "undefined.webp",
+            "./Media/temporary/undefined.jpg",
+            "-o",
+            (logging = "-v")
+          );
+          ran = "Media/temp/undefined.jpg";
+          client.sendMessage(from, fs.readFileSync(ran), image, {
+            quoted: mek,
+          });
+          fs.unlinkSync(ran);
+
+          break;
+
+        case "rashmika": // random rashmika stickers
+          //client.sendMessage(from, "stopped due stupid behaviour", text, {quoted: mek})  //turn this on to stop spam
+          var ccc = Math.floor(Math.random() * 312 + 1);
+          ran = "./Media/rashmika_stickers/rashmika (" + ccc + ").webp";
+          client.sendMessage(from, fs.readFileSync(ran), sticker, {
+            quoted: mek,
+          });
+          break;
+
+        case "randomsticker":
+          // random sticker
+          //client.sendMessage(from, "stopped due stupid behaviour", text, {quoted: mek})  //turn this on to stop spam
+          var ccc = Math.floor(Math.random() * 934 + 1);
+          ran = "./Media/stickers/s (" + ccc + ").webp";
+          client.sendMessage(from, fs.readFileSync(ran), sticker, {
+            quoted: mek,
+          });
+          break;
+
+        case "allsticker": // all sticker
+          if (args[0] != "akm")
+            return reply("```No more sticker due to stupid behaviour```"); //turn this on to stop spam
+          if (isGroupAdmins || isOwner || !isGroup) {
+            for (var i = 1; i < 934; i++) {
+              ran = "./Media/stickers/s (" + i + ").webp";
               client.sendMessage(from, fs.readFileSync(ran), sticker);
             }
+          } else {
+            reply(mess.error.admin);
+          }
+          break;
 
-            break;
+        case "rall": // all rashmika stickers in group
+          //client.sendMessage(from, "stopped due stupid behaviour", text)  //turn this on to stop spam
+          if (!(isGroupAdmins || isOwner)) return reply(mess.error.ownerB);
+          for (var i = 1; i < 312; i++) {
+            ran = "./Media/rashmika_stickers/rashmika (" + i + ").webp";
+            client.sendMessage(from, fs.readFileSync(ran), sticker);
+          }
 
-          case "rashu": // all rashmika stickers in inbox
-            if (isGroup) return reply("```Command works in inbox```");
-            for (var i = 1; i < 312; i++) {
-              ran = "./Media/rashmika_stickers/rashmika (" + i + ").webp";
-              client.sendMessage(from, fs.readFileSync(ran), sticker);
-            }
+          break;
 
-            break;
+        case "rashu": // all rashmika stickers in inbox
+          if (isGroup) return reply("```Command works in inbox```");
+          for (var i = 1; i < 312; i++) {
+            ran = "./Media/rashmika_stickers/rashmika (" + i + ").webp";
+            client.sendMessage(from, fs.readFileSync(ran), sticker);
+          }
 
-          case "ytaudio":
-            if (args.length < 1)
-              return reply(
-                "*Usage:*\n.ytaudio https://youtu.be/wui0YweevtY\n.ytaudio https://youtu.be/ByH9LuSILxU"
-              );
-            if (!isUrl(args[0]) && !args[0].includes("youtu"))
-              return reply(mess.error.Iv);
+          break;
 
-            await YD.download(ytdl.getVideoID(args[0]), "temporary/audio.mp3");
-
-            function function24() {
-              client.sendMessage(
-                from,
-                { url: "./Media/temporary/audio.mp3" }, // can send mp3, mp4, & ogg
-                MessageType.audio,
-                { mimetype: Mimetype.mp4Audio }
-              );
-            }
-            setTimeout(function24, 15000);
-
-            break;
-
-          case "ytvideo":
-            if (args.length < 1)
-              return reply(
-                "*Usage:*\n```.ytvideo https://youtu.be/wui0YweevtY\n.ytvideo https://youtu.be/ByH9LuSILxU```"
-              );
-            if (!isUrl(args[0]) && !args[0].includes("youtu"))
-              return reply(mess.error.Iv);
-
-            ytdl(args[0]).pipe(
-              fs.createWriteStream("./Media/temporary/video.mp4")
+        case "ytaudio":
+          if (args.length < 1)
+            return reply(
+              "*Usage:*\n.ytaudio https://youtu.be/wui0YweevtY\n.ytaudio https://youtu.be/ByH9LuSILxU"
             );
-            reply(mess.wait);
-            function function2() {
-              client.sendMessage(
-                from,
-                fs.readFileSync("./Media/temporary/video.mp4"),
-                MessageType.video,
-                { quoted: mek, caption: "Hers is the video." }
-              );
-            }
-            setTimeout(function2, 15000);
-            break;
+          if (!isUrl(args[0]) && !args[0].includes("youtu"))
+            return reply(mess.error.Iv);
 
-          case "yts":
-            reply("```feature yet to be released!```");
-            search(args[0], opts, function (err, results) {
-              if (err) return console.log(err);
-              console.log(results);
-            });
-            break;
+          await YD.download(ytdl.getVideoID(args[0]), "temporary/audio.mp3");
 
-          case "lyrics":
-            if (args.length < 1)
-              return reply(
-                "*Usage:*\n```.lyrics brown munde\n.lyrics Jab Pyar Kiya To Darna Kya```"
-              );
-            var lyrics = await solenolyrics.requestLyricsFor(args);
-            reply(lyrics);
-            break;
-          
+          function function24() {
+            client.sendMessage(
+              from,
+              { url: "./Media/temporary/audio.mp3" }, // can send mp3, mp4, & ogg
+              MessageType.audio,
+              { mimetype: Mimetype.mp4Audio }
+            );
+          }
+          setTimeout(function24, 15000);
 
+          break;
 
-            case 'read':
-              reply('```Feature suspended bcoz of 1000 request in a day, will be continued soon!```');
-              break
+        case "ytvideo":
+          if (args.length < 1)
+            return reply(
+              "*Usage:*\n```.ytvideo https://youtu.be/wui0YweevtY\n.ytvideo https://youtu.be/ByH9LuSILxU```"
+            );
+          if (!isUrl(args[0]) && !args[0].includes("youtu"))
+            return reply(mess.error.Iv);
 
-          case "r":
-            try {
-              
-           
+          ytdl(args[0]).pipe(
+            fs.createWriteStream("./Media/temporary/video.mp4")
+          );
+          reply(mess.wait);
+          function function2() {
+            client.sendMessage(
+              from,
+              fs.readFileSync("./Media/temporary/video.mp4"),
+              MessageType.video,
+              { quoted: mek, caption: "Hers is the video." }
+            );
+          }
+          setTimeout(function2, 15000);
+          break;
+
+        case "yts":
+          reply("```feature yet to be released!```");
+          search(args[0], opts, function (err, results) {
+            if (err) return console.log(err);
+            console.log(results);
+          });
+          break;
+
+        case "lyrics":
+          if (args.length < 1)
+            return reply(
+              "*Usage:*\n```.lyrics brown munde\n.lyrics Jab Pyar Kiya To Darna Kya```"
+            );
+          var lyrics = await solenolyrics.requestLyricsFor(args);
+          reply(lyrics);
+          break;
+
+        case "read":
+          reply(
+            "```Feature suspended bcoz of 1000 request in a day, will be continued soon!```"
+          );
+          break;
+
+        case "r":
+          try {
             if (args.length < 1)
               return reply(
                 "*Usage:*\n```.read [lang_code] [Text]```\n*Eg*:\n```.read en who are you?\n.read hi tum kon ho?```"
               );
-              
+
             if (args[0] != "en" && args[0] != "hi" && args[0] != "ta")
               return reply(`Add lang code between 'read' and '${args[0]}'`);
             const gtts = require("./lib/gtts")(args[0]);
@@ -821,160 +747,157 @@ async function starts() {
                   });
                   fs.unlinkSync(ranm);
                 });
-              } catch (error) {
+          } catch (error) {
+            reply("```Error```");
+          }
+          break;
 
-              reply("```Error```")
-              }
-            break;
+        case "meme":
+          meme = await fetchJson("https://kagchi-api.glitch.me/meme/memes", {
+            method: "get",
+          });
+          im = await getBuffer(`https://imgur.com/${meme.hash}.jpg`);
+          client.sendMessage(from, im, image, {
+            quoted: mek,
+            caption: "```maymay```",
+          });
+          break;
 
-          case "meme":
-            meme = await fetchJson("https://kagchi-api.glitch.me/meme/memes", {
-              method: "get",
-            });
-            im = await getBuffer(`https://imgur.com/${meme.hash}.jpg`);
-            client.sendMessage(from, im, image, {
-              quoted: mek,
-              caption: "```maymay```",
-            });
-            break;
-
-          case "sticker":
-            if (isMedia || isQuotedImage) {
-              const encmedia = isQuotedImage
-                ? JSON.parse(JSON.stringify(mek).replace("quotedM", "m"))
-                    .message.extendedTextMessage.contextInfo
-                : mek;
-              const media = await client.downloadAndSaveMediaMessage(encmedia);
-
-              const buffer = await webp.cwebp(
-                "undefined.jpeg",
-                "./Media/temporary/sticker.webp",
-                "-q 50"
-              );
-              ran = fs.readFileSync("./Media/temporary/sticker.webp");
-              client.sendMessage(from, ran, sticker, { quoted: mek });
-              console.log(encmedia.jid);
-            } else if (
-              (isMedia && mek.message.videoMessage.seconds < 11) ||
-              (isQuotedVideo &&
-                mek.message.extendedTextMessage.contextInfo.quotedMessage
-                  .videoMessage.seconds < 11)
-            ) {
-              const encmedia = isQuotedVideo
-                ? JSON.parse(JSON.stringify(mek).replace("quotedM", "m"))
-                    .message.extendedTextMessage.contextInfo
-                : mek;
-              const media = await client.downloadAndSaveMediaMessage(encmedia);
-
-              let results = await WebVideos("./undefined.mp4", {
-                bin: "node_modules/ffmpeg-static-electron/bin/linux/x64/ffmpeg",
-                output_dir: "./Media/temporary/",
-                temp_dir: "./Media/temporary",
-                formats: [{ format: "gif", fps: 8, loop: true }],
-              });
-              await webp.gwebp(results[0], "sticker.webp", "-q 80"); // gif to webp
-
-              ran = "./sticker.webp";
-              client.sendMessage(from, fs.readFileSync(ran), sticker, {
-                quoted: mek,
-              });
-            } else return reply("```Tag the media or send it with caption```");
-
-            break;
-
-          case "hello":
-            client.sendMessage(from, "```Hello```", text);
-            break;
-
-          //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  general  $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-
-          case "del":
-            if (!(isQuotedImage || isQuotedSticker || isQuotedVideo))
-              reply("```Tag the msg to be deleted.```");
-            const mencmedia = isQuotedImage
+        case "sticker":
+          if (isMedia || isQuotedImage) {
+            const encmedia = isQuotedImage
               ? JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message
                   .extendedTextMessage.contextInfo
               : mek;
-            await client.deleteMessage(from, {
-              id: mencmedia.jid,
-              remoteJid: from,
-              fromMe: true,
-            }); // will delete the sent message for everyone!
+            const media = await client.downloadAndSaveMediaMessage(encmedia);
 
-            break;
-
-          case "menu":
-          case "help":
-            client.sendMessage(
-              from,
-              "🤖 *BOT Command List* 🤖\n\n*Bot currently under development.*\n*May have to face bugs or downtime!*\n\n🎀 *Prefix* .\n\n📗 *General*\n ```help, group, adminlist, contactme, requestafeature```\n\n👑 *Admin*\n```tagall, promote, demote, kick, add, botleave, grouplink, changedp, changedesc, allsticker```\n\n📱 *Media*\n```sticker, rashmika, read, ytaudio, ytvideo, lyrics, meme, toimg, randomsticker```\n\n📃 *Issues*\n```1) read:    Feature suspended, added abuse detection feature\n2) sticker: sticker can now be made\n3) toimg:   fixing bugs in sticker to image conversion \n4) promote demote: fixed bugs```",
-              text,
-              { quoted: mek }
+            const buffer = await webp.cwebp(
+              "undefined.jpeg",
+              "./Media/temporary/sticker.webp",
+              "-q 50"
             );
-            break;
+            ran = fs.readFileSync("./Media/temporary/sticker.webp");
+            client.sendMessage(from, ran, sticker, { quoted: mek });
+            console.log(encmedia.jid);
+          } else if (
+            (isMedia && mek.message.videoMessage.seconds < 11) ||
+            (isQuotedVideo &&
+              mek.message.extendedTextMessage.contextInfo.quotedMessage
+                .videoMessage.seconds < 11)
+          ) {
+            const encmedia = isQuotedVideo
+              ? JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message
+                  .extendedTextMessage.contextInfo
+              : mek;
+            const media = await client.downloadAndSaveMediaMessage(encmedia);
 
-          case "contactme":
-            if (isGroup) return reply("```works only in inbox```");
-            reply("```Why do u want to contact me?```");
-            break;
+            let results = await WebVideos("./undefined.mp4", {
+              bin: "node_modules/ffmpeg-static-electron/bin/linux/x64/ffmpeg",
+              output_dir: "./Media/temporary/",
+              temp_dir: "./Media/temporary",
+              formats: [{ format: "gif", fps: 8, loop: true }],
+            });
+            await webp.gwebp(results[0], "sticker.webp", "-q 80"); // gif to webp
 
-          case "requestafeature":
-            if (isGroup) return reply("```works only in inbox```");
-            reply("```what feature do you want?```");
-            break;
+            ran = "./sticker.webp";
+            client.sendMessage(from, fs.readFileSync(ran), sticker, {
+              quoted: mek,
+            });
+          } else return reply("```Tag the media or send it with caption```");
 
-          case "group":
-            const ppUrl = await client.getProfilePicture(from); // leave empty to get your own
-            //console.log("download profile picture from: " + ppUrl)
-            teks = `\n💮 *Title*: ${
-              groupMetadata.subject
-            }\n\n👑 *Created By*: ${
-              groupMetadata.owner.split("@")[0]
-            }\n\n🏊 *Participiants*: ${
-              groupMetadata.participants.length
-            }\n\n🏅 *Admins*:${groupAdmins.length}\n\n🌏 *Description*:\n${
-              groupMetadata.desc
-            }`;
-            //  client.sendMessage(from, client.getProfilePicture(from) ,MessageType.image)
+          break;
 
-            client.sendMessage(from, teks, text, { quoted: mek });
-            break;
+        case "hello":
+          client.sendMessage(from, "```Hello```", text);
+          break;
 
-          case "tagall": //tag everyone in the group
-            if (!isGroup)
-              return reply("```No one is here except you and me``` 🌑");
-            if (!isGroupAdmins) return reply(mess.only.admin);
-            members_id = [];
-            teks = args.length > 1 ? body.slice(8).trim() : "";
-            teks += "\n\n";
-            for (let mem of groupMembers) {
-              teks += `🍥 @${mem.jid.split("@")[0]}\n`;
-              members_id.push(mem.jid);
-            }
-            mentions(teks, members_id, true);
-            break;
+        //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  general  $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
-          case "adminlist":
-            if (!isGroup) return reply(mess.only.group);
-            teks = `*${groupMetadata.subject}*\n\n`;
-            no = 0;
-            for (let admon of groupAdmins) {
-              no += 1;
-              teks += `[${no.toString()}] @${admon.split("@")[0]}\n`;
-            }
-            mentions(teks, groupAdmins, true);
-            break;
+        case "del":
+          if (!(isQuotedImage || isQuotedSticker || isQuotedVideo))
+            reply("```Tag the msg to be deleted.```");
+          const mencmedia = isQuotedImage
+            ? JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message
+                .extendedTextMessage.contextInfo
+            : mek;
+          await client.deleteMessage(from, {
+            id: mencmedia.jid,
+            remoteJid: from,
+            fromMe: true,
+          }); // will delete the sent message for everyone!
 
-          default:
-            if (isGroup && isSimi && budy != undefined) {
-              console.log(budy);
-              muehe = await simih(budy);
-              console.log(muehe);
-              reply(muehe);
-            } else {
-              //return console.log(color('[WARN]','red'), 'Unregistered Command from', color(sender.split('@')[0]))
-            }
-        
+          break;
+
+        case "menu":
+        case "help":
+          client.sendMessage(
+            from,
+            "🤖 *BOT Command List* 🤖\n\n*Bot currently under development.*\n*May have to face bugs or downtime!*\n\n🎀 *Prefix* .\n\n📗 *General*\n ```help, group, adminlist, contactme, requestafeature```\n\n👑 *Admin*\n```tagall, promote, demote, kick, add, botleave, grouplink, changedp, changedesc, allsticker```\n\n📱 *Media*\n```sticker, rashmika, read, ytaudio, ytvideo, lyrics, meme, toimg, randomsticker```\n\n📃 *Issues*\n```1) read:    Feature suspended, added abuse detection feature\n2) sticker: sticker can now be made\n3) toimg:   fixing bugs in sticker to image conversion \n4) promote demote: fixed bugs```",
+            text,
+            { quoted: mek }
+          );
+          break;
+
+        case "contactme":
+          if (isGroup) return reply("```works only in inbox```");
+          reply("```Why do u want to contact me?```");
+          break;
+
+        case "requestafeature":
+          if (isGroup) return reply("```works only in inbox```");
+          reply("```what feature do you want?```");
+          break;
+
+        case "group":
+          if (!isGroup) return reply(mess.only.group);
+          const ppUrl = await client.getProfilePicture(from); // leave empty to get your own
+          //console.log("download profile picture from: " + ppUrl)
+          teks = `\n💮 *Title*: ${groupMetadata.subject}\n\n👑 *Created By*: ${
+            groupMetadata.owner.split("@")[0]
+          }\n\n🏊 *Participiants*: ${
+            groupMetadata.participants.length
+          }\n\n🏅 *Admins*:${groupAdmins.length}\n\n🌏 *Description*:\n${
+            groupMetadata.desc
+          }`;
+          //  client.sendMessage(from, client.getProfilePicture(from) ,MessageType.image)
+
+          client.sendMessage(from, teks, text, { quoted: mek });
+          break;
+
+        case "tagall": //tag everyone in the group
+          if (!isGroup)
+            return reply("```No one is here except you and me``` 🌑");
+          if (!isGroupAdmins) return reply(mess.only.admin);
+          members_id = [];
+          teks = args.length > 1 ? body.slice(8).trim() : "";
+          teks += "\n\n";
+          for (let mem of groupMembers) {
+            teks += `🍥 @${mem.jid.split("@")[0]}\n`;
+            members_id.push(mem.jid);
+          }
+          mentions(teks, members_id, true);
+          break;
+
+        case "adminlist":
+          if (!isGroup) return reply(mess.only.group);
+          teks = `*${groupMetadata.subject}*\n\n`;
+          no = 0;
+          for (let admon of groupAdmins) {
+            no += 1;
+            teks += `[${no.toString()}] @${admon.split("@")[0]}\n`;
+          }
+          mentions(teks, groupAdmins, true);
+          break;
+
+        default:
+          if (isGroup && isSimi && budy != undefined) {
+            console.log(budy);
+            muehe = await simih(budy);
+            console.log(muehe);
+            reply(muehe);
+          } else {
+            //return console.log(color('[WARN]','red'), 'Unregistered Command from', color(sender.split('@')[0]))
+          }
       }
     } catch (e) {
       console.log("Error : %s", color(e, "red"));
