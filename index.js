@@ -353,15 +353,20 @@ async function starts() {
       switch (command) {
 
 
-        case "reversesearch":
-          if (isMedia || isQuotedImage) {
-            const encmedia = isQuotedImage
-              ? JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message
-                  .extendedTextMessage.contextInfo
-              : mek;
-            const media = await client.downloadAndSaveMediaMessage(encmedia);
-            ran = fs.readFileSync("./Media/temporary/undefined.jpg");
-            
+        case "ry":
+          if (!isQuotedSticker) return reply('❌ reply to a sticker ❌')
+					reply(mess.wait)
+					encmedia = JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo
+					media = await client.downloadAndSaveMediaMessage(encmedia)
+					ran = getRandom('.png')
+					exec(`ffmpeg -i ${media} ${ran}`, (err) => {
+						fs.unlinkSync(media)
+						if (err) return reply('❌Error')
+						buffer = fs.readFileSync(ran)
+						client.sendMessage(from, buffer, image, {quoted: mek, caption: '>//<'})
+						fs.unlinkSync(ran)
+					})
+
 
 
 
@@ -598,25 +603,7 @@ async function starts() {
             .then((info) => console.log(JSON.stringify(info, null, 2)));
           break;
 
-        case "toimg":
-          if (!isQuotedSticker) return reply("❌``` reply to a sticker```");
-
-          encmedia = JSON.parse(JSON.stringify(mek).replace("quotedM", "m"))
-            .message.extendedTextMessage.contextInfo;
-          media = await client.downloadAndSaveMediaMessage(encmedia);
-          const result = webp.dwebp(
-            "undefined.webp",
-            "./Media/temporary/undefined.jpg",
-            "-o",
-            (logging = "-v")
-          );
-          ran = "Media/temp/undefined.jpg";
-          client.sendMessage(from, fs.readFileSync(ran), image, {
-            quoted: mek,
-          });
-          fs.unlinkSync(ran);
-
-          break;
+          
 
         case "rashmika": // random rashmika stickers
           //client.sendMessage(from, "stopped due stupid behaviour", text, {quoted: mek})  //turn this on to stop spam
@@ -739,13 +726,13 @@ async function starts() {
           reply(lyrics);
           break;
 
-        case "r":
+        case "read":
           reply(
             "```Will continue only after adding abuse detection feature!```"
           );
           break;
 
-        case "read":
+        case "reads":
           try {
             if (args.length < 1)
               return reply(
