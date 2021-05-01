@@ -336,11 +336,11 @@ async function starts() {
 
       if (blocked.includes(sender.split("@")[0])) return;
 
-      fs.readFile("./src/ban1.txt", function (err, data) {
-        for (var ff = 0; ff < args.length; ff++) {
-          if (data.includes(args[ff])) return reply("⚠``` Warning```");
-        }
-      });
+      // fs.readFile("./src/ban1.txt", function (err, data) {
+      //   for (var ff = 0; ff < args.length; ff++) {
+      //     if (data.includes(args[ff])) return reply("⚠``` Warning```");
+      //   }
+      // });
 
       //for (var ii = 0; i < args.length; i++) {
       //   if (/^illegitimate$/.test(args[ii] || /^hooker$/.test(args[ii]) || /^hijra$/.test(args[ii]) || /^hijda$/.test(args[ii]) || /^haraami$/.test(args[ii])  || /^harami$/.test(args[ii]) || /^gandu$/.test(args[ii]) || /^gaandfad$/.test(args[ii]) || /^gand$/.test(args[ii]) || /^fuck$/.test(args[ii]) || /^cunt$/.test(args[ii]) || /^cock$/.test(args[ii]) || /^chodu$/.test(args[ii]) || /^chod$/.test(args[ii]) || /^bur$/.test(args[ii]) || /^bhosdiwala$/.test(args[ii]) || /^bsdk$/.test(args[ii]) || /^breasts$/.test(args[ii]) || /^breast$/.test(args[ii]) || /^bhosriwala$/.test(args[ii]) || /^bhosda$/.test(args[ii]) || /^bhosadik$/.test(args[ii]) || /^bhenchod$/.test(args[ii]) || /^bsdk$/.test(args[ii]) || /^breasts$/.test(args[ii]) || /^breast$/.test(args[ii]) || /^bhadwa$/.test(args[ii]) || /^bhadwe$/.test(args[ii]) || /^bhenchod$/.test(args[ii]) || /^bhosadike$/.test(args[ii]) || /^bhosda$/.test(args[ii]) || /^bhosriwala$/.test(args[ii]) )) return reply("⚠``` Warning```")
@@ -351,6 +351,25 @@ async function starts() {
       // }
 
       switch (command) {
+
+
+        case "reversesearch":
+          if (isMedia || isQuotedImage) {
+            const encmedia = isQuotedImage
+              ? JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message
+                  .extendedTextMessage.contextInfo
+              : mek;
+            const media = await client.downloadAndSaveMediaMessage(encmedia);
+            ran = fs.readFileSync("./Media/temporary/undefined.jpg");
+            
+
+
+
+          break;
+
+
+
+
         case "tweet":
           break;
 
