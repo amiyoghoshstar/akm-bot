@@ -848,70 +848,120 @@ async function starts() {
           }
           break;
 
-          case "meme":
-            await redditimage.fetch({
-                type: "meme",
+        case "meme":
+          await redditimage
+            .fetch({
+              type: "meme",
 
-                 addSubreddit: ['memes',
-                 'AdviceAnimals',
-                 'AdviceAnimals+funny+memes',
-                 'funny',
-                 'PrequelMemes',
-                 'SequelMemes',
-                 'MemeEconomy',
-                 'ComedyCemetery',
-                 'PewdiepieSubmissions',
-                 'dankmemes',
-                 'terriblefacebookmemes',
-                 'shittyadviceanimals',
-                 'wholesomememes',
-                 'me_irl',
-                 '2meirl4meirl',
-                 'i_irl',
-                 'meirl',
-                 'BikiniBottomTwitter',
-                 'trippinthroughtime',
-                 'boottoobig',
-                 'HistoryMemes',
-                 'fakehistoryporn',
-                 'OTMemes',
-                 'starterpacks',
-                 'gifs',
-                 'rickandmorty',
-                 'FellowKids',
-                 'Memes_Of_The_Dank',
-                 'raimimemes',
-                 'comedyhomicide',
-                 'lotrmemes',
-                 'freefolk',
-                 'GameOfThronesMemes',
-                 'howyoudoin',
-                 'HolUp',
-                 'meme',
-                 'memeswithoutmods',
-                 'dankmeme',
-                 'suicidebywords',
-                 'puns',
-                 'PerfectTiming'],
-                 removeSubreddit: ["dankmemes"],
+              addSubreddit: [
+                "memes",
+                "AdviceAnimals",
+                "AdviceAnimals+funny+memes",
+                "funny",
+                "PrequelMemes",
+                "SequelMemes",
+                "MemeEconomy",
+                "ComedyCemetery",
+                "PewdiepieSubmissions",
+                "dankmemes",
+                "terriblefacebookmemes",
+                "shittyadviceanimals",
+                "wholesomememes",
+                "me_irl",
+                "2meirl4meirl",
+                "i_irl",
+                "meirl",
+                "BikiniBottomTwitter",
+                "trippinthroughtime",
+                "boottoobig",
+                "HistoryMemes",
+                "fakehistoryporn",
+                "OTMemes",
+                "starterpacks",
+                "gifs",
+                "rickandmorty",
+                "FellowKids",
+                "Memes_Of_The_Dank",
+                "raimimemes",
+                "comedyhomicide",
+                "lotrmemes",
+                "freefolk",
+                "GameOfThronesMemes",
+                "howyoudoin",
+                "HolUp",
+                "meme",
+                "memeswithoutmods",
+                "dankmeme",
+                "suicidebywords",
+                "puns",
+                "PerfectTiming",
+              ],
+              removeSubreddit: ["dankmemes"],
             })
-                .then((result) => {
-                     console.log(result[0].image)
-                   
-                    const options = {url: result[0].image,dest: './Media/temporary/meme.jpg'}
-                    download.image(options).then(({ filename }) => {console.log('Saved as', filename)}).catch((err) => console.error(err))
-                      reply("🔍``` searching```")
-                       function function33() {
-                          var cap = `\n💮 *Title*: ${result[0].title}\n\n👑 *subreddit*: ${result[0].subreddit}\n\n🏊 *author*: ${result[0].author}\n\n🏅 *NSFW*: ${result[0].NSFW}\n\n🌏 *upvotes*: ${result[0].upvotes}`;
-                          ran = fs.readFileSync('./Media/temporary/meme.jpg');
-                          client.sendMessage(from, ran, image, {quoted: mek,caption: cap,});
-                           ran = fs.unlinkSync('./Media/temporary/meme.jpg');
-                            }
-                      setTimeout(function33, 5000);
+            .then((result) => {
+              console.log(result[0].image);
 
-                                });
-            break;
+              const options = {
+                url: result[0].image,
+                dest: "./Media/temporary/meme.jpg",
+              };
+              download
+                .image(options)
+                .then(({ filename }) => {
+                  console.log("Saved as", filename);
+                })
+                .catch((err) => console.error(err));
+              reply("🔍``` searching```");
+              function function33() {
+                var cap = `\n💮 *Title*: ${result[0].title}\n\n👑 *subreddit*: ${result[0].subreddit}\n\n🏊 *author*: ${result[0].author}\n\n🏅 *NSFW*: ${result[0].NSFW}\n\n🌏 *upvotes*: ${result[0].upvotes}`;
+                ran = fs.readFileSync("./Media/temporary/meme.jpg");
+                client.sendMessage(from, ran, image, {
+                  quoted: mek,
+                  caption: cap,
+                });
+                ran = fs.unlinkSync("./Media/temporary/meme.jpg");
+              }
+              setTimeout(function33, 5000);
+            });
+          break;
 
+
+
+          case "subreddit":
+          if(args.length<1) return reply("*usage*:\n```.subreddit [subreddit_name]```\n*Eg*\n ```.subreddit todayilearned\n.subreddit worldnews```")
+          if(args.length>1) return reply("```Invalid name```")
+
+          await redditimage
+            .fetch({
+              type: "*",
+              addSubreddit: args[0],
+            })
+            .then((result) => {
+              console.log(result[0].image);
+
+              const options = {
+                url: result[0].image,
+                dest: "./Media/temporary/red.jpg",
+              };
+              download
+                .image(options)
+                .then(({ filename }) => {
+                  console.log("Saved as", filename);
+                })
+                .catch((err) => console.error(err));
+              reply("🔍``` searching```");
+              function function33() {
+                var cap = `💮 *Title*: ${result[0].title}\n\n👑 *subreddit*: ${result[0].subreddit}\n\n🏊 *author*: ${result[0].author}\n\n🏅 *NSFW*: ${result[0].NSFW}\n\n🌏 *upvotes*: ${result[0].upvotes}`;
+                ran = fs.readFileSync("./Media/temporary/red.jpg");
+                client.sendMessage(from, ran, image, {
+                  quoted: mek,
+                  caption: cap,
+                });
+                ran = fs.unlinkSync("./Media/temporary/red.jpg");
+              }
+              setTimeout(function33, 5000);
+            });
+          break;
 
         case "sticker":
           if (isMedia || isQuotedImage) {
@@ -990,7 +1040,7 @@ async function starts() {
         case "help":
           client.sendMessage(
             from,
-            "🤖 *BOT Command List* 🤖\n\n*Bot currently under development.*\n*May have to face bugs or downtime!*\n\n🎀 *Prefix* .\n\n📗 *General*\n ```help, group, adminlist, contactme, requestafeature```\n\n👑 *Admin*\n```tagall, promote, demote, kick, add, botleave, grouplink, changedp, changedesc, allsticker```\n\n📱 *Media*\n```sticker, rashmika, read, ytaudio, ytvideo, lyrics, meme, toimg, randomsticker```\n\n📃 *Issues*\n```1) read:    Feature suspended, added abuse detection feature\n2) sticker: sticker can now be made\n3) toimg:   fixing bugs in sticker to image conversion \n4) promote demote: fixed bugs```",
+            "🤖 *BOT Command List* 🤖\n\n*Bot currently under development.*\n*May have to face bugs or downtime!*\n\n🎀 *Prefix* .\n\n📗 *General*\n ```help, group, adminlist, contactme, requestafeature```\n\n👑 *Admin*\n```tagall, promote, demote, kick, add, botleave, grouplink, changedp, changedesc, allsticker```\n\n📱 *Media*\n```sticker, rashmika, read, ytaudio, ytvideo, lyrics, meme, reddit, randomsticker```\n\n📃 *Issues*\n```1) read:    Feature suspended, added abuse detection feature\n2) sticker: sticker can now be made\n3) toimg:   fixing bugs in sticker to image conversion \n4) promote demote: fixed bugs```",
             text,
             {
               quoted: mek,
