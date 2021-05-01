@@ -6,8 +6,13 @@ const {
   GroupSettingChange,
 } = require("@adiwajshing/baileys");
 const WSF = require("wa-sticker-formatter");
-const { color, bgcolor } = require("./lib/color");
-const { help } = require("./src/help");
+const {
+  color,
+  bgcolor
+} = require("./lib/color");
+const {
+  help
+} = require("./src/help");
 const {
   wait,
   simih,
@@ -22,10 +27,15 @@ const {
   success,
   close,
 } = require("./lib/functions");
-const { fetchJson, fetchText } = require("./lib/fetcher");
+const {
+  fetchJson,
+  fetchText
+} = require("./lib/fetcher");
 const fs = require("fs");
 const moment = require("moment-timezone");
-const { exec } = require("child_process");
+const {
+  exec
+} = require("child_process");
 const fetch = require("node-fetch");
 const ffmpeg = require("fluent-ffmpeg");
 const welkom = JSON.parse(fs.readFileSync("./src/welkom.json"));
@@ -33,7 +43,10 @@ const samih = JSON.parse(fs.readFileSync("./src/simi.json"));
 const setting = JSON.parse(fs.readFileSync("./src/settings.json"));
 const ytdl = require("ytdl-core");
 const search = require("youtube-search");
-const opts = { maxResults: 10, key: "AIzaSyA1S1jM8KxdPAqb2DUXg2AQDNqbOcS2btE" };
+const opts = {
+  maxResults: 10,
+  key: "AIzaSyA1S1jM8KxdPAqb2DUXg2AQDNqbOcS2btE"
+};
 var YoutubeMp3Downloader = require("youtube-mp3-downloader");
 const solenolyrics = require("solenolyrics");
 const yts = require("yt-search");
@@ -48,14 +61,9 @@ var YD = new YoutubeMp3Downloader({
   progressTimeout: 2000, // Interval in ms for the progress reports (default: 1000)
   allowWebm: false, // Enable download from WebM sources (default: false)
 });
-var findInFiles = require("find-in-files");
 const WebVideos = require("web-videos");
-const readline = require("readline");
-const readInterface = readline.createInterface({
-  input: fs.createReadStream("./src/ban.txt"),
-  output: process.stdout,
-  console: false,
-});
+const redditimage = require("reddit.images");
+const download = require('image-downloader')
 
 prefix = setting.prefix;
 const blocked = ["919523577371", "917003685950", "917404486414"];
@@ -92,7 +100,9 @@ async function starts() {
   client.on("open", () => {
     success("2", "Connected");
   });
-  await client.connect({ timeoutMs: 30 * 1000 });
+  await client.connect({
+    timeoutMs: 30 * 1000
+  });
   fs.writeFileSync(
     "./BarBar.json",
     JSON.stringify(client.base64EncodedAuthInfo(), null, "\t")
@@ -119,7 +129,9 @@ async function starts() {
         let buff = await getBuffer(ppimg);
         client.sendMessage(mdata.id, buff, MessageType.image, {
           caption: teks,
-          contextInfo: { mentionedJid: [num] },
+          contextInfo: {
+            mentionedJid: [num]
+          },
         });
       } else if (anu.action == "remove") {
         num = anu.participants[0];
@@ -133,7 +145,9 @@ async function starts() {
         let buff = await getBuffer(ppimg);
         client.sendMessage(mdata.id, buff, MessageType.image, {
           caption: teks,
-          contextInfo: { mentionedJid: [num] },
+          contextInfo: {
+            mentionedJid: [num]
+          },
         });
       }
     } catch (e) {
@@ -176,24 +190,24 @@ async function starts() {
       } = MessageType;
       const time = moment.tz("Asia/Kolkata").format("DD/MM HH:mm:ss");
       body =
-        type === "conversation" && mek.message.conversation.startsWith(prefix)
-          ? mek.message.conversation
-          : type == "imageMessage" &&
-            mek.message.imageMessage.caption.startsWith(prefix)
-          ? mek.message.imageMessage.caption
-          : type == "videoMessage" &&
-            mek.message.videoMessage.caption.startsWith(prefix)
-          ? mek.message.videoMessage.caption
-          : type == "extendedTextMessage" &&
-            mek.message.extendedTextMessage.text.startsWith(prefix)
-          ? mek.message.extendedTextMessage.text
-          : "";
+        type === "conversation" && mek.message.conversation.startsWith(prefix) ?
+        mek.message.conversation :
+        type == "imageMessage" &&
+        mek.message.imageMessage.caption.startsWith(prefix) ?
+        mek.message.imageMessage.caption :
+        type == "videoMessage" &&
+        mek.message.videoMessage.caption.startsWith(prefix) ?
+        mek.message.videoMessage.caption :
+        type == "extendedTextMessage" &&
+        mek.message.extendedTextMessage.text.startsWith(prefix) ?
+        mek.message.extendedTextMessage.text :
+        "";
       budy =
-        type === "conversation"
-          ? mek.message.conversation
-          : type === "extendedTextMessage"
-          ? mek.message.extendedTextMessage.text
-          : "";
+        type === "conversation" ?
+        mek.message.conversation :
+        type === "extendedTextMessage" ?
+        mek.message.extendedTextMessage.text :
+        "";
       const command = body.slice(1).trim().split(/ +/).shift().toLowerCase();
       const args = body.trim().split(/ +/).slice(1);
       const isCmd = body.startsWith(prefix);
@@ -202,19 +216,15 @@ async function starts() {
         wait: "⏱️ ```Processing```",
         success: "✔️``` Successful```",
         error: {
-          stick:
-            "❌ ```Failed, an error occurred while converting the image to a sticker. Please try again.```",
+          stick: "❌ ```Failed, an error occurred while converting the image to a sticker. Please try again.```",
           Iv: "🌐 ```Invalid link```",
         },
         only: {
           group: "👩‍👩‍👦‍👦 ```This command can only be used in groups!```",
-          ownerG:
-            "💎 ```This command can only be used by the owner of the group!```",
-          ownerB:
-            "🎩 ```This command can only be used by the owner of the bot!```",
+          ownerG: "💎 ```This command can only be used by the owner of the group!```",
+          ownerB: "🎩 ```This command can only be used by the owner of the bot!```",
           admin: "🤷‍♂️ ```This command can only be used by the admins!```",
-          Badmin:
-            "🤖 ```This command can only be used when the bot has admin rights!```",
+          Badmin: "🤖 ```This command can only be used when the bot has admin rights!```",
         },
       };
 
@@ -241,20 +251,26 @@ async function starts() {
         );
       };
       const reply = (teks) => {
-        client.sendMessage(from, teks, text, { quoted: mek });
+        client.sendMessage(from, teks, text, {
+          quoted: mek
+        });
       };
       const sendMess = (hehe, teks) => {
         client.sendMessage(hehe, teks, text);
       };
       const mentions = (teks, memberr, id) => {
-        id == null || id == undefined || id == false
-          ? client.sendMessage(from, teks.trim(), extendedText, {
-              contextInfo: { mentionedJid: memberr },
-            })
-          : client.sendMessage(from, teks.trim(), extendedText, {
-              quoted: mek,
-              contextInfo: { mentionedJid: memberr },
-            });
+        id == null || id == undefined || id == false ?
+          client.sendMessage(from, teks.trim(), extendedText, {
+            contextInfo: {
+              mentionedJid: memberr
+            },
+          }) :
+          client.sendMessage(from, teks.trim(), extendedText, {
+            quoted: mek,
+            contextInfo: {
+              mentionedJid: memberr
+            },
+          });
       };
 
       colors = ["red", "white", "black", "blue", "yellow", "green"];
@@ -314,40 +330,36 @@ async function starts() {
           color(args.length)
         );
       let authorname =
-        client.contacts[from] != undefined
-          ? client.contacts[from].vname || client.contacts[from].notify
-          : undefined;
-      if (authorname != undefined) {
-      } else {
+        client.contacts[from] != undefined ?
+        client.contacts[from].vname || client.contacts[from].notify :
+        undefined;
+      if (authorname != undefined) {} else {
         authorname = groupName;
       }
 
       // await client.chatRead (from) // mark all messages in chat as read (equivalent of opening a chat in WA)
+
       if (blocked.includes(sender.split("@")[0])) return;
 
-      // if (args.length > 0)
-      // {
-      //   try {
-      //     for(var i=0;i<args.length;i++)
-      //     {
-      //       for(var ir=1;i<3;ir++)
-      //     {
-      //       readInterface.on(ir, function(line) {
-      //         console.log(line);
-      //         if(args[i].toLowerCase()==line.toLowerCase())
-      //         {
+      fs.readFile("./src/ban1.txt", function (err, data) {
+        for (var ff = 0; ff < args.length; ff++) {
+          if (data.includes(args[ff])) return reply("⚠``` Warning```")
+        }
+      })
 
-      //           return   reply("⚠``` Warning```")
-      //         }
-      //        });
-      //       }};
-      // } catch (error) {
-      //     console.log(error)
+
+      //for (var ii = 0; i < args.length; i++) {
+      //   if (/^illegitimate$/.test(args[ii] || /^hooker$/.test(args[ii]) || /^hijra$/.test(args[ii]) || /^hijda$/.test(args[ii]) || /^haraami$/.test(args[ii])  || /^harami$/.test(args[ii]) || /^gandu$/.test(args[ii]) || /^gaandfad$/.test(args[ii]) || /^gand$/.test(args[ii]) || /^fuck$/.test(args[ii]) || /^cunt$/.test(args[ii]) || /^cock$/.test(args[ii]) || /^chodu$/.test(args[ii]) || /^chod$/.test(args[ii]) || /^bur$/.test(args[ii]) || /^bhosdiwala$/.test(args[ii]) || /^bsdk$/.test(args[ii]) || /^breasts$/.test(args[ii]) || /^breast$/.test(args[ii]) || /^bhosriwala$/.test(args[ii]) || /^bhosda$/.test(args[ii]) || /^bhosadik$/.test(args[ii]) || /^bhenchod$/.test(args[ii]) || /^bsdk$/.test(args[ii]) || /^breasts$/.test(args[ii]) || /^breast$/.test(args[ii]) || /^bhadwa$/.test(args[ii]) || /^bhadwe$/.test(args[ii]) || /^bhenchod$/.test(args[ii]) || /^bhosadike$/.test(args[ii]) || /^bhosda$/.test(args[ii]) || /^bhosriwala$/.test(args[ii]) )) return reply("⚠``` Warning```")
+      // if(/^bhadva$/.test(args[ii])  || /^bhadava$/.test(args[ii])  || /^betichod$/.test(args[ii])  || /^bambu$/.test(args[ii])  || /^bamboo$/.test(args[ii])   || /^asshole$/.test(args[ii])  || /^ass$/.test(args[ii])  || /^jhaat$/.test(args[ii]) || /^kutta$/.test(args[ii]) || /^lassan$/.test(args[ii]) || /^jhant$/.test(args[ii]) || /^jhaant$/.test(args[ii]) || /^lodu$/.test(args[ii]) || /^lauda$/.test(args[ii]) || /^laude$/.test(args[ii]) || /^lavde$/.test(args[ii]) || /^penis$/.test(args[ii]) || /^lund$/.test(args[ii]) || /^madar$/.test(args[ii]) || /^madarchod$/.test(args[ii]) || /^pig$/.test(args[ii]) || /^pussy$/.test(args[ii]) || /^pimp$/.test(args[ii]) || /^piss$/.test(args[ii]) || /^randi$/.test(args[ii]) || /^randu$/.test(args[ii]) || /^raand$/.test(args[ii]) ) return reply("⚠``` Warning```")
+
+      //if( /^सुअर$/.test(args[ii])  ||  /^लौड़ा$/.test(args[ii])  || /^लण्ड$/.test(args[ii])  || /^रंडी$/.test(args[ii])  || /^रांड$/.test(args[ii])  || /^कूतिया$/.test(args[ii])  || /^मादरचोद$/.test(args[ii])  || /^भोसड़े$/.test(args[ii])  || /^बच्चकलप$/.test(args[ii])  || /^पिस्सू$/.test(args[ii])  || /^चुदाई$/.test(args[ii])  || /^गांड$/.test(args[ii])  || /^कूत्ते$/.test(args[ii])  || /^whore$/.test(args[ii])  || /^औलाद$/.test(args[ii])  || /^rundi$/.test(args[ii])  || /^randwa$/.test(args[ii])  || /^tits$/.test(args[ii])  || /^bhosadika$/i.test(args[ii])  ) return reply("⚠``` Warning```")
+
+
       // }
-      // }
+
+
 
       switch (command) {
-        //################################  Admin  COMMANDS   ##################################################
 
         case "tweet":
           break;
@@ -494,7 +506,7 @@ async function starts() {
         case "botleave":
           if (!isGroup) return reply(mess.only.group);
           if (isGroupAdmins || isOwner) {
-            await client.sendMessage(from, "``` Bye, Miss you all ```🤧", text);
+            await client.sendMessage(from, "```Bye, Miss you all ```🤧", text);
             client.groupLeave(from);
           } else {
             reply("```Only admins can ask me to leave ```🌚");
@@ -540,10 +552,10 @@ async function starts() {
             return reply(
               "```Tag the image with the caption .changedp or send with the caption .changedp ```"
             );
-          const encmedia = isQuotedImage
-            ? JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message
-                .extendedTextMessage.contextInfo
-            : mek;
+          const encmedia = isQuotedImage ?
+            JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message
+            .extendedTextMessage.contextInfo :
+            mek;
           const media = await client.downloadAndSaveMediaMessage(encmedia);
           const img = fs.readFileSync(media);
           await client.updateProfilePicture(from, img);
@@ -569,7 +581,7 @@ async function starts() {
           await client.groupUpdateDescription(from, args);
           break;
 
-        //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ Media $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+          //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ Media $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
         case "fbvid":
           fbv
@@ -660,10 +672,12 @@ async function starts() {
 
           function function24() {
             client.sendMessage(
-              from,
-              { url: "./Media/temporary/audio.mp3" }, // can send mp3, mp4, & ogg
-              MessageType.audio,
-              { mimetype: Mimetype.mp4Audio }
+              from, {
+                url: "./Media/temporary/audio.mp3"
+              }, // can send mp3, mp4, & ogg
+              MessageType.audio, {
+                mimetype: Mimetype.mp4Audio
+              }
             );
           }
           setTimeout(function24, 15000);
@@ -682,12 +696,15 @@ async function starts() {
             fs.createWriteStream("./Media/temporary/video.mp4")
           );
           reply(mess.wait);
+
           function function2() {
             client.sendMessage(
               from,
               fs.readFileSync("./Media/temporary/video.mp4"),
-              MessageType.video,
-              { quoted: mek, caption: "Hers is the video." }
+              MessageType.video, {
+                quoted: mek,
+                caption: "Hers is the video."
+              }
             );
           }
           setTimeout(function2, 15000);
@@ -710,43 +727,46 @@ async function starts() {
           reply(lyrics);
           break;
 
-        case "read":
+        case "r":
           reply(
             "```Will continue only after adding abuse detection feature!```"
           );
           break;
 
-        case "r":
+        case "read":
           try {
             if (args.length < 1)
               return reply(
                 "*Usage:*\n```.read [lang_code] [Text]```\n*Eg*:\n```.read en who are you?\n.read hi tum kon ho?```"
               );
 
+            for (var ii = 0; i < args.length; i++) {
+              if (/^illegitimate$/.test(args[ii] || /^hooker$/.test(args[ii]) || /^hijra$/.test(args[ii]) || /^hijda$/.test(args[ii]) || /^haraami$/.test(args[ii]) || /^harami$/.test(args[ii]) || /^gandu$/.test(args[ii]) || /^gaandfad$/.test(args[ii]) || /^gand$/.test(args[ii]) || /^fuck$/.test(args[ii]) || /^cunt$/.test(args[ii]) || /^cock$/.test(args[ii]) || /^chodu$/.test(args[ii]) || /^chod$/.test(args[ii]) || /^bur$/.test(args[ii]) || /^bhosdiwala$/.test(args[ii]) || /^bsdk$/.test(args[ii]) || /^breasts$/.test(args[ii]) || /^breast$/.test(args[ii]) || /^bhosriwala$/.test(args[ii]) || /^bhosda$/.test(args[ii]) || /^bhosadik$/.test(args[ii]) || /^bhenchod$/.test(args[ii]) || /^bsdk$/.test(args[ii]) || /^breasts$/.test(args[ii]) || /^breast$/.test(args[ii]) || /^bhadwa$/.test(args[ii]) || /^bhadwe$/.test(args[ii]) || /^bhenchod$/.test(args[ii]) || /^bhosadike$/.test(args[ii]) || /^bhosda$/.test(args[ii]) || /^bhosriwala$/.test(args[ii]))) return reply("⚠``` Warning```")
+
+              if (/^bhadva$/.test(args[ii]) || /^bhadava$/.test(args[ii]) || /^betichod$/.test(args[ii]) || /^bambu$/.test(args[ii]) || /^bamboo$/.test(args[ii]) || /^asshole$/.test(args[ii]) || /^ass$/.test(args[ii]) || /^jhaat$/.test(args[ii]) || /^kutta$/.test(args[ii]) || /^lassan$/.test(args[ii]) || /^jhant$/.test(args[ii]) || /^jhaant$/.test(args[ii]) || /^lodu$/.test(args[ii]) || /^lauda$/.test(args[ii]) || /^laude$/.test(args[ii]) || /^lavde$/.test(args[ii]) || /^penis$/.test(args[ii]) || /^lund$/.test(args[ii]) || /^madar$/.test(args[ii]) || /^madarchod$/.test(args[ii]) || /^pig$/.test(args[ii]) || /^pussy$/.test(args[ii]) || /^pimp$/.test(args[ii]) || /^piss$/.test(args[ii]) || /^randi$/.test(args[ii]) || /^randu$/.test(args[ii]) || /^raand$/.test(args[ii])) return reply("⚠``` Warning```")
+
+              if (/^सुअर$/.test(args[ii]) || /^लौड़ा$/.test(args[ii]) || /^लण्ड$/.test(args[ii]) || /^रंडी$/.test(args[ii]) || /^रांड$/.test(args[ii]) || /^कूतिया$/.test(args[ii]) || /^मादरचोद$/.test(args[ii]) || /^भोसड़े$/.test(args[ii]) || /^बच्चकलप$/.test(args[ii]) || /^पिस्सू$/.test(args[ii]) || /^चुदाई$/.test(args[ii]) || /^गांड$/.test(args[ii]) || /^कूत्ते$/.test(args[ii]) || /^whore$/.test(args[ii]) || /^औलाद$/.test(args[ii]) || /^rundi$/.test(args[ii]) || /^randwa$/.test(args[ii]) || /^tits$/.test(args[ii]) || /^bhosadika$/i.test(args[ii])) return reply("⚠``` Warning```")
+
+
+            }
+
             if (args[0] != "en" && args[0] != "hi" && args[0] != "ta")
               return reply(`Add lang code between 'read' and '${args[0]}'`);
             const gtts = require("./lib/gtts")(args[0]);
             if (args.length < 2)
-              return client.sendMessage(
-                from,
-                "```Where is the text?```",
-                text,
-                {
-                  quoted: mek,
-                }
-              );
+              return reply("```Where is the text?```")
             dtt = body.slice(9);
             ranm = getRandom(".mp3");
-            dtt.length > 600
-              ? reply("```Too long! should be less than 600 characters.```")
-              : gtts.save(ranm, dtt, function () {
-                  client.sendMessage(from, fs.readFileSync(ranm), audio, {
-                    quoted: mek,
-                    mimetype: "audio/mp4",
-                    ptt: true,
-                  });
-                  fs.unlinkSync(ranm);
+            dtt.length > 600 ?
+              reply("```Too long! should be less than 600 characters.```") :
+              gtts.save(ranm, dtt, function () {
+                client.sendMessage(from, fs.readFileSync(ranm), audio, {
+                  quoted: mek,
+                  mimetype: "audio/mp4",
+                  ptt: true,
                 });
+                fs.unlinkSync(ranm);
+              });
           } catch (error) {
             reply("```Error```");
           }
@@ -763,12 +783,54 @@ async function starts() {
           });
           break;
 
+          case "m":
+            await redditimage.fetch({
+            type: "meme",
+            
+           // addSubreddit: ["memes", "funny"],
+            //removeSubreddit: ["dankmemes"],
+           })
+            .then((result) => {
+              //console.log(result)
+              console.log(result[0].image)
+          
+            const options = {
+              url: result[0].image,
+              dest: './Media/temporary/meme.jpg'                // will be saved to /path/to/dest/image.jpg
+            }
+            var cap = `\n💮 *Title*: ${result[0].title}\n\n👑 *subreddit*: ${
+              result[0].subreddit
+            }\n\n🏊 *author*: ${
+              result[0].author
+            }\n\n🏅 *Admins*:${groupAdmins.length}\n\n🌏 *upvotes*:\n${
+              result[0].upvotes
+            }`;
+            download.image(options)
+            .then(({ filename }) => {
+             console.log('Saved as', filename)  // saved to /path/to/dest/image.jpg
+            })
+
+            .catch((err) => console.error(err))
+            ran = fs.readFileSync("./Media/temporary/meme.jpg");
+            client.sendMessage(from, ran, image, {
+              quoted: mek,
+              caption: cap,
+            });  });
+
+
+
+
+
+            
+
+          break;
+
         case "sticker":
           if (isMedia || isQuotedImage) {
-            const encmedia = isQuotedImage
-              ? JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message
-                  .extendedTextMessage.contextInfo
-              : mek;
+            const encmedia = isQuotedImage ?
+              JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message
+              .extendedTextMessage.contextInfo :
+              mek;
             const media = await client.downloadAndSaveMediaMessage(encmedia);
 
             const buffer = await webp.cwebp(
@@ -777,25 +839,31 @@ async function starts() {
               "-q 50"
             );
             ran = fs.readFileSync("./Media/temporary/sticker.webp");
-            client.sendMessage(from, ran, sticker, { quoted: mek });
+            client.sendMessage(from, ran, sticker, {
+              quoted: mek
+            });
             console.log(encmedia.jid);
           } else if (
             (isMedia && mek.message.videoMessage.seconds < 11) ||
             (isQuotedVideo &&
               mek.message.extendedTextMessage.contextInfo.quotedMessage
-                .videoMessage.seconds < 11)
+              .videoMessage.seconds < 11)
           ) {
-            const encmedia = isQuotedVideo
-              ? JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message
-                  .extendedTextMessage.contextInfo
-              : mek;
+            const encmedia = isQuotedVideo ?
+              JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message
+              .extendedTextMessage.contextInfo :
+              mek;
             const media = await client.downloadAndSaveMediaMessage(encmedia);
 
             let results = await WebVideos("./undefined.mp4", {
               bin: "node_modules/ffmpeg-static-electron/bin/linux/x64/ffmpeg",
               output_dir: "./Media/temporary/",
               temp_dir: "./Media/temporary",
-              formats: [{ format: "gif", fps: 8, loop: true }],
+              formats: [{
+                format: "gif",
+                fps: 8,
+                loop: true
+              }],
             });
             await webp.gwebp(results[0], "sticker.webp", "-q 80"); // gif to webp
 
@@ -811,15 +879,15 @@ async function starts() {
           client.sendMessage(from, "```Hello```", text);
           break;
 
-        //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  general  $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+          //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  general  $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
         case "del":
           if (!(isQuotedImage || isQuotedSticker || isQuotedVideo))
             reply("```Tag the msg to be deleted.```");
-          const mencmedia = isQuotedImage
-            ? JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message
-                .extendedTextMessage.contextInfo
-            : mek;
+          const mencmedia = isQuotedImage ?
+            JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message
+            .extendedTextMessage.contextInfo :
+            mek;
           await client.deleteMessage(from, {
             id: mencmedia.jid,
             remoteJid: from,
@@ -833,8 +901,9 @@ async function starts() {
           client.sendMessage(
             from,
             "🤖 *BOT Command List* 🤖\n\n*Bot currently under development.*\n*May have to face bugs or downtime!*\n\n🎀 *Prefix* .\n\n📗 *General*\n ```help, group, adminlist, contactme, requestafeature```\n\n👑 *Admin*\n```tagall, promote, demote, kick, add, botleave, grouplink, changedp, changedesc, allsticker```\n\n📱 *Media*\n```sticker, rashmika, read, ytaudio, ytvideo, lyrics, meme, toimg, randomsticker```\n\n📃 *Issues*\n```1) read:    Feature suspended, added abuse detection feature\n2) sticker: sticker can now be made\n3) toimg:   fixing bugs in sticker to image conversion \n4) promote demote: fixed bugs```",
-            text,
-            { quoted: mek }
+            text, {
+              quoted: mek
+            }
           );
           break;
 
@@ -861,7 +930,9 @@ async function starts() {
           }`;
           //  client.sendMessage(from, client.getProfilePicture(from) ,MessageType.image)
 
-          client.sendMessage(from, teks, text, { quoted: mek });
+          client.sendMessage(from, teks, text, {
+            quoted: mek
+          });
           break;
 
         case "tagall": //tag everyone in the group
