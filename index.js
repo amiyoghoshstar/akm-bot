@@ -7,7 +7,6 @@ const {
 } = require("@adiwajshing/baileys");
 const WSF = require("wa-sticker-formatter");
 const { color, bgcolor } = require("./lib/color");
-const { help } = require("./src/help");
 const {
   wait,
   simih,
@@ -35,7 +34,7 @@ const ytdl = require("ytdl-core");
 const search = require("youtube-search");
 const opts = {
   maxResults: 10,
-  key: "AIzaSyA1S1jM8KxdPAqb2DUXg2AQDNqbOcS2btE",
+  key: process.env.ytapi,
 };
 var YoutubeMp3Downloader = require("youtube-mp3-downloader");
 const solenolyrics = require("solenolyrics");
@@ -1105,7 +1104,7 @@ async function starts() {
 
         default:
           if (isGroup && isSimi && budy != undefined) {
-            console.log(budy);
+            console.log("a");
             muehe = await simih(budy);
             console.log(muehe);
             reply(muehe);
