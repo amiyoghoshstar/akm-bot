@@ -361,7 +361,11 @@ async function starts() {
 
       switch (command) {
         case "tweet":
-          var params = { screen_name: "FabrizioRomano" };
+          var params = {
+            screen_name: "FabrizioRomano",
+            tweet_mode: "extended",
+            count: 10,
+          };
           twit.get(
             "statuses/user_timeline",
             params,
@@ -369,9 +373,11 @@ async function starts() {
               if (!error) {
                 var i = 0;
                 while (i < 10) {
-                  teks = `👲 *Name*: ${tweets[i].user.name} \n\n🐦 *Tweet*:\n${
-                    tweets[i].text
-                  }\n\n📅 *Time*: ${
+                  teks = `👲 *Name*: ${
+                    tweets[i].user.name
+                  } \n\n🐦 *Tweet*:\n${tweets[i].full_text
+                    .split("https://t.co/")[0]
+                    .replace(/\n/g, " ")}\n\n📅 *Time*: ${
                     tweets[i].created_at.split("+")[0]
                   }\n\n🔄 *Retweets*: ${
                     tweets[i].retweet_count
@@ -959,45 +965,6 @@ async function starts() {
             });
           break;
 
-        case "subreddit":
-          if (args.length < 1)
-            return reply(
-              "*usage*:\n```.subreddit [subreddit_name]```\n*Eg*\n ```.subreddit todayilearned\n.subreddit worldnews```"
-            );
-          if (args.length > 1) return reply("```Invalid name```");
-
-          await redditimage
-            .fetch({
-              type: "*",
-              addSubreddit: args[0],
-            })
-            .then((result) => {
-              console.log(result[0].image);
-
-              const options = {
-                url: result[0].image,
-                dest: "./Media/temporary/red.jpg",
-              };
-              download
-                .image(options)
-                .then(({ filename }) => {
-                  console.log("Saved as", filename);
-                })
-                .catch((err) => console.error(err));
-              reply("🔍``` searching```");
-              function function33() {
-                var cap = `💮 *Title*: ${result[0].title}\n\n👑 *subreddit*: ${result[0].subreddit}\n\n🏊 *author*: ${result[0].author}\n\n🏅 *NSFW*: ${result[0].NSFW}\n\n🌏 *upvotes*: ${result[0].upvotes}`;
-                ran = fs.readFileSync("./Media/temporary/red.jpg");
-                client.sendMessage(from, ran, image, {
-                  quoted: mek,
-                  caption: cap,
-                });
-                ran = fs.unlinkSync("./Media/temporary/red.jpg");
-              }
-              setTimeout(function33, 5000);
-            });
-          break;
-
         case "sticker":
           if (isMedia || isQuotedImage) {
             const encmedia = isQuotedImage
@@ -1075,7 +1042,7 @@ async function starts() {
         case "help":
           client.sendMessage(
             from,
-            "🤖 *BOT Command List* 🤖\n\n*Bot currently under development.*\n*May have to face bugs or downtime!*\n\n🎀 *Prefix* .\n\n📗 *General*\n ```help, group, adminlist, contactme, requestafeature```\n\n👑 *Admin*\n```tagall, promote, demote, kick, add, botleave, grouplink, changedp, changedesc, allsticker```\n\n📱 *Media*\n```sticker, rashmika, read, ytaudio, ytvideo, lyrics, meme, reddit, randomsticker```\n\n📃 *Issues*\n```1) read:    Feature suspended, added abuse detection feature\n2) sticker: sticker can now be made\n3) toimg:   fixing bugs in sticker to image conversion \n4) promote demote: fixed bugs```",
+            "🤖 *BOT Command List* 🤖\n\n*Bot currently under development.*\n*May have to face bugs or downtime!*\n\n🎀 *Prefix* .\n\n📗 *General*\n ```help, group, adminlist, contactme, requestafeature```\n\n👑 *Admin*\n```tagall, promote, demote, kick, add, botleave, grouplink, changedp, changedesc, allsticker```\n\n📱 *Media*\n```sticker, rashmika, read, ytaudio, ytvideo, lyrics, meme, randomsticker```\n\n📃 *Issues*\n```1) read:    Feature suspended, added abuse detection feature\n2) sticker: sticker can now be made\n3) toimg:   fixing bugs in sticker to image conversion \n4) promote demote: fixed bugs```",
             text,
             {
               quoted: mek,
