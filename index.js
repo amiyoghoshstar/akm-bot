@@ -54,6 +54,15 @@ var YD = new YoutubeMp3Downloader({
 const WebVideos = require("web-videos");
 const redditimage = require("reddit.images");
 const download = require("image-downloader");
+var twitter = require("twitter");
+require("dotenv/config");
+
+var twit = new twitter({
+  consumer_key: process.env.apiKey,
+  consumer_secret: process.env.apiKeysecret,
+  access_token_key: process.env.accesstoken,
+  access_token_secret: process.env.accesstokensecret,
+});
 
 prefix = setting.prefix;
 const blocked = ["919523577371", "917003685950", "917404486414"];
@@ -351,29 +360,50 @@ async function starts() {
       // }
 
       switch (command) {
-
-
-        case "ry":
-          if (!isQuotedSticker) return reply('❌ reply to a sticker ❌')
-					reply(mess.wait)
-					encmedia = JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo
-					media = await client.downloadAndSaveMediaMessage(encmedia)
-					ran = getRandom('.png')
-					exec(`ffmpeg -i ${media} ${ran}`, (err) => {
-						fs.unlinkSync(media)
-						if (err) return reply('❌Error')
-						buffer = fs.readFileSync(ran)
-						client.sendMessage(from, buffer, image, {quoted: mek, caption: '>//<'})
-						fs.unlinkSync(ran)
-					})
-
-
-
+        case "tweet":
+          var params = { screen_name: "FabrizioRomano" };
+          twit.get(
+            "statuses/user_timeline",
+            params,
+            function (error, tweets, response) {
+              if (!error) {
+                var i = 0;
+                while (i < 10) {
+                  teks = `👲 *Name*: ${tweets[i].user.name} \n\n🐦 *Tweet*:\n${
+                    tweets[i].text
+                  }\n\n📅 *Time*: ${
+                    tweets[i].created_at.split("+")[0]
+                  }\n\n🔄 *Retweets*: ${
+                    tweets[i].retweet_count
+                  }\n\n♥ *Likes*: ${tweets[i].favorite_count}`;
+                  if (!tweets[i].in_reply_to_screen_name) reply(teks);
+                  i++;
+                }
+              }
+            }
+          );
 
           break;
 
+        case "ry":
+          if (!isQuotedSticker) return reply("❌ reply to a sticker ❌");
+          reply(mess.wait);
+          encmedia = JSON.parse(JSON.stringify(mek).replace("quotedM", "m"))
+            .message.extendedTextMessage.contextInfo;
+          media = await client.downloadAndSaveMediaMessage(encmedia);
+          ran = getRandom(".png");
+          exec(`ffmpeg -i ${media} ${ran}`, (err) => {
+            fs.unlinkSync(media);
+            if (err) return reply("❌Error");
+            buffer = fs.readFileSync(ran);
+            client.sendMessage(from, buffer, image, {
+              quoted: mek,
+              caption: ">//<",
+            });
+            fs.unlinkSync(ran);
+          });
 
-
+          break;
 
         case "tweet":
           break;
@@ -602,8 +632,6 @@ async function starts() {
             .getInfo(args)
             .then((info) => console.log(JSON.stringify(info, null, 2)));
           break;
-
-          
 
         case "rashmika": // random rashmika stickers
           //client.sendMessage(from, "stopped due stupid behaviour", text, {quoted: mek})  //turn this on to stop spam
@@ -931,11 +959,12 @@ async function starts() {
             });
           break;
 
-
-
-          case "subreddit":
-          if(args.length<1) return reply("*usage*:\n```.subreddit [subreddit_name]```\n*Eg*\n ```.subreddit todayilearned\n.subreddit worldnews```")
-          if(args.length>1) return reply("```Invalid name```")
+        case "subreddit":
+          if (args.length < 1)
+            return reply(
+              "*usage*:\n```.subreddit [subreddit_name]```\n*Eg*\n ```.subreddit todayilearned\n.subreddit worldnews```"
+            );
+          if (args.length > 1) return reply("```Invalid name```");
 
           await redditimage
             .fetch({
