@@ -172,7 +172,6 @@ async function starts() {
       const content = JSON.stringify(mek.message);
       const from = mek.key.remoteJid;
       const type = Object.keys(mek.message)[0];
-      const apiKey = setting.apiKey;
       const {
         text,
         extendedText,
@@ -1103,13 +1102,18 @@ async function starts() {
           break;
 
         default:
+         // console.log("a");
+          if(isCmd){
+            client.sendMessage(from,fs.readFileSync("./Media/response/idk.webp"), sticker,{quoted:mek})
+          }
+
           if (isGroup && isSimi && budy != undefined) {
             console.log("a");
             muehe = await simih(budy);
             console.log(muehe);
             reply(muehe);
           } else {
-            //return console.log(color('[WARN]','red'), 'Unregistered Command from', color(sender.split('@')[0]))
+           // return console.log(color('[WARN]','red'), 'Unregistered Command from', color(sender.split('@')[0]))
           }
       }
     } catch (e) {
