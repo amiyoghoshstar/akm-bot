@@ -1,0 +1,25 @@
+[
+	{
+		"group_name": "xda off topic",
+		"allow_sticker": 1,
+		"blocklist": [
+			"919013844884",
+			"919709094733"
+		]
+	},
+	{
+		"group_name": "xda coders",
+		"allow_sticker": 0,
+		"blocklist": [
+			"919342844884",
+			"917564094733",
+			"919543844325",
+			"918769894733"
+		]
+	},
+	{
+		"group_name": "stickerbazi",
+		"allow_sticker": 1,
+		"blocklist": []
+	}
+]

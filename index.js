@@ -30,6 +30,8 @@ const ffmpeg = require("fluent-ffmpeg");
 const welkom = JSON.parse(fs.readFileSync("./src/welkom.json"));
 const samih = JSON.parse(fs.readFileSync("./src/simi.json"));
 const setting = JSON.parse(fs.readFileSync("./src/settings.json"));
+const grpconfig = JSON.parse(fs.readFileSync("./src/grpconfig.json"));
+
 const ytdl = require("ytdl-core");
 const search = require("youtube-search");
 const opts = {
@@ -370,12 +372,20 @@ async function starts() {
             mek.message.extendedTextMessage === null
           )return reply("*Usage:*\n```.ban @shreya\n.ban @sahil```");
 					mentioned = mek.message.extendedTextMessage.contextInfo.mentionedJid;
+
+
+					grpconfig.name = prefix;
+          fs.writeFileSync(
+            "./src/grpconfig.json",
+            JSON.stringify(setting, null, "\t")
+          );
 					mentions(
 						`Banned @${mentioned[0].split("@")[0]} from accessing the bot in this group!`,
 						mentioned,
 						true
 					);
-					
+
+
 
 
           break;
@@ -772,7 +782,7 @@ async function starts() {
 
           if (args.length < 1)
             return reply(
-              "*Usage:*\n.ytaudio https://youtu.be/wui0YweevtY\n.ytaudio https://youtu.be/ByH9LuSILxU"
+              "*Usage:*\n.ytaudio https://youtu.be/wui0Y\n.ytaudio https://youtu.be/BILxU"
             );
           if (!isUrl(args[0]) && !args[0].includes("youtu"))
             return reply(mess.error.Iv);
@@ -802,7 +812,7 @@ async function starts() {
 
           if (args.length < 1)
             return reply(
-              "*Usage:*\n```.ytvideo https://youtu.be/wui0YweevtY\n.ytvideo https://youtu.be/ByH9LuSILxU```"
+              "*Usage:*\n```.ytvideo https://youtu.be/wui0Yw\n.ytvideo https://youtu.be/ByHLxU```"
             );
           if (!isUrl(args[0]) && !args[0].includes("youtu"))
             return reply(mess.error.Iv);
@@ -1148,7 +1158,7 @@ async function starts() {
 
           client.sendMessage(
             from,
-            "🤖 *BOT Command List* 🤖\n\n*Bot currently under development.*\n*May have to face bugs or downtime!*\n\n🎀 *Prefix* .\n\n📗 *General*\n ```help, group, adminlist, contactme, requestafeature```\n\n👑 *Admin*\n```tagall, promote, demote, kick, add, botleave, grouplink, changedp, changedesc, allsticker```\n\n📱 *Media*\n```sticker, rashmika, read, ytaudio, ytvideo, lyrics, meme, randomsticker```\n\n📃 *Issues*\n```1) read:    Feature suspended, added abuse detection feature\n2) sticker: sticker can now be made\n3) toimg:   fixing bugs in sticker to image conversion \n4) promote demote: fixed bugs```",
+            "🤖 *BOT Command List* 🤖\n\n*The phone number was banned.*\n*Please do not misuse.*\n*May have to face bugs or downtime!*\n\n🎀 *Prefix: * .\n\n📗 *General*\n ```help, group, adminlist, contactme, requestafeature```\n\n👑 *Admin*\n```tagall, promote, demote, kick, add, botleave, grouplink, changedp, changedesc, allsticker```\n\n📱 *Media*\n```sticker, rashmika, read, ytaudio, ytvideo, lyrics, meme, randomsticker```\n\n📃 *Issues*\n```1) read:    Feature suspended, adding abuse detection feature\n2) sticker: sticker can now be made\n3) Added delay and typing... feature.\n4) Adding block feature for group admins, to prevent spammers from using the bot```",
             text,
             {
               quoted: mek,
@@ -1162,7 +1172,7 @@ async function starts() {
           await client.updatePresence(from, Presence.composing);
 
           if (isGroup) return reply("```works only in inbox```");
-          reply("```Why do u want to contact me?```");
+          reply("```https://forms.gle/8UD4haXaVA4BRGcr8```");
           break;
 
         case "requestafeature":
@@ -1182,14 +1192,13 @@ async function starts() {
           if (!isGroup) return reply(mess.only.group);
           const ppUrl = await client.getProfilePicture(from); // leave empty to get your own
           //console.log("download profile picture from: " + ppUrl)
-          teks = `\n💮 *Title*: ${groupMetadata.subject}\n\n👑 *Created By*: ${
-            groupMetadata.owner.split("@")[0]
-          }\n\n🏊 *Participiants*: ${
+          //teks = `\n💮 *Title*: ${groupMetadata.subject}\n\n👑 *Created By*: ${groupMetadata.owner.split("@")[0]}\n\n🏊 *Participiants*: ${groupMetadata.participants.lengthgroupMetadata.desc}`;
+          //  client.sendMessage(from, client.getProfilePicture(from) ,MessageType.image)
+					teks = `\n💮 *Title*: ${groupMetadata.subject}\n\n🏊 *Participiants*: ${
             groupMetadata.participants.length
           }\n\n🏅 *Admins*:${groupAdmins.length}\n\n🌏 *Description*:\n${
             groupMetadata.desc
           }`;
-          //  client.sendMessage(from, client.getProfilePicture(from) ,MessageType.image)
 
           client.sendMessage(from, teks, text, {
             quoted: mek,
