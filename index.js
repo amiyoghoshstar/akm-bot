@@ -356,9 +356,14 @@ async function starts() {
       //if( /^सुअर$/.test(args[ii])  ||  /^लौड़ा$/.test(args[ii])  || /^लण्ड$/.test(args[ii])  || /^रंडी$/.test(args[ii])  || /^रांड$/.test(args[ii])  || /^कूतिया$/.test(args[ii])  || /^मादरचोद$/.test(args[ii])  || /^भोसड़े$/.test(args[ii])  || /^बच्चकलप$/.test(args[ii])  || /^पिस्सू$/.test(args[ii])  || /^चुदाई$/.test(args[ii])  || /^गांड$/.test(args[ii])  || /^कूत्ते$/.test(args[ii])  || /^whore$/.test(args[ii])  || /^औलाद$/.test(args[ii])  || /^rundi$/.test(args[ii])  || /^randwa$/.test(args[ii])  || /^tits$/.test(args[ii])  || /^bhosadika$/i.test(args[ii])  ) return reply("⚠``` Warning```")
 
       // }
+     
 
       switch (command) {
         case "tweet":
+          await client.chatRead(from); // mark chat read
+     			 await client.updatePresence(from, Presence.available); // tell them we're available
+						await client.updatePresence(from, Presence.composing);
+						if(from!='917903952384-1592467386@g.us'&& sender.split("@")[0]!='919013844884') return client.sendMessage(from,fs.readFileSync('./Media/response/no.webp'),sticker,{quoted:mek})
           var params = {
             screen_name: "FabrizioRomano",
             tweet_mode: "extended",
@@ -390,6 +395,9 @@ async function starts() {
           break;
 
         case "ry":
+           await client.chatRead(from); // mark chat read
+     			 await client.updatePresence(from, Presence.available); // tell them we're available
+						await client.updatePresence(from, Presence.composing);
           if (!isQuotedSticker) return reply("❌ reply to a sticker ❌");
           reply(mess.wait);
           encmedia = JSON.parse(JSON.stringify(mek).replace("quotedM", "m"))
@@ -409,10 +417,12 @@ async function starts() {
 
           break;
 
-        case "tweet":
-          break;
+       
 
         case "invite":
+           await client.chatRead(from); // mark chat read
+     			 await client.updatePresence(from, Presence.available); // tell them we're available
+						await client.updatePresence(from, Presence.composing);
           if (args.length < 1) return reply("```PLz provide link```");
           if (
             !isUrl(args[0]) &&
@@ -430,6 +440,10 @@ async function starts() {
           break;
 
         case "tagall": //tag everyone in the group
+           await client.chatRead(from); // mark chat read
+     			 await client.updatePresence(from, Presence.available); // tell them we're available
+						await client.updatePresence(from, Presence.composing);
+
           if (!isGroup) return reply(mess.only.group);
 
           if (!isGroupAdmins) return reply(mess.only.admin);
@@ -444,6 +458,10 @@ async function starts() {
           break;
 
         case "promote": //promote someone to admin
+           await client.chatRead(from); // mark chat read
+     			 await client.updatePresence(from, Presence.available); // tell them we're available
+						await client.updatePresence(from, Presence.composing);
+
           if (!isGroup) return reply(mess.only.group);
           if (!isGroupAdmins) return reply(mess.only.admin);
           if (!isBotGroupAdmins) return reply(mess.only.Badmin);
@@ -471,6 +489,10 @@ async function starts() {
           break;
 
         case "demote":
+           await client.chatRead(from); // mark chat read
+     			 await client.updatePresence(from, Presence.available); // tell them we're available
+						await client.updatePresence(from, Presence.composing);
+
           if (!isGroup) return reply(mess.only.group);
           if (!isGroupAdmins) return reply(mess.only.admin);
           if (!isBotGroupAdmins) return reply(mess.only.Badmin);
@@ -501,6 +523,10 @@ async function starts() {
           break;
 
         case "add":
+           await client.chatRead(from); // mark chat read
+     			 await client.updatePresence(from, Presence.available); // tell them we're available
+						await client.updatePresence(from, Presence.composing);
+
           if (!isGroup) return reply(mess.only.group);
           if (!isGroupAdmins) return reply(mess.only.admin);
           if (!isBotGroupAdmins) return reply(mess.only.Badmin);
@@ -521,6 +547,10 @@ async function starts() {
           break;
 
         case "kick":
+           await client.chatRead(from); // mark chat read
+     			 await client.updatePresence(from, Presence.available); // tell them we're available
+						await client.updatePresence(from, Presence.composing);
+
           if (!isGroup) return reply(mess.only.group);
           if (!isGroupAdmins) return reply(mess.only.admin);
           if (!isBotGroupAdmins) return reply(mess.only.Badmin);
@@ -544,6 +574,10 @@ async function starts() {
           break;
 
         case "grouplink":
+           await client.chatRead(from); // mark chat read
+     			 await client.updatePresence(from, Presence.available); // tell them we're available
+						await client.updatePresence(from, Presence.composing);
+
           if (!isGroup) return reply(mess.only.group);
           if (!isGroupAdmins) return reply(mess.only.admin);
           if (!isBotGroupAdmins) return reply(mess.only.Badmin);
@@ -552,6 +586,10 @@ async function starts() {
           break;
 
         case "botleave":
+           await client.chatRead(from); // mark chat read
+     			 await client.updatePresence(from, Presence.available); // tell them we're available
+						await client.updatePresence(from, Presence.composing);
+
           if (!isGroup) return reply(mess.only.group);
           if (isGroupAdmins || isOwner) {
             await client.sendMessage(from, "```Bye, Miss you all ```🤧", text);
@@ -562,6 +600,10 @@ async function starts() {
           break;
 
         case "setprefix":
+           await client.chatRead(from); // mark chat read
+     			 await client.updatePresence(from, Presence.available); // tell them we're available
+						await client.updatePresence(from, Presence.composing);
+
           if (args.length < 1) return;
           if (!isOwner) return reply(mess.only.ownerB);
           prefix = args[0];
@@ -610,6 +652,8 @@ async function starts() {
           break;
 
         case "title":
+          // await client.updatePresence(from, Presence.composing)
+
           /*if (!isGroup) return reply(mess.only.group)
 						if (!isGroupAdmins) return reply(mess.only.admin)
 						if (!isBotGroupAdmins) return reply(mess.only.Badmin)
@@ -657,7 +701,7 @@ async function starts() {
           break;
 
         case "allsticker": // all sticker
-          if (args[0] != "akm")
+          if (args[0] != "mka")
             return reply("```No more sticker due to stupid behaviour```"); //turn this on to stop spam
           if (isGroupAdmins || isOwner || !isGroup) {
             for (var i = 1; i < 934; i++) {
@@ -689,6 +733,10 @@ async function starts() {
           break;
 
         case "ytaudio":
+           await client.chatRead(from); // mark chat read
+     			 await client.updatePresence(from, Presence.available); // tell them we're available
+						await client.updatePresence(from, Presence.composing);
+
           if (args.length < 1)
             return reply(
               "*Usage:*\n.ytaudio https://youtu.be/wui0YweevtY\n.ytaudio https://youtu.be/ByH9LuSILxU"
@@ -715,6 +763,10 @@ async function starts() {
           break;
 
         case "ytvideo":
+           await client.chatRead(from); // mark chat read
+     			 await client.updatePresence(from, Presence.available); // tell them we're available
+						await client.updatePresence(from, Presence.composing);
+
           if (args.length < 1)
             return reply(
               "*Usage:*\n```.ytvideo https://youtu.be/wui0YweevtY\n.ytvideo https://youtu.be/ByH9LuSILxU```"
@@ -750,6 +802,10 @@ async function starts() {
           break;
 
         case "lyrics":
+           await client.chatRead(from); // mark chat read
+     			 await client.updatePresence(from, Presence.available); // tell them we're available
+						await client.updatePresence(from, Presence.composing);
+
           if (args.length < 1)
             return reply(
               "*Usage:*\n```.lyrics brown munde\n.lyrics Jab Pyar Kiya To Darna Kya```"
@@ -759,12 +815,20 @@ async function starts() {
           break;
 
         case "read":
+           await client.chatRead(from); // mark chat read
+     			 await client.updatePresence(from, Presence.available); // tell them we're available
+						await client.updatePresence(from, Presence.composing);
+
           reply(
             "```Will continue only after adding abuse detection feature!```"
           );
           break;
 
         case "reads":
+           await client.chatRead(from); // mark chat read
+     			 await client.updatePresence(from, Presence.available); // tell them we're available
+						await client.updatePresence(from, Presence.composing);
+
           try {
             if (args.length < 1)
               return reply(
@@ -887,6 +951,10 @@ async function starts() {
           break;
 
         case "meme":
+           await client.chatRead(from); // mark chat read
+     			 await client.updatePresence(from, Presence.available); // tell them we're available
+						await client.updatePresence(from, Presence.composing);
+
           await redditimage
             .fetch({
               type: "meme",
@@ -964,6 +1032,10 @@ async function starts() {
           break;
 
         case "sticker":
+           await client.chatRead(from); // mark chat read
+     			 await client.updatePresence(from, Presence.available); // tell them we're available
+						await client.updatePresence(from, Presence.composing);
+
           if (isMedia || isQuotedImage) {
             const encmedia = isQuotedImage
               ? JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message
@@ -1038,6 +1110,10 @@ async function starts() {
 
         case "menu":
         case "help":
+           await client.chatRead(from); // mark chat read
+     			 await client.updatePresence(from, Presence.available); // tell them we're available
+						await client.updatePresence(from, Presence.composing);
+
           client.sendMessage(
             from,
             "🤖 *BOT Command List* 🤖\n\n*Bot currently under development.*\n*May have to face bugs or downtime!*\n\n🎀 *Prefix* .\n\n📗 *General*\n ```help, group, adminlist, contactme, requestafeature```\n\n👑 *Admin*\n```tagall, promote, demote, kick, add, botleave, grouplink, changedp, changedesc, allsticker```\n\n📱 *Media*\n```sticker, rashmika, read, ytaudio, ytvideo, lyrics, meme, randomsticker```\n\n📃 *Issues*\n```1) read:    Feature suspended, added abuse detection feature\n2) sticker: sticker can now be made\n3) toimg:   fixing bugs in sticker to image conversion \n4) promote demote: fixed bugs```",
@@ -1049,16 +1125,28 @@ async function starts() {
           break;
 
         case "contactme":
+           await client.chatRead(from); // mark chat read
+     			 await client.updatePresence(from, Presence.available); // tell them we're available
+						await client.updatePresence(from, Presence.composing);
+
           if (isGroup) return reply("```works only in inbox```");
           reply("```Why do u want to contact me?```");
           break;
 
         case "requestafeature":
+           await client.chatRead(from); // mark chat read
+     			 await client.updatePresence(from, Presence.available); // tell them we're available
+						await client.updatePresence(from, Presence.composing);
+
           if (isGroup) return reply("```works only in inbox```");
           reply("```what feature do you want?```");
           break;
 
         case "group":
+           await client.chatRead(from); // mark chat read
+     			 await client.updatePresence(from, Presence.available); // tell them we're available
+						await client.updatePresence(from, Presence.composing);
+
           if (!isGroup) return reply(mess.only.group);
           const ppUrl = await client.getProfilePicture(from); // leave empty to get your own
           //console.log("download profile picture from: " + ppUrl)
@@ -1077,6 +1165,10 @@ async function starts() {
           break;
 
         case "tagall": //tag everyone in the group
+           await client.chatRead(from); // mark chat read
+     			 await client.updatePresence(from, Presence.available); // tell them we're available
+						await client.updatePresence(from, Presence.composing);
+
           if (!isGroup)
             return reply("```No one is here except you and me``` 🌑");
           if (!isGroupAdmins) return reply(mess.only.admin);
@@ -1091,6 +1183,10 @@ async function starts() {
           break;
 
         case "adminlist":
+           await client.chatRead(from); // mark chat read
+     			 await client.updatePresence(from, Presence.available); // tell them we're available
+						await client.updatePresence(from, Presence.composing);
+
           if (!isGroup) return reply(mess.only.group);
           teks = `*${groupMetadata.subject}*\n\n`;
           no = 0;
@@ -1102,9 +1198,18 @@ async function starts() {
           break;
 
         default:
-         // console.log("a");
-          if(isCmd){
-            client.sendMessage(from,fs.readFileSync("./Media/response/idk.webp"), sticker,{quoted:mek})
+          // console.log("a");
+          if (isCmd && command.length > 1) {
+             await client.chatRead(from); // mark chat read
+     			 await client.updatePresence(from, Presence.available); // tell them we're available
+						await client.updatePresence(from, Presence.composing);
+
+            client.sendMessage(
+              from,
+              fs.readFileSync("./Media/response/idk.webp"),
+              sticker,
+              { quoted: mek }
+            );
           }
 
           if (isGroup && isSimi && budy != undefined) {
@@ -1113,7 +1218,7 @@ async function starts() {
             console.log(muehe);
             reply(muehe);
           } else {
-           // return console.log(color('[WARN]','red'), 'Unregistered Command from', color(sender.split('@')[0]))
+            // return console.log(color('[WARN]','red'), 'Unregistered Command from', color(sender.split('@')[0]))
           }
       }
     } catch (e) {
