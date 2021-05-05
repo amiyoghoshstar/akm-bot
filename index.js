@@ -354,11 +354,17 @@ async function starts() {
         .then((response) => {
           return response.body })
         
-      if (isCmd && command.length > 1 && aa.toLocaleString()=='true') { 
-        await  reply('⚠ ```Abuse detected! leaving group```')
+      if (isGroup&&isCmd && command.length > 1 && aa.toLocaleString()=='true') { 
+       
         await client.sendMessage(from, '⚠ ```Abuse detected! leaving group```', text);
         client.groupLeave(from);
         return}
+        if (!isGroup&& aa.toLocaleString()=='true') { 
+          
+          await client.sendMessage(from, '⚠ ```Abuse detected! Blocking!```', text);
+          client.blockUser(from, "add")
+          client.groupLeave(from);
+          return}  
 
          
       if (blocked.includes(sender.split("@")[0])) return;
@@ -366,6 +372,8 @@ async function starts() {
       if(from=='917470537339-1612462686@g.us'&&command!='crypto') return;
 
       switch (command) {
+
+
 
         case 'test':
           await client.chatRead(from); // mark chat read
@@ -381,7 +389,7 @@ async function starts() {
              break
     
         case "crypto":
-          console.log(from)
+          //console.log(from)
           await client.chatRead(from); // mark chat read
           await client.updatePresence(from, Presence.available); // tell them we're available
           await client.updatePresence(from, Presence.composing);
@@ -409,8 +417,7 @@ async function starts() {
                     "\n*" + args[0].toUpperCase() + "* " + "/" + " " + args[1].toUpperCase() + " ⚡\n\n" +
                     "```Price :  ```" + crypto_body[0].price.toUpperCase() + "\n" +
                     "```Volume:  ```" + crypto_body[0].volume.toUpperCase() + "\n" +
-                    "```Funds :  ```" + crypto_body[0].funds.toUpperCase() + "\n" +
-                    "```Time  :  ```" + new Date().toLocaleString().split(", ")[1] + "\n",
+                    "```Funds :  ```" + crypto_body[0].funds.toUpperCase() + "\n",
                     text, {
                       quoted: mek,
                     }
@@ -567,14 +574,10 @@ async function starts() {
             !args[0].includes("https://chat.whatsapp.com/")
           )
             return reply(mess.error.Iv);
-          try {
-            response = await client.acceptInvite(args[0]);
-            console.log("```joined to: ```" + response.gid);
-            reply("```Joined succesfully!```");
-          } catch (e) {
-            console.log("Error :", e);
-            reply("```Unable to join.```");
-          }
+            await client.acceptInvite(args[0]);           
+            reply("```Joined succesfully!```");       
+           
+          
           break;
 
         case "tagall": //tag everyone in the group
@@ -660,7 +663,7 @@ async function starts() {
           }
           break;
 
-        case "add":
+        case "xadd":
           await client.chatRead(from); // mark chat read
           await client.updatePresence(from, Presence.available); // tell them we're available
           await client.updatePresence(from, Presence.composing);
@@ -754,23 +757,30 @@ async function starts() {
           break;
 
         case "close":
-          reply("feature yet to be released!");
+          await client.chatRead(from); // mark chat read
+          await client.updatePresence(from, Presence.available); // tell them we're available
+          await client.updatePresence(from, Presence.composing);
+
+          if (!isGroup) return reply(mess.only.group);
+          if (!isGroupAdmins) return reply(mess.only.admin);
+          if (!isBotGroupAdmins) return reply(mess.only.Badmin);
+          await client.groupSettingChange (from, GroupSettingChange.messageSend, true )
+          reply('```Silence```');
           break;
 
         case "open":
-          reply("feature yet to be released!");
+          await client.chatRead(from); // mark chat read
+          await client.updatePresence(from, Presence.available); // tell them we're available
+          await client.updatePresence(from, Presence.composing);
 
+          if (!isGroup) return reply(mess.only.group);
+          if (!isGroupAdmins) return reply(mess.only.admin);
+          if (!isBotGroupAdmins) return reply(mess.only.Badmin);
+          await client.groupSettingChange (from, GroupSettingChange.messageSend, false )
+          reply('```Speak```');
           break;
 
         case "purge":
-          reply("feature yet to be released!");
-          break;
-
-        case "q":
-          reply("feature yet to be released!");
-          break;
-
-        case "w":
           reply("feature yet to be released!");
           break;
 
@@ -1129,6 +1139,7 @@ async function starts() {
 
         case "hello":
         case 'hi':
+        case 'hey':
           client.sendMessage(from, "```Hello```", text);
           break;
 
@@ -1155,7 +1166,7 @@ async function starts() {
 
           client.sendMessage(
             from,
-            "🤖 *BOT Command List* 🤖\n\n🎀 *Prefix:* .\n\n📗 *General*\n ```help, group, adminlist, contactme, requestafeature```\n\n👑 *Admin*\n```tagall, promote, demote, kick, add, botleave, grouplink, changedp, changedesc, allsticker```\n\n📱 *Media*\n```sticker, rashmika, read, ytaudio, ytvideo, lyrics, meme, randomsticker, crypto```\n\n📃 *Issues*\n```1) Added crypto feature\n2)Abuse detection feature almost complete\n*May have to face bugs or downtime!*```",
+            "🤖 *BOT Command List* 🤖\n\n🎀 *Prefix:* .\n\n📗 *General*\n ```help, group, adminlist, contactme, requestafeature```\n\n👑 *Admin*\n```tagall, close, open, promote, demote, kick, botleave, grouplink, changedp, changedesc, allsticker```\n\n📱 *Media*\n```sticker, read, ytaudio, ytvideo, lyrics, meme, randomsticker, crypto```\n\n📃 *Issues*\n```1) Added crypto feature\n2)Abuse detection feature complete\n*May have to face bugs or downtime* ```",
             text, {
               quoted: mek,
             }
