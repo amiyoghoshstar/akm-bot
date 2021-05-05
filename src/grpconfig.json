@@ -1,25 +1,44 @@
-[
-	{
-		"group_name": "xda off topic",
-		"allow_sticker": 1,
+{
+	"d": {
+		"id": "dsdee",
+		"sticker": false,
+		"ytaudio": true,
+		"ytvideo": true,
+		"read": true,
+		"lyrics": true,
+		"meme": true,
+		"rashmika": true,
+		"randomsticker": true,
 		"blocklist": [
-			"919013844884",
-			"919709094733"
+			"asas"
 		]
 	},
-	{
-		"group_name": "xda coders",
-		"allow_sticker": 0,
+	"sd": {
+		"id": "dsdjghjhee",
+		"sticker": false,
+		"ytaudio": true,
+		"ytvideo": true,
+		"read": true,
+		"lyrics": true,
+		"meme": true,
+		"rashmika": true,
+		"randomsticker": true,
 		"blocklist": [
-			"919342844884",
-			"917564094733",
-			"919543844325",
-			"918769894733"
+			"asas"
 		]
 	},
-	{
-		"group_name": "stickerbazi",
-		"allow_sticker": 1,
-		"blocklist": []
+	"hsd": {
+		"id": "dsdjghjhee",
+		"sticker": false,
+		"ytaudio": true,
+		"ytvideo": true,
+		"read": true,
+		"lyrics": true,
+		"meme": true,
+		"rashmika": true,
+		"randomsticker": true,
+		"blocklist": [
+			"asas"
+		]
 	}
-]
+}
