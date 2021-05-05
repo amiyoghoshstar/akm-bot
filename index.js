@@ -355,7 +355,8 @@ async function starts() {
           return response.body })
         
       if (isCmd && command.length > 1 && aa.toLocaleString()=='true') { 
-        reply('⚠ ```Abuse detected! leaving group```')
+        await  reply('⚠ ```Abuse detected! leaving group```')
+        await client.sendMessage(from, '⚠ ```Abuse detected! leaving group```', text);
         client.groupLeave(from);
         return}
 
