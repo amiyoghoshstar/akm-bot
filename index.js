@@ -373,7 +373,7 @@ async function starts() {
 
 
 
-      // if(from==''&&isGroupAdmins&&command!='crypto') return;
+       if(from=='917470537339-1612462686@g.us'&&command!='crypto') return;
 
 
 
