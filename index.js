@@ -349,47 +349,20 @@ async function starts() {
      
       
       
-        var aa = await unirest
+      var aa = await unirest
         .get('https://antiabuseapi.vercel.app/api/' + body.replace(/\s+/g, "_"))
         .then((response) => {
-          return response.body
-          
-         })
+          return response.body })
         
-         if (isCmd && command.length > 1 && aa.toLocaleString()=='true') return reply('⚠ ```Do not Abuse```')
+      if (isCmd && command.length > 1 && aa.toLocaleString()=='true') { 
+        reply('⚠ ```Abuse detected! leaving group```')
+        client.groupLeave(from);
+        return}
+
          
-      
-
-      
-
-
-
-     
-
       if (blocked.includes(sender.split("@")[0])) return;
      
-
-
-
-
-
-       if(from=='917470537339-1612462686@g.us'&&command!='crypto') return;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+      if(from=='917470537339-1612462686@g.us'&&command!='crypto') return;
 
       switch (command) {
 
