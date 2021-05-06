@@ -391,15 +391,15 @@ async function starts() {
 
       switch (command) {
 
-        case 'saavn':
+        case 'song':
 
 
 
           break
 
         case 'credits':
-          amiyo="Added crypto\n"
-          adithya="Added abuse detection"
+          amiyo="Amiyo: Added crypto\n"
+          adithya="Adithya: Added abuse detection"
           msg=amiyo+adithya
           reply(msg)
 
