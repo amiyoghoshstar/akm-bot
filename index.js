@@ -390,6 +390,21 @@ async function starts() {
       if (from == "917470537339-1612462686@g.us" && command != "crypto") return;
 
       switch (command) {
+
+        case 'saavn':
+
+
+
+          break
+
+        case 'credits':
+          amiyo="Added crypto\n"
+          adithya="Added abuse detection"
+          msg=amiyo+adithya
+          reply(msg)
+
+          break  
+
         case "test":
 
           await client.chatRead(from); // mark chat read
@@ -1049,7 +1064,7 @@ async function starts() {
           }
           break;
 
-        case "meme":
+        case "xmeme":
           await client.chatRead(from); // mark chat read
           await client.updatePresence(from, Presence.available); // tell them we're available
           await client.updatePresence(from, Presence.composing);
@@ -1217,7 +1232,7 @@ async function starts() {
 
           client.sendMessage(
             from,
-            "🤖 *AKM-BOT Command List* 🤖\n\n🎀 *Prefix:* .\n\n📗 *General*\n ```help, group, adminlist, contactme, requestafeature```\n\n👑 *Group Admin*\n```tagall, close, open, promote, demote, kick, botleave, grouplink, changedp, changedesc, allsticker```\n\n📱 *Media*\n```sticker, read, ytaudio, ytvideo, lyrics, meme, randomsticker, crypto```\n\n📃 *Issues*\n```1) Added crypto\n2) Abuse detection complete\n3) Suspended adding to groups\n *May have to face bugs or downtime* ```",
+            "🤖 *AKM-BOT Command List* 🤖\n\n🎀 *Prefix:* .\n\n📗 *General*\n ```help, group, adminlist, contactme, requestafeature, credits```\n\n👑 *Group Admin*\n```tagall, close, open, promote, demote, kick, botleave, grouplink, changedp, changedesc, allsticker```\n\n📱 *Media*\n```sticker, read, ytaudio, ytvideo, lyrics, randomsticker, crypto```\n\n📃 *Issues*\n```1) Added crypto\n2) Abuse detection complete\n3) Suspended adding to groups\n4)Removed meme and add```\n *May have to face bugs or downtime*",
             text,
             {
               quoted: mek,
