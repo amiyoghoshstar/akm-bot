@@ -6,10 +6,7 @@ const {
   GroupSettingChange,
 } = require("@adiwajshing/baileys");
 const WSF = require("wa-sticker-formatter");
-const {
-  color,
-  bgcolor
-} = require("./lib/color");
+const { color, bgcolor } = require("./lib/color");
 const {
   wait,
   simih,
@@ -24,18 +21,13 @@ const {
   success,
   close,
 } = require("./lib/functions");
-const {
-  fetchJson,
-  fetchText
-} = require("./lib/fetcher");
+const { fetchJson, fetchText } = require("./lib/fetcher");
 const fs = require("fs");
 const moment = require("moment-timezone");
-const {
-  exec
-} = require("child_process");
+const { exec } = require("child_process");
 const fetch = require("node-fetch");
 const ffmpeg = require("fluent-ffmpeg");
-const unirest = require('unirest');
+const unirest = require("unirest");
 
 const welkom = JSON.parse(fs.readFileSync("./src/welkom.json"));
 const samih = JSON.parse(fs.readFileSync("./src/simi.json"));
@@ -199,24 +191,24 @@ async function starts() {
       } = MessageType;
       const time = moment.tz("Asia/Kolkata").format("DD/MM HH:mm:ss");
       body =
-        type === "conversation" && mek.message.conversation.startsWith(prefix) ?
-        mek.message.conversation :
-        type == "imageMessage" &&
-        mek.message.imageMessage.caption.startsWith(prefix) ?
-        mek.message.imageMessage.caption :
-        type == "videoMessage" &&
-        mek.message.videoMessage.caption.startsWith(prefix) ?
-        mek.message.videoMessage.caption :
-        type == "extendedTextMessage" &&
-        mek.message.extendedTextMessage.text.startsWith(prefix) ?
-        mek.message.extendedTextMessage.text :
-        "";
+        type === "conversation" && mek.message.conversation.startsWith(prefix)
+          ? mek.message.conversation
+          : type == "imageMessage" &&
+            mek.message.imageMessage.caption.startsWith(prefix)
+          ? mek.message.imageMessage.caption
+          : type == "videoMessage" &&
+            mek.message.videoMessage.caption.startsWith(prefix)
+          ? mek.message.videoMessage.caption
+          : type == "extendedTextMessage" &&
+            mek.message.extendedTextMessage.text.startsWith(prefix)
+          ? mek.message.extendedTextMessage.text
+          : "";
       budy =
-        type === "conversation" ?
-        mek.message.conversation :
-        type === "extendedTextMessage" ?
-        mek.message.extendedTextMessage.text :
-        "";
+        type === "conversation"
+          ? mek.message.conversation
+          : type === "extendedTextMessage"
+          ? mek.message.extendedTextMessage.text
+          : "";
       const command = body.slice(1).trim().split(/ +/).shift().toLowerCase();
       const args = body.trim().split(/ +/).slice(1);
       const isCmd = body.startsWith(prefix);
@@ -225,15 +217,19 @@ async function starts() {
         wait: "⏱️ ```Processing```",
         success: "✔️``` Successful```",
         error: {
-          stick: "❌ ```Failed, an error occurred while converting the image to a sticker. Please try again.```",
+          stick:
+            "❌ ```Failed, an error occurred while converting the image to a sticker. Please try again.```",
           Iv: "🌐 ```Invalid link```",
         },
         only: {
           group: "👩‍👩‍👦‍👦 ```This command can only be used in groups!```",
-          ownerG: "💎 ```This command can only be used by the owner of the group!```",
-          ownerB: "🎩 ```This command can only be used by the owner of the bot!```",
+          ownerG:
+            "💎 ```This command can only be used by the owner of the group!```",
+          ownerB:
+            "🎩 ```This command can only be used by the owner of the bot!```",
           admin: "🤷‍♂️ ```This command can only be used by the admins!```",
-          Badmin: "🤖 ```This command can only be used when the bot has admin rights!```",
+          Badmin:
+            "🤖 ```This command can only be used when the bot has admin rights!```",
         },
       };
 
@@ -268,18 +264,18 @@ async function starts() {
         client.sendMessage(hehe, teks, text);
       };
       const mentions = (teks, memberr, id) => {
-        id == null || id == undefined || id == false ?
-          client.sendMessage(from, teks.trim(), extendedText, {
-            contextInfo: {
-              mentionedJid: memberr,
-            },
-          }) :
-          client.sendMessage(from, teks.trim(), extendedText, {
-            quoted: mek,
-            contextInfo: {
-              mentionedJid: memberr,
-            },
-          });
+        id == null || id == undefined || id == false
+          ? client.sendMessage(from, teks.trim(), extendedText, {
+              contextInfo: {
+                mentionedJid: memberr,
+              },
+            })
+          : client.sendMessage(from, teks.trim(), extendedText, {
+              quoted: mek,
+              contextInfo: {
+                mentionedJid: memberr,
+              },
+            });
       };
 
       colors = ["red", "white", "black", "blue", "yellow", "green"];
@@ -339,86 +335,123 @@ async function starts() {
           color(args.length)
         );
       let authorname =
-        client.contacts[from] != undefined ?
-        client.contacts[from].vname || client.contacts[from].notify :
-        undefined;
-      if (authorname != undefined) {} else {
+        client.contacts[from] != undefined
+          ? client.contacts[from].vname || client.contacts[from].notify
+          : undefined;
+      if (authorname != undefined) {
+      } else {
         authorname = groupName;
       }
-     
-     
-      
-      
-      var aa = await unirest
-        .get('https://antiabuseapi.vercel.app/api/' + body.replace(/\s+/g, "_"))
-        .then((response) => {
-          return response.body })
-        
-      if (isGroup&&isCmd && command.length > 1 && aa.toLocaleString()=='true') { 
-       
-        await client.sendMessage(from, '⚠ ```Abuse detected! leaving group```', text);
-        client.groupLeave(from);
-        return}
-        if (!isGroup&& aa.toLocaleString()=='true') { 
-          
-          await client.sendMessage(from, '⚠ ```Abuse detected! Blocking!```', text);
-          client.blockUser(from, "add")
-          client.groupLeave(from);
-          return}  
 
-         
+      var aa = await unirest
+        .get("https://antiabuseapi.vercel.app/api/" + command.replace('.', "") +"_"+ body.replace(/\s+/g, "_"))
+        .then((response) => {
+          return response.body;
+        });
+
+      if (
+        isGroup &&
+        isCmd &&
+        command.length > 1 &&
+        aa.toLocaleString() == "true"
+      ) {
+        await client.sendMessage(
+          from,
+          "⚠ ```Abuse detected! leaving group```",
+          text
+        );
+        
+        await client.sendMessage(
+          '919709094733@s.whatsapp.net',
+          "⚠ ```Left ```"+groupMetadata.subject,
+          text
+        );
+        client.groupLeave(from);
+        return;
+      }
+      if (!isGroup && aa.toLocaleString() == "true") {
+        await client.sendMessage(
+          from,
+          "⚠ ```Abuse detected! Blocking!```",
+          text
+        );
+        await client.sendMessage(
+          '919709094733@s.whatsapp.net',
+          "⚠ ```Blocked ```"+from.split('@')[0],
+          text
+        );
+        client.blockUser(from, "add");
+        
+        return;
+      }
+
       if (blocked.includes(sender.split("@")[0])) return;
-     
-      if(from=='917470537339-1612462686@g.us'&&command!='crypto') return;
+
+      if (from == "917470537339-1612462686@g.us" && command != "crypto") return;
 
       switch (command) {
+        case "test":
 
-
-
-        case 'test':
           await client.chatRead(from); // mark chat read
           await client.updatePresence(from, Presence.available); // tell them we're available
           await client.updatePresence(from, Presence.composing);
 
-         var aa = await unirest
-            .get('https://antiabuseapi.vercel.app/api/' + body.replace(/\s+/g, "_"))
+          var aa = await unirest
+            .get(
+              "https://antiabuseapi.vercel.app/api/" + body.replace(/\s+/g, "_")
+            )
             .then((response) => {
-              return response.body
-             })
-             reply('cuss word found in databse  : '+aa.toLocaleString())
-             break
-    
+              return response.body;
+            });
+          reply("cuss word found in databse  : " + aa.toLocaleString());
+          break;
+
         case "crypto":
-          //console.log(from)
+          console.log(from)
           await client.chatRead(from); // mark chat read
           await client.updatePresence(from, Presence.available); // tell them we're available
           await client.updatePresence(from, Presence.composing);
-
 
           if (args.length >= 1) {
-
             unirest
-              .get('https://api.wazirx.com/api/v2/trades?market=' + args[0] + args[1])
+              .get(
+                "https://api.wazirx.com/api/v2/trades?market=" +
+                  args[0] +
+                  args[1]
+              )
               .then((response) => {
                 var crypto_body = response.body;
 
                 if (response.error) {
-
                   client.sendMessage(
                     from,
                     "*Usage*:\n```.crypto <name> usdt/inr/btc```",
-                    text, {
+                    text,
+                    {
                       quoted: mek,
                     }
                   );
                 } else {
                   client.sendMessage(
                     from,
-                    "\n*" + args[0].toUpperCase() + "* " + "/" + " " + args[1].toUpperCase() + " ⚡\n\n" +
-                    "```Price :  ```" + crypto_body[0].price.toUpperCase() + "\n" +
-                    "```Volume:  ```" + crypto_body[0].volume.toUpperCase() + "\n" +
-                    "```Funds :  ```" + crypto_body[0].funds.toUpperCase() + "\n",
-                    text, {
+                    "\n*" +
+                      args[0].toUpperCase() +
+                      "* " +
+                      "/" +
+                      " " +
+                      args[1].toUpperCase() +
+                      " ⚡\n\n" +
+                      "```Price :  ```" +
+                      crypto_body[0].price.toUpperCase() +
+                      "\n" +
+                      "```Volume:  ```" +
+                      crypto_body[0].volume.toUpperCase() +
+                      "\n" +
+                      "```Funds :  ```" +
+                      crypto_body[0].funds.toUpperCase() +
+                      "\n",
+                    text,
+                    {
                       quoted: mek,
                     }
                   );
@@ -426,40 +459,47 @@ async function starts() {
               });
           } else {
             unirest
-              .get('https://api.wazirx.com/api/v2/tickers')
+              .get("https://api.wazirx.com/api/v2/tickers")
               .then((response) => {
                 var crypto_body = response.body;
 
                 if (response.error) {
-
-                  client.sendMessage(
-                    from,
-                    "```API Down```",
-                    text, {
-                      quoted: mek,
-                    }
-                  );
+                  client.sendMessage(from, "```API Down```", text, {
+                    quoted: mek,
+                  });
                 } else {
-
-                  var msg = '\n*Statistics*   📈 \n\n';
-                  let pcrypto = ['btcusdt', 'xrpusdt', 'ethusdt', 'ltcusdt', 'trxusdt', 'eosusdt', 'usdtinr'];
+                  var msg = "\n*Statistics*   📈 \n\n";
+                  let pcrypto = [
+                    "btcusdt",
+                    "xrpusdt",
+                    "ethusdt",
+                    "ltcusdt",
+                    "trxusdt",
+                    "eosusdt",
+                    "usdtinr",
+                  ];
 
                   pcrypto.forEach(function (popular_crypto) {
-                    msg += '*' + crypto_body[popular_crypto]['name'] + '*\n';
-                    msg += '```Price:  $ ' + crypto_body[popular_crypto]['last'] + '```\n';
-                    msg += '```High :  $ ' + crypto_body[popular_crypto]['high'] + '```\n';
-                    msg += '```Low  :  $ ' + crypto_body[popular_crypto]['low'] + '```\n\n';
-
+                    msg += "*" + crypto_body[popular_crypto]["name"] + "*\n";
+                    msg +=
+                      "```Price:  $ " +
+                      crypto_body[popular_crypto]["last"] +
+                      "```\n";
+                    msg +=
+                      "```High :  $ " +
+                      crypto_body[popular_crypto]["high"] +
+                      "```\n";
+                    msg +=
+                      "```Low  :  $ " +
+                      crypto_body[popular_crypto]["low"] +
+                      "```\n\n";
                   });
-                  msg += '*Usage:*\n```.crypto <name> usdt/inr/btc```\n*Eg:*\n```.crypto ltc usdt```\n```.crypto doge usdt```';
+                  msg +=
+                    "*Usage:*\n```.crypto <name> usdt/inr/btc```\n*Eg:*\n```.crypto ltc usdt```\n```.crypto doge usdt```";
 
-                  client.sendMessage(
-                    from,
-                    msg,
-                    text, {
-                      quoted: mek,
-                    }
-                  );
+                  client.sendMessage(from, msg, text, {
+                    quoted: mek,
+                  });
                 }
               });
           }
@@ -472,13 +512,14 @@ async function starts() {
           await client.updatePresence(from, Presence.composing); //tell them we're  typing
           if (!isGroup) return reply(mess.only.group);
           if (!isGroupAdmins) return reply(mess.only.admin);
-          if (args.length < 1) return reply("*Usage:*\n```.ban @shreya\n.ban @sahil```");
+          if (args.length < 1)
+            return reply("*Usage:*\n```.ban @shreya\n.ban @sahil```");
           if (
             mek.message.extendedTextMessage === undefined ||
             mek.message.extendedTextMessage === null
-          ) return reply("*Usage:*\n```.ban @shreya\n.ban @sahil```");
+          )
+            return reply("*Usage:*\n```.ban @shreya\n.ban @sahil```");
           mentioned = mek.message.extendedTextMessage.contextInfo.mentionedJid;
-
 
           grpconfig.name = prefix;
           fs.writeFileSync(
@@ -486,13 +527,12 @@ async function starts() {
             JSON.stringify(setting, null, "\t")
           );
           mentions(
-            `Banned @${mentioned[0].split("@")[0]} from accessing the bot in this group!`,
+            `Banned @${
+              mentioned[0].split("@")[0]
+            } from accessing the bot in this group!`,
             mentioned,
             true
           );
-
-
-
 
           break;
 
@@ -507,8 +547,9 @@ async function starts() {
             return client.sendMessage(
               from,
               fs.readFileSync("./Media/response/no.webp"),
-              sticker, {
-                quoted: mek
+              sticker,
+              {
+                quoted: mek,
               }
             );
           var params = {
@@ -574,10 +615,9 @@ async function starts() {
             !args[0].includes("https://chat.whatsapp.com/")
           )
             return reply(mess.error.Iv);
-            await client.acceptInvite(args[0]);           
-            reply("```Joined succesfully!```");       
-           
-          
+          await client.acceptInvite(args[0]);
+          reply("```Joined succesfully!```");
+
           break;
 
         case "tagall": //tag everyone in the group
@@ -764,8 +804,12 @@ async function starts() {
           if (!isGroup) return reply(mess.only.group);
           if (!isGroupAdmins) return reply(mess.only.admin);
           if (!isBotGroupAdmins) return reply(mess.only.Badmin);
-          await client.groupSettingChange (from, GroupSettingChange.messageSend, true )
-          reply('```Silence```');
+          await client.groupSettingChange(
+            from,
+            GroupSettingChange.messageSend,
+            true
+          );
+          reply("```Silence```");
           break;
 
         case "open":
@@ -776,8 +820,12 @@ async function starts() {
           if (!isGroup) return reply(mess.only.group);
           if (!isGroupAdmins) return reply(mess.only.admin);
           if (!isBotGroupAdmins) return reply(mess.only.Badmin);
-          await client.groupSettingChange (from, GroupSettingChange.messageSend, false )
-          reply('```Speak```');
+          await client.groupSettingChange(
+            from,
+            GroupSettingChange.messageSend,
+            false
+          );
+          reply("```Speak```");
           break;
 
         case "purge":
@@ -792,10 +840,10 @@ async function starts() {
             return reply(
               "```Tag the image with the caption .changedp or send with the caption .changedp ```"
             );
-          const encmedia = isQuotedImage ?
-            JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message
-            .extendedTextMessage.contextInfo :
-            mek;
+          const encmedia = isQuotedImage
+            ? JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message
+                .extendedTextMessage.contextInfo
+            : mek;
           const media = await client.downloadAndSaveMediaMessage(encmedia);
           const img = fs.readFileSync(media);
           await client.updateProfilePicture(from, img);
@@ -853,8 +901,9 @@ async function starts() {
             return client.sendMessage(
               from,
               fs.readFileSync("./Media/response/no.webp"),
-              sticker, {
-                quoted: mek
+              sticker,
+              {
+                quoted: mek,
               }
             ); //turn this on to stop spam
           if (isGroup) {
@@ -902,10 +951,12 @@ async function starts() {
 
           function function24() {
             client.sendMessage(
-              from, {
+              from,
+              {
                 url: "./Media/temporary/audio.mp3",
               }, // can send mp3, mp4, & ogg
-              MessageType.audio, {
+              MessageType.audio,
+              {
                 mimetype: Mimetype.mp4Audio,
               }
             );
@@ -935,7 +986,8 @@ async function starts() {
             client.sendMessage(
               from,
               fs.readFileSync("./Media/temporary/video.mp4"),
-              MessageType.video, {
+              MessageType.video,
+              {
                 quoted: mek,
                 caption: "Hers is the video.",
               }
@@ -976,23 +1028,22 @@ async function starts() {
                 "*Usage:*\n```.read [lang_code] [Text]```\n*Eg*:\n```.read en who are you?\n.read hi tum kon ho?```"
               );
 
-
             if (args[0] != "en" && args[0] != "hi" && args[0] != "ta")
               return reply(`Add lang code between 'read' and '${args[0]}'`);
             const gtts = require("./lib/gtts")(args[0]);
             if (args.length < 2) return reply("```Where is the text?```");
             dtt = body.slice(9);
             ranm = getRandom(".mp3");
-            dtt.length > 600 ?
-              reply("```Too long! should be less than 600 characters.```") :
-              gtts.save(ranm, dtt, function () {
-                client.sendMessage(from, fs.readFileSync(ranm), audio, {
-                  quoted: mek,
-                  mimetype: "audio/mp4",
-                  ptt: true,
+            dtt.length > 600
+              ? reply("```Too long! should be less than 600 characters.```")
+              : gtts.save(ranm, dtt, function () {
+                  client.sendMessage(from, fs.readFileSync(ranm), audio, {
+                    quoted: mek,
+                    mimetype: "audio/mp4",
+                    ptt: true,
+                  });
+                  fs.unlinkSync(ranm);
                 });
-                fs.unlinkSync(ranm);
-              });
           } catch (error) {
             reply("```Error```");
           }
@@ -1061,9 +1112,7 @@ async function starts() {
               };
               download
                 .image(options)
-                .then(({
-                  filename
-                }) => {
+                .then(({ filename }) => {
                   console.log("Saved as", filename);
                 })
                 .catch((err) => console.error(err));
@@ -1088,10 +1137,10 @@ async function starts() {
           await client.updatePresence(from, Presence.composing);
 
           if (isMedia || isQuotedImage) {
-            const encmedia = isQuotedImage ?
-              JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message
-              .extendedTextMessage.contextInfo :
-              mek;
+            const encmedia = isQuotedImage
+              ? JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message
+                  .extendedTextMessage.contextInfo
+              : mek;
             const media = await client.downloadAndSaveMediaMessage(encmedia);
 
             const buffer = await webp.cwebp(
@@ -1103,28 +1152,30 @@ async function starts() {
             client.sendMessage(from, ran, sticker, {
               quoted: mek,
             });
-            fs.unlinkSync("./Media/temporary/sticker.webp")
+            fs.unlinkSync("./Media/temporary/sticker.webp");
           } else if (
             (isMedia && mek.message.videoMessage.seconds < 11) ||
             (isQuotedVideo &&
               mek.message.extendedTextMessage.contextInfo.quotedMessage
-              .videoMessage.seconds < 11)
+                .videoMessage.seconds < 11)
           ) {
-            const encmedia = isQuotedVideo ?
-              JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message
-              .extendedTextMessage.contextInfo :
-              mek;
+            const encmedia = isQuotedVideo
+              ? JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message
+                  .extendedTextMessage.contextInfo
+              : mek;
             const media = await client.downloadAndSaveMediaMessage(encmedia);
 
             let results = await WebVideos("./undefined.mp4", {
               bin: "node_modules/ffmpeg-static-electron/bin/linux/x64/ffmpeg",
               output_dir: "./Media/temporary/",
               temp_dir: "./Media/temporary",
-              formats: [{
-                format: "gif",
-                fps: 8,
-                loop: true,
-              }, ],
+              formats: [
+                {
+                  format: "gif",
+                  fps: 8,
+                  loop: true,
+                },
+              ],
             });
             await webp.gwebp(results[0], "sticker.webp", "-q 80"); // gif to webp
 
@@ -1132,24 +1183,24 @@ async function starts() {
             client.sendMessage(from, fs.readFileSync(ran), sticker, {
               quoted: mek,
             });
-            fs.unlinkSync("./Media/temporary/sticker.webp")
+            fs.unlinkSync("./Media/temporary/sticker.webp");
           } else return reply("```Tag the media or send it with caption```");
 
           break;
 
         case "hello":
-        case 'hi':
-        case 'hey':
+        case "hi":
+        case "hey":
           client.sendMessage(from, "```Hello```", text);
           break;
 
         case "del":
           if (!(isQuotedImage || isQuotedSticker || isQuotedVideo))
             reply("```Tag the msg to be deleted.```");
-          const mencmedia = isQuotedImage ?
-            JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message
-            .extendedTextMessage.contextInfo :
-            mek;
+          const mencmedia = isQuotedImage
+            ? JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message
+                .extendedTextMessage.contextInfo
+            : mek;
           await client.deleteMessage(from, {
             id: mencmedia.jid,
             remoteJid: from,
@@ -1166,8 +1217,9 @@ async function starts() {
 
           client.sendMessage(
             from,
-            "🤖 *BOT Command List* 🤖\n\n🎀 *Prefix:* .\n\n📗 *General*\n ```help, group, adminlist, contactme, requestafeature```\n\n👑 *Admin*\n```tagall, close, open, promote, demote, kick, botleave, grouplink, changedp, changedesc, allsticker```\n\n📱 *Media*\n```sticker, read, ytaudio, ytvideo, lyrics, meme, randomsticker, crypto```\n\n📃 *Issues*\n```1) Added crypto feature\n2)Abuse detection feature complete\n*May have to face bugs or downtime* ```",
-            text, {
+            "🤖 *AKM-BOT Command List* 🤖\n\n🎀 *Prefix:* .\n\n📗 *General*\n ```help, group, adminlist, contactme, requestafeature```\n\n👑 *Group Admin*\n```tagall, close, open, promote, demote, kick, botleave, grouplink, changedp, changedesc, allsticker```\n\n📱 *Media*\n```sticker, read, ytaudio, ytvideo, lyrics, meme, randomsticker, crypto```\n\n📃 *Issues*\n```1) Added crypto\n2) Abuse detection complete\n3) Suspended adding to groups\n *May have to face bugs or downtime* ```",
+            text,
+            {
               quoted: mek,
             }
           );
@@ -1201,11 +1253,7 @@ async function starts() {
           //console.log("download profile picture from: " + ppUrl)
           //teks = `\n💮 *Title*: ${groupMetadata.subject}\n\n👑 *Created By*: ${groupMetadata.owner.split("@")[0]}\n\n🏊 *Participiants*: ${groupMetadata.participants.lengthgroupMetadata.desc}`;
           //  client.sendMessage(from, client.getProfilePicture(from) ,MessageType.image)
-          teks = `\n💮 *Title*: ${groupMetadata.subject}\n\n🏊 *Participiants*: ${
-            groupMetadata.participants.length
-          }\n\n🏅 *Admins*:${groupAdmins.length}\n\n🌏 *Description*:\n${
-            groupMetadata.desc
-          }`;
+          teks = `\n💮 *Title*: ${groupMetadata.subject}\n\n🏊 *Participiants*: ${groupMetadata.participants.length}\n\n🏅 *Admins*:${groupAdmins.length}\n\n🌏 *Description*:\n${groupMetadata.desc}`;
 
           client.sendMessage(from, teks, text, {
             quoted: mek,
@@ -1233,9 +1281,9 @@ async function starts() {
             await client.chatRead(from); // mark chat read
             await client.updatePresence(from, Presence.available); // tell them we're available
             await client.updatePresence(from, Presence.composing);
-            reply('```No such command```')
+            reply("```No such command\nsee menu for commands```");
 
-           // client.sendMessage(from,fs.readFileSync("./Media/response/idk.webp"),sticker, {quoted: mek });
+            // client.sendMessage(from,fs.readFileSync("./Media/response/idk.webp"),sticker, {quoted: mek });
           }
 
           if (isGroup && isSimi && budy != undefined) {
