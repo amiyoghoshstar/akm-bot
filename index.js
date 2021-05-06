@@ -351,7 +351,7 @@ async function starts() {
 
       if (
         isGroup &&
-        isCmd &&
+        isCmd!='test' &&
         command.length > 1 &&
         aa.toLocaleString() == "true"
       ) {
@@ -413,12 +413,12 @@ async function starts() {
 
           var aa = await unirest
             .get(
-              "https://antiabuseapi.vercel.app/api/" + body.replace(/\s+/g, "_")
+              "https://antiabuseapi.vercel.app/api/" + command.replace('.', "") +"_"+ body.replace(/\s+/g, "_")
             )
             .then((response) => {
               return response.body;
             });
-          reply("cuss word found in databse  : " + aa.toLocaleString());
+          reply("cuss word found in databse: " + aa.toLocaleString());
           break;
 
         case "crypto":
@@ -620,7 +620,7 @@ async function starts() {
 
           break;
 
-        case "invite":
+        case "xinvite":
           await client.chatRead(from); // mark chat read
           await client.updatePresence(from, Presence.available); // tell them we're available
           await client.updatePresence(from, Presence.composing);
