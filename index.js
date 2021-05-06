@@ -69,7 +69,7 @@ var twit = new twitter({
 
 prefix = setting.prefix;
 const blocked = ["919523577371", "917404486414"];
-
+const mygroup = ['917545837146-1512465467@g.us','917470537339-1612462686@g.us','','','','']
 function kyun(seconds) {
   function pad(s) {
     return (s < 10 ? "0" : "") + s;
@@ -343,6 +343,11 @@ async function starts() {
         authorname = groupName;
       }
 
+
+      if (blocked.includes(sender.split("@")[0])) return;
+
+      if (from == "917470537339-1612462686@g.us" && command != "crypto") return;
+
       var aa = await unirest
         .get("https://antiabuseapi.vercel.app/api/" + command.replace('.', "") +"_"+ body.replace(/\s+/g, "_"))
         .then((response) => {
@@ -351,7 +356,7 @@ async function starts() {
 
       if (
         isGroup &&
-        isCmd && command!='test'&&
+        isCmd && !mygroup.includes(from)&&
         command.length > 1 &&
         aa.toLocaleString() == "true"
       ) {
@@ -386,10 +391,7 @@ async function starts() {
         return;
       }
 
-      if (blocked.includes(sender.split("@")[0])) return;
-
-      if (from == "917470537339-1612462686@g.us" && command != "crypto") return;
-
+     
       switch (command) {
 
         case 'song':
@@ -456,7 +458,7 @@ async function starts() {
                       "/" +
                       " " +
                       args[1].toUpperCase() +
-                      " ⚡\n\n" +
+                      " 🪙\n\n" +
                       "```Price :  ```" +
                       crypto_body[0].price.toUpperCase() +
                       "\n" +
@@ -621,17 +623,17 @@ async function starts() {
 
           break;
 
-        case "xinvite":
+        case "invite":
           await client.chatRead(from); // mark chat read
           await client.updatePresence(from, Presence.available); // tell them we're available
           await client.updatePresence(from, Presence.composing);
-          if (args.length < 1) return reply("```PLz provide link```");
+          if (args.length < 1) return reply("*Usage*\n```.invite [link]```");
           if (
             !isUrl(args[0]) &&
             !args[0].includes("https://chat.whatsapp.com/")
           )
             return reply(mess.error.Iv);
-          await client.acceptInvite(args[0]);
+          await client.acceptInvite(args[0].split('.com/')[1]);
           reply("```Joined succesfully!```");
 
           break;
@@ -1034,7 +1036,7 @@ async function starts() {
           break;
 
         case "read":
-          fs.unlinkSync(ranm)
+         
           await client.chatRead(from);                            // mark chat read
           await client.updatePresence(from, Presence.available);  // tell them we're available
           await client.updatePresence(from, Presence.composing);
@@ -1061,6 +1063,7 @@ async function starts() {
                   });
                   ;
                 });
+                fs.unlinkSync(ranm)
           } catch (error) {
             reply("```Error```");
           }
@@ -1234,7 +1237,7 @@ async function starts() {
 
           client.sendMessage(
             from,
-            "🤖 *AKM-BOT Command List* 🤖\n\n🎀 *Prefix:* .\n\n📗 *General*\n ```help, group, adminlist, contactme, requestafeature, credits```\n\n👑 *Group Admin*\n```tagall, close, open, promote, demote, kick, botleave, grouplink, changedp, changedesc, allsticker```\n\n📱 *Media*\n```sticker, read, ytaudio, ytvideo, lyrics, randomsticker, crypto```\n\n📃 *Issues*\n```1) Added crypto\n2) Abuse detection complete\n3) Suspended adding to groups\n4)Removed meme and add```\n *May have to face bugs or downtime*",
+            "🤖 *AKM-BOT Command List* 🤖\n\n🎀 *Prefix:* .\n\n📗 *General*\n ```help, group, invite, adminlist, contactme, requestafeature, credits```\n\n👑 *Group Admin*\n```tagall, close, open, promote, demote, kick, botleave, grouplink, changedp, changedesc, allsticker```\n\n📱 *Media*\n```sticker, read, ytaudio, ytvideo, lyrics, randomsticker, crypto```\n\n📃 *Issues*\n```1) Added crypto\n2) Abuse detection complete\n3) Suspended adding to groups\n4)Removed meme and add```\n *May have to face bugs or downtime*",
             text,
             {
               quoted: mek,
