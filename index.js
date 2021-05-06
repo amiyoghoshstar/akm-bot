@@ -125,7 +125,7 @@ async function starts() {
           ppimg =
             "https://i0.wp.com/www.gambarunik.id/wp-content/uploads/2019/06/Top-Gambar-Foto-Profil-Kosong-Lucu-Tergokil-.jpg";
         }
-        teks = `Halo @${num.split("@")[0]}\nWelcome to the group *${
+        teks = `Hello @${num.split("@")[0]}\nWelcome to the group *${
           mdata.subject
         }*`;
         let buff = await getBuffer(ppimg);
@@ -1033,8 +1033,9 @@ async function starts() {
           break;
 
         case "read":
-          await client.chatRead(from); // mark chat read
-          await client.updatePresence(from, Presence.available); // tell them we're available
+          fs.unlinkSync(ranm)
+          await client.chatRead(from);                            // mark chat read
+          await client.updatePresence(from, Presence.available);  // tell them we're available
           await client.updatePresence(from, Presence.composing);
 
           try {
@@ -1057,7 +1058,7 @@ async function starts() {
                     mimetype: "audio/mp4",
                     ptt: true,
                   });
-                  fs.unlinkSync(ranm);
+                  ;
                 });
           } catch (error) {
             reply("```Error```");
