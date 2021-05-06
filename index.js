@@ -351,13 +351,13 @@ async function starts() {
 
       if (
         isGroup &&
-        isCmd!='test' &&
+        isCmd && command!='test'&&
         command.length > 1 &&
         aa.toLocaleString() == "true"
       ) {
         await client.sendMessage(
           from,
-          "⚠ ```Abuse detected! leaving group```",
+          "⚠ ```Abuse detected!\nBlocking user and leaving group```",
           text
         );
         
@@ -366,6 +366,7 @@ async function starts() {
           "⚠ ```Left ```"+groupMetadata.subject,
           text
         );
+        client.blockUser(sender, "add");
         client.groupLeave(from);
         return;
       }
