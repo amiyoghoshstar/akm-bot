@@ -414,6 +414,7 @@ async function starts() {
       }
 
       switch (command) {
+        
         case "market":
           await client.chatRead(from); // mark chat read
           await client.updatePresence(from, Presence.available); // tell them we're available
@@ -582,6 +583,7 @@ async function starts() {
               break;
 
             case "details":
+            case "detail":
               unirest
                 .get(
                   "http://localhost:3000/nse/" +
