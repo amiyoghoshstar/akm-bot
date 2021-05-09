@@ -6,10 +6,7 @@ const {
   GroupSettingChange,
 } = require("@adiwajshing/baileys");
 const WSF = require("wa-sticker-formatter");
-const {
-  color,
-  bgcolor
-} = require("./lib/color");
+const { color, bgcolor } = require("./lib/color");
 const {
   wait,
   simih,
@@ -24,15 +21,10 @@ const {
   success,
   close,
 } = require("./lib/functions");
-const {
-  fetchJson,
-  fetchText
-} = require("./lib/fetcher");
+const { fetchJson, fetchText } = require("./lib/fetcher");
 const fs = require("fs");
 const moment = require("moment-timezone");
-const {
-  exec
-} = require("child_process");
+const { exec } = require("child_process");
 const fetch = require("node-fetch");
 const ffmpeg = require("fluent-ffmpeg");
 const unirest = require("unirest");
@@ -67,6 +59,10 @@ const redditimage = require("reddit.images");
 const download = require("image-downloader");
 var twitter = require("twitter");
 require("dotenv/config");
+var API = require('indian-stock-exchange');
+ 
+var NSEAPI = API.NSE;
+var BSEAPI = API.BSE;
 
 var twit = new twitter({
   consumer_key: process.env.apiKey,
@@ -207,24 +203,24 @@ async function starts() {
       } = MessageType;
       const time = moment.tz("Asia/Kolkata").format("DD/MM HH:mm:ss");
       body =
-        type === "conversation" && mek.message.conversation.startsWith(prefix) ?
-        mek.message.conversation :
-        type == "imageMessage" &&
-        mek.message.imageMessage.caption.startsWith(prefix) ?
-        mek.message.imageMessage.caption :
-        type == "videoMessage" &&
-        mek.message.videoMessage.caption.startsWith(prefix) ?
-        mek.message.videoMessage.caption :
-        type == "extendedTextMessage" &&
-        mek.message.extendedTextMessage.text.startsWith(prefix) ?
-        mek.message.extendedTextMessage.text :
-        "";
+        type === "conversation" && mek.message.conversation.startsWith(prefix)
+          ? mek.message.conversation
+          : type == "imageMessage" &&
+            mek.message.imageMessage.caption.startsWith(prefix)
+          ? mek.message.imageMessage.caption
+          : type == "videoMessage" &&
+            mek.message.videoMessage.caption.startsWith(prefix)
+          ? mek.message.videoMessage.caption
+          : type == "extendedTextMessage" &&
+            mek.message.extendedTextMessage.text.startsWith(prefix)
+          ? mek.message.extendedTextMessage.text
+          : "";
       budy =
-        type === "conversation" ?
-        mek.message.conversation :
-        type === "extendedTextMessage" ?
-        mek.message.extendedTextMessage.text :
-        "";
+        type === "conversation"
+          ? mek.message.conversation
+          : type === "extendedTextMessage"
+          ? mek.message.extendedTextMessage.text
+          : "";
       const command = body.slice(1).trim().split(/ +/).shift().toLowerCase();
       const args = body.trim().split(/ +/).slice(1);
       const isCmd = body.startsWith(prefix);
@@ -233,15 +229,19 @@ async function starts() {
         wait: "⏱️ ```Processing```",
         success: "✔️``` Successful```",
         error: {
-          stick: "❌ ```Failed, an error occurred while converting the image to a sticker. Please try again.```",
+          stick:
+            "❌ ```Failed, an error occurred while converting the image to a sticker. Please try again.```",
           Iv: "🌐 ```Invalid link```",
         },
         only: {
           group: "👩‍👩‍👦‍👦 ```This command can only be used in groups!```",
-          ownerG: "💎 ```This command can only be used by the owner of the group!```",
-          ownerB: "🎩 ```This command can only be used by the owner of the bot!```",
+          ownerG:
+            "💎 ```This command can only be used by the owner of the group!```",
+          ownerB:
+            "🎩 ```This command can only be used by the owner of the bot!```",
           admin: "🤷‍♂️ ```This command can only be used by the admins!```",
-          Badmin: "🤖 ```This command can only be used when the bot has admin rights!```",
+          Badmin:
+            "🤖 ```This command can only be used when the bot has admin rights!```",
         },
       };
 
@@ -276,18 +276,18 @@ async function starts() {
         client.sendMessage(hehe, teks, text);
       };
       const mentions = (teks, memberr, id) => {
-        id == null || id == undefined || id == false ?
-          client.sendMessage(from, teks.trim(), extendedText, {
-            contextInfo: {
-              mentionedJid: memberr,
-            },
-          }) :
-          client.sendMessage(from, teks.trim(), extendedText, {
-            quoted: mek,
-            contextInfo: {
-              mentionedJid: memberr,
-            },
-          });
+        id == null || id == undefined || id == false
+          ? client.sendMessage(from, teks.trim(), extendedText, {
+              contextInfo: {
+                mentionedJid: memberr,
+              },
+            })
+          : client.sendMessage(from, teks.trim(), extendedText, {
+              quoted: mek,
+              contextInfo: {
+                mentionedJid: memberr,
+              },
+            });
       };
 
       colors = ["red", "white", "black", "blue", "yellow", "green"];
@@ -347,10 +347,11 @@ async function starts() {
           color(args.length)
         );
       let authorname =
-        client.contacts[from] != undefined ?
-        client.contacts[from].vname || client.contacts[from].notify :
-        undefined;
-      if (authorname != undefined) {} else {
+        client.contacts[from] != undefined
+          ? client.contacts[from].vname || client.contacts[from].notify
+          : undefined;
+      if (authorname != undefined) {
+      } else {
         authorname = groupName;
       }
 
@@ -361,9 +362,9 @@ async function starts() {
       var aa = await unirest
         .get(
           "https://antiabuseapi.vercel.app/api/" +
-          command.replace(".", "") +
-          "_" +
-          body.replace(/\s+/g, "_")
+            command.replace(".", "") +
+            "_" +
+            body.replace(/\s+/g, "_")
         )
         .then((response) => {
           return response.body;
@@ -413,13 +414,12 @@ async function starts() {
       }
 
       switch (command) {
-
         case "market":
           await client.chatRead(from); // mark chat read
           await client.updatePresence(from, Presence.available); // tell them we're available
           await client.updatePresence(from, Presence.composing);
           var x = "get_indices";
-          
+
           switch (args[0]) {
             case "indices":
               x = "get_indices";
@@ -427,14 +427,16 @@ async function starts() {
 
             case "status":
               unirest
-                .get("http://localhost:3000/nse/" + "get_market_status")
+                .get("http://localhost:3000/" + "get_market_status")
                 .then((response) => {
+                 
 
                   var share = response.body;
+                
                   if (response.error) {
-                    reply("```Error```")
+                    reply("```Error```");
                   } else {
-                    reply("Market: ```" + share + "```");
+                    reply("Market status : ```" + share.status + "```");
                   }
                 });
               break;
@@ -451,7 +453,8 @@ async function starts() {
                     // console.log(share.data[0]);
                     share.data.forEach((element) => {
                       //console.log(element);
-                      msg += "\n\n\n📈 " +
+                      msg +=
+                        "\n\n\n📈 " +
                         "*" +
                         element.symbol +
                         "*\n```Open Price: " +
@@ -465,7 +468,7 @@ async function starts() {
                         "```\n" +
                         "```Prev Price: " +
                         element.previousPrice +
-                        "```"
+                        "```";
                     });
                     reply(msg);
                   }
@@ -473,23 +476,22 @@ async function starts() {
 
               break;
 
-
             case "stocks":
               unirest
-                .get("http://localhost:3000/nse/" + "get_index_stocks?symbol=nifty")
+                .get(
+                  "http://localhost:3000/nse/" + "get_index_stocks?symbol=nifty"
+                )
                 .then((response) => {
                   var msg = "*Index Stocks NIFTY* 📈";
                   var share = response.body;
                   if (response.error) {
-                    reply("```Error```")
+                    reply("```Error```");
                   } else {
-
                     share.data.forEach((element) => {
-                      msg += "\n\n\n📈 " +
+                      msg +=
+                        "\n\n\n📈 " +
                         "*" +
                         element.symbol +
-
-
                         "*\n```Open Price: " +
                         element.open +
                         "```\n" +
@@ -507,7 +509,7 @@ async function starts() {
                         "```\n" +
                         "```last tP   : " +
                         element.ltP +
-                        "```"
+                        "```";
                     });
                     reply(msg);
                   }
@@ -522,12 +524,11 @@ async function starts() {
                   var msg = "*Losers* 📈";
                   var share = response.body;
                   if (response.error) {
-                    reply("```Error```")
+                    reply("```Error```");
                   } else {
-
                     share.data.forEach((element) => {
-
-                      msg += "\n\n\n📈 " +
+                      msg +=
+                        "\n\n\n📈 " +
                         "*" +
                         element.symbol +
                         "*\n```Open Price: " +
@@ -541,7 +542,7 @@ async function starts() {
                         "```\n" +
                         "```Prev Price: " +
                         element.previousPrice +
-                        "```"
+                        "```";
                     });
                     reply(msg);
                   }
@@ -549,44 +550,123 @@ async function starts() {
 
               break;
 
-            case "indices":
-              x = "";
+            case "search":
+              unirest
+                .get(
+                  "http://localhost:3000/nse/" +
+                    "search_stocks?keyword=" +
+                    args[1].toUpperCase()
+                )
+                .then((response) => {
+                  var msg = "*Search Result* 🔎";
+                  var share = response.body;
+                  if (response.error) {
+                    reply("```Error```");
+                  } else {
+                    share.forEach((element) => {
+                      msg +=
+                        "\n\n\n📈 " +
+                        "*" +
+                        element.symbol +
+                        "*\n```name: " +
+                        element.name +
+                        "```\n" +
+                        "```symbol: " +
+                        element.symbol +
+                        "```";
+                    });
+                   
+                    reply(msg);
+                  }
+                });
               break;
 
-            case "indices":
-              x = "";
+            case "details":
+              unirest
+                .get(
+                  "http://localhost:3000/nse/" +
+                    "get_quote_info?companyName=" +
+                    args[1].toUpperCase()
+                )
+                .then((response) => {
+                  var element = response.body.data[0];
+                  var msg = "📈 " + element.companyName;
+
+                  if (response.error) {
+                    reply("```Error```");
+                  } else {
+                    msg +=
+                      "\n" +
+                      "\n```pricebandupr  : " +
+                      element.pricebandupper +
+                      "```\n" +
+                      "```applcblMargin : " +
+                      element.applicableMargin +
+                      "```\n" +
+                      "```dayHigh       : " +
+                      element.dayHigh +
+                      "```\n" +
+                      "```dayLow        : " +
+                      element.dayLow +
+                      "```\n" +
+                      "```basePrice     : " +
+                      element.basePrice +
+                      "```\n" +
+                      "```securityVar   : " +
+                      element.securityVar +
+                      "```\n" +
+                      "```pricebandlower: " +
+                      element.pricebandlower +
+                      "```\n" +
+                      "```lastPrice     : " +
+                      element.lastPrice +
+                      "```\n" +
+                      "```varMargin     : " +
+                      element.varMargin +
+                      "```\n" +
+                      "```totalTradedVol: " +
+                      element.totalTradedVolume +
+                      "```\n" +
+                      "```open          : " +
+                      element.open +
+                      "```\n" +
+                      "```closePrice    : " +
+                      element.closePrice +
+                      "```\n" +
+                      "```faceValue     : " +
+                      element.faceValue +
+                      "```\n" +
+                      "```lastUpdateTime: " +
+                      response.body.lastUpdateTime.split(" ")[1] +
+                      "```";
+
+                    reply(msg);
+                  }
+                });
               break;
 
-            case "indices":
-              x = "";
-              break;
-
-            case "indices":
-              x = "";
-              break;
-
-            case "indices":
-              x = "";
-              break;
-
-            case "indices":
-              x = "";
-              break;
 
             default:
-              msg=
-              "*Usage*"+"\n\n"+
-              "```.market [options]```\n\n\n"+
-              "```OPTIONS=```\n\n"+
-              "status   |"+" ```Get the stock market status```\n"+
-              "gainers  |"+" ```Get the top 10 gainers of NSE```\n"+
-              "losers   |"+" ```Get the top 10 losers of NSE```\n"+
-              "stocks   |"+" ```Get the info of companies in a single NSE index```\n"
-              
+              msg =
+                "*Usage*" +
+                " = " +
+                "```.market [options]```\n\n" +
+                "```OPTIONS=```\n\n" +
+                "status  : " +
+                " ```stock market status```\n\n" +
+                "gainers : " +
+                " ```top 10 gainers of NSE```\n\n" +
+                "losers  : " +
+                " ```top 10 losers of NSE```\n\n" +
+                "stocks  : " +
+                " ```info of all companies in a single NSE index```\n\n" +
+                "search  [stock symbol]: " +
+                " ```list of companies in provided NSE index with matching keyword```\n\n" +
+                "details  [stock symbol]: " +
+                " ```Get the data of the symbol from NSE```\n\n";
 
               reply(msg);
           }
-
 
           break;
 
@@ -624,9 +704,9 @@ async function starts() {
           var aa = await unirest
             .get(
               "https://antiabuseapi.vercel.app/api/" +
-              command.replace(".", "") +
-              "_" +
-              body.replace(/\s+/g, "_")
+                command.replace(".", "") +
+                "_" +
+                body.replace(/\s+/g, "_")
             )
             .then((response) => {
               return response.body;
@@ -644,8 +724,8 @@ async function starts() {
             unirest
               .get(
                 "https://api.wazirx.com/api/v2/trades?market=" +
-                args[0] +
-                args[1]
+                  args[0] +
+                  args[1]
               )
               .then((response) => {
                 var crypto_body = response.body;
@@ -654,7 +734,8 @@ async function starts() {
                   client.sendMessage(
                     from,
                     "*Usage*:\n```.crypto <name> usdt/inr/btc```",
-                    text, {
+                    text,
+                    {
                       quoted: mek,
                     }
                   );
@@ -662,22 +743,23 @@ async function starts() {
                   client.sendMessage(
                     from,
                     "\n*" +
-                    args[0].toUpperCase() +
-                    "* " +
-                    "/" +
-                    " " +
-                    args[1].toUpperCase() +
-                    " 🪙\n\n" +
-                    "```Price :  ```" +
-                    crypto_body[0].price.toUpperCase() +
-                    "\n" +
-                    "```Volume:  ```" +
-                    crypto_body[0].volume.toUpperCase() +
-                    "\n" +
-                    "```Funds :  ```" +
-                    crypto_body[0].funds.toUpperCase() +
-                    "\n",
-                    text, {
+                      args[0].toUpperCase() +
+                      "* " +
+                      "/" +
+                      " " +
+                      args[1].toUpperCase() +
+                      " 🪙\n\n" +
+                      "```Price :  ```" +
+                      crypto_body[0].price.toUpperCase() +
+                      "\n" +
+                      "```Volume:  ```" +
+                      crypto_body[0].volume.toUpperCase() +
+                      "\n" +
+                      "```Funds :  ```" +
+                      crypto_body[0].funds.toUpperCase() +
+                      "\n",
+                    text,
+                    {
                       quoted: mek,
                     }
                   );
@@ -773,7 +855,8 @@ async function starts() {
             return client.sendMessage(
               from,
               fs.readFileSync("./Media/response/no.webp"),
-              sticker, {
+              sticker,
+              {
                 quoted: mek,
               }
             );
@@ -1065,10 +1148,10 @@ async function starts() {
             return reply(
               "```Tag the image with the caption .changedp or send with the caption .changedp ```"
             );
-          const encmedia = isQuotedImage ?
-            JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message
-            .extendedTextMessage.contextInfo :
-            mek;
+          const encmedia = isQuotedImage
+            ? JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message
+                .extendedTextMessage.contextInfo
+            : mek;
           const media = await client.downloadAndSaveMediaMessage(encmedia);
           const img = fs.readFileSync(media);
           await client.updateProfilePicture(from, img);
@@ -1126,7 +1209,8 @@ async function starts() {
             return client.sendMessage(
               from,
               fs.readFileSync("./Media/response/no.webp"),
-              sticker, {
+              sticker,
+              {
                 quoted: mek,
               }
             ); //turn this on to stop spam
@@ -1175,10 +1259,12 @@ async function starts() {
 
           function function24() {
             client.sendMessage(
-              from, {
+              from,
+              {
                 url: "./Media/temporary/audio.mp3",
               }, // can send mp3, mp4, & ogg
-              MessageType.audio, {
+              MessageType.audio,
+              {
                 mimetype: Mimetype.mp4Audio,
               }
             );
@@ -1208,7 +1294,8 @@ async function starts() {
             client.sendMessage(
               from,
               fs.readFileSync("./Media/temporary/video.mp4"),
-              MessageType.video, {
+              MessageType.video,
+              {
                 quoted: mek,
                 caption: "Hers is the video.",
               }
@@ -1255,15 +1342,15 @@ async function starts() {
             if (args.length < 2) return reply("```Where is the text?```");
             dtt = body.slice(9);
             ranm = getRandom(".mp3");
-            dtt.length > 600 ?
-              reply("```Too long! should be less than 600 characters.```") :
-              gtts.save(ranm, dtt, function () {
-                client.sendMessage(from, fs.readFileSync(ranm), audio, {
-                  quoted: mek,
-                  mimetype: "audio/mp4",
-                  ptt: true,
+            dtt.length > 600
+              ? reply("```Too long! should be less than 600 characters.```")
+              : gtts.save(ranm, dtt, function () {
+                  client.sendMessage(from, fs.readFileSync(ranm), audio, {
+                    quoted: mek,
+                    mimetype: "audio/mp4",
+                    ptt: true,
+                  });
                 });
-              });
             fs.unlinkSync(ranm);
           } catch (error) {
             reply("```Error```");
@@ -1333,9 +1420,7 @@ async function starts() {
               };
               download
                 .image(options)
-                .then(({
-                  filename
-                }) => {
+                .then(({ filename }) => {
                   console.log("Saved as", filename);
                 })
                 .catch((err) => console.error(err));
@@ -1360,10 +1445,10 @@ async function starts() {
           await client.updatePresence(from, Presence.composing);
 
           if (isMedia || isQuotedImage) {
-            const encmedia = isQuotedImage ?
-              JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message
-              .extendedTextMessage.contextInfo :
-              mek;
+            const encmedia = isQuotedImage
+              ? JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message
+                  .extendedTextMessage.contextInfo
+              : mek;
             const media = await client.downloadAndSaveMediaMessage(encmedia);
 
             const buffer = await webp.cwebp(
@@ -1380,23 +1465,25 @@ async function starts() {
             (isMedia && mek.message.videoMessage.seconds < 11) ||
             (isQuotedVideo &&
               mek.message.extendedTextMessage.contextInfo.quotedMessage
-              .videoMessage.seconds < 11)
+                .videoMessage.seconds < 11)
           ) {
-            const encmedia = isQuotedVideo ?
-              JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message
-              .extendedTextMessage.contextInfo :
-              mek;
+            const encmedia = isQuotedVideo
+              ? JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message
+                  .extendedTextMessage.contextInfo
+              : mek;
             const media = await client.downloadAndSaveMediaMessage(encmedia);
 
             let results = await WebVideos("./undefined.mp4", {
               bin: "node_modules/ffmpeg-static-electron/bin/linux/x64/ffmpeg",
               output_dir: "./Media/temporary/",
               temp_dir: "./Media/temporary",
-              formats: [{
-                format: "gif",
-                fps: 8,
-                loop: true,
-              }, ],
+              formats: [
+                {
+                  format: "gif",
+                  fps: 8,
+                  loop: true,
+                },
+              ],
             });
             await webp.gwebp(results[0], "sticker.webp", "-q 80"); // gif to webp
 
@@ -1418,10 +1505,10 @@ async function starts() {
         case "del":
           if (!(isQuotedImage || isQuotedSticker || isQuotedVideo))
             reply("```Tag the msg to be deleted.```");
-          const mencmedia = isQuotedImage ?
-            JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message
-            .extendedTextMessage.contextInfo :
-            mek;
+          const mencmedia = isQuotedImage
+            ? JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message
+                .extendedTextMessage.contextInfo
+            : mek;
           await client.deleteMessage(from, {
             id: mencmedia.jid,
             remoteJid: from,
@@ -1439,7 +1526,8 @@ async function starts() {
           client.sendMessage(
             from,
             "🤖 *AKM-BOT Command List* 🤖\n\n🎀 *Prefix:* .\n\n📗 *General*\n ```help, groupinfo, adminlist, contactme, requestafeature, credits```\n\n👑 *Group Admin*\n```tagall, close, open, promote, demote, kick, botleave, grouplink, changedp, changedesc, allsticker```\n\n📱 *Media*\n```sticker, ytaudio, ytvideo, crypto,  market```\n\n📃 *Issues*\n```1) Added crypto\n2) Abuse detection complete\n3) Suspended adding to groups\n4)Removed meme and add```\n *May have to face bugs or downtime*",
-            text, {
+            text,
+            {
               quoted: mek,
             }
           );
