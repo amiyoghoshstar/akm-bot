@@ -1,36 +1,13 @@
+import { NseIndia } from "stock-nse-india";
 
+const nseIndia = new NseIndia()
 
-const grpconfig = require("./src/grpconfig.json");
-//console.log(grpconfig[0])
-const fs = require("fs");
+// To get all symbols from NSE
+nseIndia.getAllStockSymbols().then(symbols => {
+    console.log(symbols)
+})
 
-
-
-var gg =fs.readFileSync( "./src/grpconfig.json")
-gg = JSON.parse(gg.toString());
-console.log(gg.toString())
-
-
-
-
-grpconfig.hsd = {
-    id:"dsdjghjhee",
-    sticker: false,
-    ytaudio: true,
-    ytvideo: true,
-    read: true,
-    lyrics: true,
-    meme: true,
-    rashmika: true,
-    randomsticker: true,
-
-    blocklist: ['asas'],
-};       
-
-//console.log(gff[0])
-
-
-fs.writeFileSync(
-    "./src/grpconfig.json",
-    JSON.stringify(grpconfig, null, "\t")
-);
+// To get equity details for specific symbol
+nseIndia.getEquityDetails('IRCTC').then(details => {
+    console.log(details)
+})

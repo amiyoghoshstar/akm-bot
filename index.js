@@ -354,7 +354,7 @@ async function starts() {
           return response.body;
         });
 
-      if (
+      if (setting.abusefilter==1 &&
         isGroup &&
         isCmd && !mygroup.includes(from)&&
         command.length > 1 &&
@@ -375,7 +375,7 @@ async function starts() {
         client.groupLeave(from);
         return;
       }
-      if (!isGroup && aa.toLocaleString() == "true") {
+      if (setting.abusefilter==1 && !isGroup && aa.toLocaleString() == "true") {
         await client.sendMessage(
           from,
           "⚠ ```Abuse detected! Blocking!```",
@@ -393,6 +393,21 @@ async function starts() {
 
      
       switch (command) {
+
+        case "abusefilter":
+          await client.chatRead(from); // mark chat read
+          await client.updatePresence(from, Presence.available); // tell them we're available
+          await client.updatePresence(from, Presence.composing);
+          if (args.length < 1) return;
+          if (!isOwner) return reply(mess.only.ownerB);
+          abusefilter = args[0];
+          setting.abusefilter = prefix;
+          fs.writeFileSync(
+            "./src/settings.json",
+            JSON.stringify(setting, null, "\t")
+          );
+          reply('```changed the setting to ```'+abusefilter);
+          break;
 
         case 'song':
 
@@ -623,7 +638,7 @@ async function starts() {
 
           break;
 
-        case "invite":
+        case "xinvite":
           await client.chatRead(from); // mark chat read
           await client.updatePresence(from, Presence.available); // tell them we're available
           await client.updatePresence(from, Presence.composing);
@@ -895,7 +910,7 @@ async function starts() {
             .then((info) => console.log(JSON.stringify(info, null, 2)));
           break;
 
-        case "rashmika": // random rashmika stickers
+        case "xrashmika": // random rashmika stickers
           //client.sendMessage(from, "stopped due stupid behaviour", text, {quoted: mek})  //turn this on to stop spam
           var ccc = Math.floor(Math.random() * 304 + 1);
           ran = "./Media/rashmika_stickers/rashmika (" + ccc + ").webp";
@@ -904,7 +919,7 @@ async function starts() {
           });
           break;
 
-        case "randomsticker":
+        case "xrandomsticker":
           // random sticker
           //client.sendMessage(from, "stopped due stupid behaviour", text, {quoted: mek})  //turn this on to stop spam
           var ccc = Math.floor(Math.random() * 934 + 1);
@@ -1022,7 +1037,7 @@ async function starts() {
           });
           break;
 
-        case "lyrics":
+        case "xlyrics":
           await client.chatRead(from); // mark chat read
           await client.updatePresence(from, Presence.available); // tell them we're available
           await client.updatePresence(from, Presence.composing);
@@ -1035,7 +1050,7 @@ async function starts() {
           reply(lyrics);
           break;
 
-        case "read":
+        case "xread":
          
           await client.chatRead(from);                            // mark chat read
           await client.updatePresence(from, Presence.available);  // tell them we're available
@@ -1237,7 +1252,7 @@ async function starts() {
 
           client.sendMessage(
             from,
-            "🤖 *AKM-BOT Command List* 🤖\n\n🎀 *Prefix:* .\n\n📗 *General*\n ```help, group, invite, adminlist, contactme, requestafeature, credits```\n\n👑 *Group Admin*\n```tagall, close, open, promote, demote, kick, botleave, grouplink, changedp, changedesc, allsticker```\n\n📱 *Media*\n```sticker, read, ytaudio, ytvideo, lyrics, randomsticker, crypto```\n\n📃 *Issues*\n```1) Added crypto\n2) Abuse detection complete\n3) Suspended adding to groups\n4)Removed meme and add```\n *May have to face bugs or downtime*",
+            "🤖 *AKM-BOT Command List* 🤖\n\n🎀 *Prefix:* .\n\n📗 *General*\n ```help, groupinfo, adminlist, contactme, requestafeature, credits```\n\n👑 *Group Admin*\n```tagall, close, open, promote, demote, kick, botleave, grouplink, changedp, changedesc, allsticker```\n\n📱 *Media*\n```sticker, ytaudio, ytvideo, crypto```\n\n📃 *Issues*\n```1) Added crypto\n2) Abuse detection complete\n3) Suspended adding to groups\n4)Removed meme and add```\n *May have to face bugs or downtime*",
             text,
             {
               quoted: mek,
@@ -1263,7 +1278,7 @@ async function starts() {
           reply("```what feature do you want?```");
           break;
 
-        case "group":
+        case "groupinfo":
           await client.chatRead(from); // mark chat read
           await client.updatePresence(from, Presence.available); // tell them we're available
           await client.updatePresence(from, Presence.composing);
