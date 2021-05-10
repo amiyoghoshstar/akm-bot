@@ -1551,6 +1551,7 @@ async function starts() {
 
           if (isGroup) return reply("```works only in inbox```");
           reply("```what feature do you want?```");
+          
           break;
 
         case "groupinfo":
