@@ -97,22 +97,17 @@ function kyun(seconds) {
 async function starts() {
   const client = new WAConnection();
   client.logger.level = "warn";
-  console.log(banner.string);
+  // console.log(banner.string);
   client.on("qr", () => {
-    console.log(
-      color("[", "white"),
-      color("!", "red"),
-      color("]", "white"),
-      color(" Scan the qr code above")
-    );
+   // console.log(color("[", "white"),color("!", "red"),color("]", "white"),color(" Scan the qr code above"));
   });
-
   fs.existsSync("./BarBar.json") && client.loadAuthInfo("./BarBar.json");
   client.on("connecting", () => {
-    start("2", "Connecting...");
+   // start("2", "Connecting...");
   });
   client.on("open", () => {
-    success("2", "Connected");
+   // success("2", "Connected");
+   
   });
   await client.connect({
     timeoutMs: 30 * 1000,
@@ -126,7 +121,7 @@ async function starts() {
     if (!welkom.includes(anu.jid)) return;
     try {
       const mdata = await client.groupMetadata(anu.jid);
-      console.log(anu);
+      // console.log(anu);
       if (anu.action == "add") {
         num = anu.participants[0];
         try {
@@ -165,7 +160,7 @@ async function starts() {
         });
       }
     } catch (e) {
-      console.log("Error : %s", color(e, "red"));
+      // console.log("Error : %s", color(e, "red"));
     }
   });
 
@@ -298,54 +293,54 @@ async function starts() {
         type === "extendedTextMessage" && content.includes("videoMessage");
       const isQuotedSticker =
         type === "extendedTextMessage" && content.includes("stickerMessage");
-      if (!isGroup && isCmd)
-        console.log(
-          "\x1b[1;31m~\x1b[1;37m>",
-          "[\x1b[1;32mEXEC\x1b[1;37m]",
-          time,
-          color(command),
-          "from",
-          color(sender.split("@")[0]),
-          "args :",
-          color(args.length)
-        );
-      if (!isGroup && !isCmd)
-        console.log(
-          "\x1b[1;31m~\x1b[1;37m>",
-          "[\x1b[1;31mRECV\x1b[1;37m]",
-          time,
-          color("Message"),
-          "from",
-          color(sender.split("@")[0]),
-          "args :",
-          color(args.length)
-        );
-      if (isCmd && isGroup)
-        console.log(
-          "\x1b[1;31m~\x1b[1;37m>",
-          "[\x1b[1;32mEXEC\x1b[1;37m]",
-          time,
-          color(command),
-          "from",
-          color(sender.split("@")[0]),
-          "in",
-          color(groupName),
-          "args :",
-          color(args.length)
-        );
-      if (!isCmd && isGroup)
-        console.log(
-          "\x1b[1;31m~\x1b[1;37m>",
-          "[\x1b[1;31mRECV\x1b[1;37m]",
-          time,
-          color("Message"),
-          "from",
-          color(sender.split("@")[0]),
-          "in",
-          color(groupName),
-          "args :",
-          color(args.length)
-        );
+      if (!isGroup && isCmd){}
+       // console.log(
+       //   "\x1b[1;31m~\x1b[1;37m>",
+       //   "[\x1b[1;32mEXEC\x1b[1;37m]",
+       //   time,
+       //   color(command),
+       //   "from",
+       //   color(sender.split("@")[0]),
+       //   "args :",
+       //   color(args.length)
+       // );
+      if (!isGroup && !isCmd){}
+        //console.log(
+        //  "\x1b[1;31m~\x1b[1;37m>",
+        //  "[\x1b[1;31mRECV\x1b[1;37m]",
+        //  time,
+        //  color("Message"),
+        //  "from",
+        //  color(sender.split("@")[0]),
+        //  "args :",
+        //  color(args.length)
+        //);
+      if (isCmd && isGroup){}
+       // console.log(
+       //   "\x1b[1;31m~\x1b[1;37m>",
+       //   "[\x1b[1;32mEXEC\x1b[1;37m]",
+       //   time,
+       //   color(command),
+       //   "from",
+       //   color(sender.split("@")[0]),
+       //   "in",
+       //   color(groupName),
+       //   "args :",
+        //  color(args.length)
+       // );
+      if (!isCmd && isGroup){}
+       // console.log(
+       //   "\x1b[1;31m~\x1b[1;37m>",
+       //   "[\x1b[1;31mRECV\x1b[1;37m]",
+       //   time,
+       //   color("Message"),
+       //   "from",
+       //   color(sender.split("@")[0]),
+       //   "in",
+       //   color(groupName),
+       //   "args :",
+       //   color(args.length)
+      //  );
       let authorname =
         client.contacts[from] != undefined
           ? client.contacts[from].vname || client.contacts[from].notify
@@ -717,7 +712,6 @@ async function starts() {
           break;
 
         case "crypto":
-          console.log(from);
           await client.chatRead(from); // mark chat read
           await client.updatePresence(from, Presence.available); // tell them we're available
           await client.updatePresence(from, Presence.composing);
@@ -1032,7 +1026,7 @@ async function starts() {
             num = `${args[0].replace(/ /g, "")}@s.whatsapp.net`;
             client.groupAdd(from, [num]);
           } catch (e) {
-            console.log("Error :", e);
+            // console.log("Error :", e);
             reply("```Unable to add due to privacy setting```");
           }
           break;
@@ -1181,11 +1175,7 @@ async function starts() {
           await client.groupUpdateDescription(from, args);
           break;
 
-        case "fbvid":
-          fbv
-            .getInfo(args)
-            .then((info) => console.log(JSON.stringify(info, null, 2)));
-          break;
+       
 
         case "xrashmika": // random rashmika stickers
           //client.sendMessage(from, "stopped due stupid behaviour", text, {quoted: mek})  //turn this on to stop spam
@@ -1309,8 +1299,8 @@ async function starts() {
         case "yts":
           reply("```feature yet to be released!```");
           search(args[0], opts, function (err, results) {
-            if (err) return console.log(err);
-            console.log(results);
+            if (err) return // console.log(err);
+            // console.log(results);
           });
           break;
 
@@ -1414,7 +1404,7 @@ async function starts() {
               removeSubreddit: ["dankmemes"],
             })
             .then((result) => {
-              console.log(result[0].image);
+              // console.log(result[0].image);
 
               const options = {
                 url: result[0].image,
@@ -1423,7 +1413,7 @@ async function starts() {
               download
                 .image(options)
                 .then(({ filename }) => {
-                  console.log("Saved as", filename);
+                  // console.log("Saved as", filename);
                 })
                 .catch((err) => console.error(err));
               reply("🔍``` searching```");
@@ -1597,16 +1587,16 @@ async function starts() {
           }
 
           if (isGroup && isSimi && budy != undefined) {
-            console.log("a");
+            // console.log("a");
             muehe = await simih(budy);
-            console.log(muehe);
+            // console.log(muehe);
             reply(muehe);
           } else {
             // return console.log(color('[WARN]','red'), 'Unregistered Command from', color(sender.split('@')[0]))
           }
       }
     } catch (e) {
-      console.log("Error : %s", color(e, "red"));
+      // console.log("Error : %s", color(e, "red"));
     }
   });
 }
