@@ -1551,7 +1551,7 @@ async function starts() {
 
           if (isGroup) return reply("```works only in inbox```");
           reply("```what feature do you want?```");
-          
+
           break;
 
         case "groupinfo":
@@ -1561,10 +1561,7 @@ async function starts() {
 
           if (!isGroup) return reply(mess.only.group);
           const ppUrl = await client.getProfilePicture(from); // leave empty to get your own
-          //console.log("download profile picture from: " + ppUrl)
-          //teks = `\n💮 *Title*: ${groupMetadata.subject}\n\n👑 *Created By*: ${groupMetadata.owner.split("@")[0]}\n\n🏊 *Participiants*: ${groupMetadata.participants.lengthgroupMetadata.desc}`;
-          //  client.sendMessage(from, client.getProfilePicture(from) ,MessageType.image)
-          teks = `\n💮 *Title*: ${groupMetadata.subject}\n\n🏊 *Participiants*: ${groupMetadata.participants.length}\n\n🏅 *Admins*:${groupAdmins.length}\n\n🌏 *Description*:\n${groupMetadata.desc}`;
+           teks = `\n💮 *Title*: ${groupMetadata.subject}\n\n🏊 *Participiants*: ${groupMetadata.participants.length}\n\n🏅 *Admins*:${groupAdmins.length}\n\n🌏 *Description*:\n${groupMetadata.desc}`;
 
           client.sendMessage(from, teks, text, {
             quoted: mek,
