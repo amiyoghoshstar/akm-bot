@@ -414,12 +414,12 @@ async function starts() {
       }
 
       switch (command) {
-        
+
         case "market":
           await client.chatRead(from); // mark chat read
           await client.updatePresence(from, Presence.available); // tell them we're available
           await client.updatePresence(from, Presence.composing);
-          var x = "get_indices";
+          var lnk = "http://localhost:3000/nse/";
 
           switch (args[0]) {
             case "indices":
@@ -444,7 +444,7 @@ async function starts() {
 
             case "gainers":
               unirest
-                .get("http://localhost:3000/nse/" + "get_gainers")
+                .get(lnk + "get_gainers")
                 .then((response) => {
                   var msg = "*Gainers* 📈";
                   var share = response.body;
@@ -480,7 +480,7 @@ async function starts() {
             case "stocks":
               unirest
                 .get(
-                  "http://localhost:3000/nse/" + "get_index_stocks?symbol=nifty"
+                  lnk + "get_index_stocks?symbol=nifty"
                 )
                 .then((response) => {
                   var msg = "*Index Stocks NIFTY* 📈";
@@ -520,7 +520,7 @@ async function starts() {
 
             case "losers":
               unirest
-                .get("http://localhost:3000/nse/" + "get_losers")
+                .get(lnk + "get_losers")
                 .then((response) => {
                   var msg = "*Losers* 📈";
                   var share = response.body;
@@ -554,7 +554,7 @@ async function starts() {
             case "search":
               unirest
                 .get(
-                  "http://localhost:3000/nse/" +
+                  lnk +
                     "search_stocks?keyword=" +
                     args[1].toUpperCase()
                 )
@@ -586,7 +586,7 @@ async function starts() {
             case "detail":
               unirest
                 .get(
-                  "http://localhost:3000/nse/" +
+                  lnk +
                     "get_quote_info?companyName=" +
                     args[1].toUpperCase()
                 )
@@ -735,7 +735,7 @@ async function starts() {
                 if (response.error) {
                   client.sendMessage(
                     from,
-                    "*Usage*:\n```.crypto <name> usdt/inr/btc```",
+                    "*Usage*:\n```.crypto <name> usdt/inr```",
                     text,
                     {
                       quoted: mek,
@@ -805,7 +805,7 @@ async function starts() {
                       "```\n\n";
                   });
                   msg +=
-                    "*Usage:*\n```.crypto <name> usdt/inr/btc```\n*Eg:*\n```.crypto ltc usdt```\n```.crypto doge usdt```";
+                    "*Usage:*\n```.crypto <name> usdt/inr```\n*Eg:*\n```.crypto ltc inr```\n```.crypto doge usdt```";
 
                   client.sendMessage(from, msg, text, {
                     quoted: mek,
@@ -1551,6 +1551,7 @@ async function starts() {
 
           if (isGroup) return reply("```works only in inbox```");
           reply("```what feature do you want?```");
+
           break;
 
         case "groupinfo":
@@ -1560,10 +1561,7 @@ async function starts() {
 
           if (!isGroup) return reply(mess.only.group);
           const ppUrl = await client.getProfilePicture(from); // leave empty to get your own
-          //console.log("download profile picture from: " + ppUrl)
-          //teks = `\n💮 *Title*: ${groupMetadata.subject}\n\n👑 *Created By*: ${groupMetadata.owner.split("@")[0]}\n\n🏊 *Participiants*: ${groupMetadata.participants.lengthgroupMetadata.desc}`;
-          //  client.sendMessage(from, client.getProfilePicture(from) ,MessageType.image)
-          teks = `\n💮 *Title*: ${groupMetadata.subject}\n\n🏊 *Participiants*: ${groupMetadata.participants.length}\n\n🏅 *Admins*:${groupAdmins.length}\n\n🌏 *Description*:\n${groupMetadata.desc}`;
+           teks = `\n💮 *Title*: ${groupMetadata.subject}\n\n🏊 *Participiants*: ${groupMetadata.participants.length}\n\n🏅 *Admins*:${groupAdmins.length}\n\n🌏 *Description*:\n${groupMetadata.desc}`;
 
           client.sendMessage(from, teks, text, {
             quoted: mek,
