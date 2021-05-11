@@ -60,12 +60,10 @@ const download = require("image-downloader");
 var twitter = require("twitter");
 require("dotenv/config");
  
-var NSEAPI = require('./nse/index');
+var API = require('./x');
 
-var API = {
-	NSE: NSEAPI
-};
 var NSEAPI = API.NSE;
+
 
 var twit = new twitter({
   consumer_key: process.env.apiKey,
@@ -422,9 +420,11 @@ async function starts() {
           await client.chatRead(from); // mark chat read
           await client.updatePresence(from, Presence.available); // tell them we're available
           await client.updatePresence(from, Presence.composing);
-          var lnk = "http://localhost:3000/nse/";
+          
 
           switch (args[0]) {
+
+
             case "indices":
               x = "get_indices";
               break;
@@ -432,10 +432,7 @@ async function starts() {
             case "status":
               NSEAPI.getMarketStatus()
                 .then((response) => {
-                 
-
-                  var share = response.body;
-                
+                  var share = response.data;
                   if (response.error) {
                     reply("```Error```");
                   } else {
@@ -448,13 +445,12 @@ async function starts() {
               NSEAPI.getGainers()
                 .then((response) => {
                   var msg = "*Gainers* 📈";
-                  var share = response.data.body;
+                  var share = response.data;
+                  
                   if (response.error) {
-                    // reply( "```Error```")
+                     reply( "```Error```")
                   } else {
-                    // console.log(share.data[0]);
                     share.data.forEach((element) => {
-                      //console.log(element);
                       msg +=
                         "\n\n\n📈 " +
                         "*" +
@@ -468,6 +464,9 @@ async function starts() {
                         "```Low Price : " +
                         element.lowPrice +
                         "```\n" +
+                        "```turnoverInLakhs : " +
+                        element.turnoverInLakhs +
+                        "```\n" +
                         "```Prev Price: " +
                         element.previousPrice +
                         "```";
@@ -479,13 +478,10 @@ async function starts() {
               break;
 
             case "stocks":
-              unirest
-                .get(
-                  lnk + "get_index_stocks?symbol=nifty"
-                )
+              NSEAPI.getIndexStocks('nifty')
                 .then((response) => {
                   var msg = "*Index Stocks NIFTY* 📈";
-                  var share = response.body;
+                  var share = response.data;
                   if (response.error) {
                     reply("```Error```");
                   } else {
@@ -520,11 +516,11 @@ async function starts() {
               break;
 
             case "losers":
-              unirest
-                .get(lnk + "get_losers")
+            case "loser":
+              NSEAPI.getLosers()
                 .then((response) => {
                   var msg = "*Losers* 📈";
-                  var share = response.body;
+                  var share = response.data;
                   if (response.error) {
                     reply("```Error```");
                   } else {
@@ -544,7 +540,10 @@ async function starts() {
                         "```\n" +
                         "```Prev Price: " +
                         element.previousPrice +
-                        "```";
+                        "```\n";+
+                        "```turnoverInLakhs : " +
+                        element.turnoverInLakhs +
+                        "```" 
                     });
                     reply(msg);
                   }
@@ -553,27 +552,23 @@ async function starts() {
               break;
 
             case "search":
-              unirest
-                .get(
-                  lnk +
-                    "search_stocks?keyword=" +
-                    args[1].toUpperCase()
-                )
+              NSEAPI.searchStocks(args[1].toUpperCase())
                 .then((response) => {
-                  var msg = "*Search Result* 🔎";
-                  var share = response.body;
+                  var msg = "*Search Result* 🔎\n";
+                  var share = response.data;
                   if (response.error) {
                     reply("```Error```");
                   } else {
                     share.forEach((element) => {
                       msg +=
-                        "\n\n\n📈 " +
+                        "\n\n📈 " +
                         "*" +
                         element.symbol +
-                        "*\n```name: " +
+                        "*\n\n"+
+                        "NAME      : ```" +
                         element.name +
                         "```\n" +
-                        "```symbol: " +
+                        "SYMBOL  : ```" +
                         element.symbol +
                         "```";
                     });
@@ -585,14 +580,9 @@ async function starts() {
 
             case "details":
             case "detail":
-              unirest
-                .get(
-                  lnk +
-                    "get_quote_info?companyName=" +
-                    args[1].toUpperCase()
-                )
+              NSEAPI.getQuoteInfo(args[1].toUpperCase())
                 .then((response) => {
-                  var element = response.body.data[0];
+                  var element = response.data.data[0];
                   var msg = "📈 " + element.companyName;
 
                   if (response.error) {
@@ -639,8 +629,21 @@ async function starts() {
                       "```faceValue     : " +
                       element.faceValue +
                       "```\n" +
-                      "```lastUpdateTime: " +
-                      response.body.lastUpdateTime.split(" ")[1] +
+                      "```sellPrice1    : " +
+                      element.sellPrice1 + "```\n" +
+                      "```sellPrice2    : " +
+                      element.sellPrice2 + "```\n" +
+                      "```buyPrice1     : " +
+                      element.buyPrice1 + "```\n" +
+                      "```buyPrice2     : " +
+                      element.buyPrice2 + "```\n" +
+                      "```high52        : " +
+                      element.high52 + "```\n" +
+                      "```low52         : " +
+                      element.low52 +
+                      "```\n" +
+                      "```Update Time   : " +
+                      response.data.lastUpdateTime.split(" ")[1] +
                       "```";
 
                     reply(msg);
@@ -718,7 +721,7 @@ async function starts() {
           break;
 
         case "crypto":
-          console.log(from);
+         // console.log(from);
           await client.chatRead(from); // mark chat read
           await client.updatePresence(from, Presence.available); // tell them we're available
           await client.updatePresence(from, Presence.composing);
@@ -972,7 +975,7 @@ async function starts() {
             client.groupMakeAdmin(from, mentioned);
           } else {
             mentions(
-              `Promoted @${mentioned[0].split("@")[0]} as a Group Admin!`,
+              `Promoted @${mentioned[0].split("@")[0]}`,
               mentioned,
               true
             );
@@ -996,7 +999,7 @@ async function starts() {
 
           mentioned = mek.message.extendedTextMessage.contextInfo.mentionedJid;
           if (mentioned.length > 1) {
-            teks = "```Successfully demoted```\n";
+            teks = "```Demoted```\n";
             for (let _ of mentioned) {
               teks += `@${_.split("@")[0]}\n`;
             }
@@ -1004,9 +1007,9 @@ async function starts() {
             client.groupRemove(from, mentioned);
           } else {
             mentions(
-              `successfully demoted @${
+              `Demoted @${
                 mentioned[0].split("@")[0]
-              } Became a Group Member!`,
+              }`,
               mentioned,
               true
             );
@@ -1053,7 +1056,7 @@ async function starts() {
             return reply("*Usage:*\n```.kick @bot\n.kick @shreya```");
           mentioned = mek.message.extendedTextMessage.contextInfo.mentionedJid;
           if (mentioned.length > 1) {
-            teks = "```Orders received, kicked :```\n";
+            teks = "```kicked :```\n";
             for (let _ of mentioned) {
               teks += `@${_.split("@")[0]}\n`;
             }
