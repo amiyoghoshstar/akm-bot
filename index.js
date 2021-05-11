@@ -59,10 +59,13 @@ const redditimage = require("reddit.images");
 const download = require("image-downloader");
 var twitter = require("twitter");
 require("dotenv/config");
-var API = require('indian-stock-exchange');
  
+var NSEAPI = require('./nse/index');
+
+var API = {
+	NSE: NSEAPI
+};
 var NSEAPI = API.NSE;
-var BSEAPI = API.BSE;
 
 var twit = new twitter({
   consumer_key: process.env.apiKey,
@@ -427,8 +430,7 @@ async function starts() {
               break;
 
             case "status":
-              unirest
-                .get("http://localhost:3000/" + "get_market_status")
+              NSEAPI.getMarketStatus()
                 .then((response) => {
                  
 
@@ -443,11 +445,10 @@ async function starts() {
               break;
 
             case "gainers":
-              unirest
-                .get(lnk + "get_gainers")
+              NSEAPI.getGainers()
                 .then((response) => {
                   var msg = "*Gainers* 📈";
-                  var share = response.body;
+                  var share = response.data.body;
                   if (response.error) {
                     // reply( "```Error```")
                   } else {
@@ -1196,6 +1197,17 @@ async function starts() {
           });
           break;
 
+
+          
+        case "xkeerthy": // random keerthy stickers
+        //client.sendMessage(from, "stopped due stupid behaviour", text, {quoted: mek})  //turn this on to stop spam
+        var ccc = Math.floor(Math.random() * 82 + 1);
+        ran = "./Media/keerthy_stickers/keerthy (" + ccc + ").webp";
+        client.sendMessage(from, fs.readFileSync(ran), sticker, {
+          quoted: mek,
+        });
+        break;
+
         case "xrandomsticker":
           // random sticker
           //client.sendMessage(from, "stopped due stupid behaviour", text, {quoted: mek})  //turn this on to stop spam
@@ -1236,7 +1248,7 @@ async function starts() {
 
           break;
 
-        case "rashu": // all rashmika stickers in inbox
+        case "rashu":       // all rashmika stickers in inbox
           if (isGroup) return reply("```Command works in inbox```");
           for (var i = 1; i < 304; i++) {
             ran = "./Media/rashmika_stickers/rashmika (" + i + ").webp";
