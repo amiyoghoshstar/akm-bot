@@ -1596,7 +1596,7 @@ async function starts() {
           break;
 
         default:
-          // console.log("a");
+        
           if (isCmd && command.length > 1) {
             await client.chatRead(from); // mark chat read
             await client.updatePresence(from, Presence.available); // tell them we're available
