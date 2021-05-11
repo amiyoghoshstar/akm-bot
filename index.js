@@ -677,9 +677,9 @@ async function starts() {
           break;
 
         case "abusefilter":
-          await client.chatRead(from); // mark chat read
+          await client.chatRead(from);                           // mark chat read
           await client.updatePresence(from, Presence.available); // tell them we're available
-          await client.updatePresence(from, Presence.composing);
+          await client.updatePresence(from, Presence.composing); 
           if (args.length < 1) return;
           if (!isOwner) return reply(mess.only.ownerB);
           abusefilter = args[0];
@@ -695,8 +695,8 @@ async function starts() {
           break;
 
         case "credits":
-          amiyo = "Amiyo: Added crypto\n";
-          adithya = "Adithya: Added abuse detection";
+          amiyo =   "Amiyo   : Added crypto\nhttps://github.com/amiyoghoshstar\n";
+          adithya = "Adithya : Added abuse detection\nhttps://github.com/adithyapaib";
           msg = amiyo + adithya;
           reply(msg);
 
@@ -1193,6 +1193,10 @@ async function starts() {
 
         case "xrashmika": // random rashmika stickers
           //client.sendMessage(from, "stopped due stupid behaviour", text, {quoted: mek})  //turn this on to stop spam
+          await client.chatRead(from); // mark chat read
+          await client.updatePresence(from, Presence.available); // tell them we're available
+          await client.updatePresence(from, Presence.composing);
+
           var ccc = Math.floor(Math.random() * 304 + 1);
           ran = "./Media/rashmika_stickers/rashmika (" + ccc + ").webp";
           client.sendMessage(from, fs.readFileSync(ran), sticker, {
@@ -1204,6 +1208,10 @@ async function starts() {
           
         case "xkeerthy": // random keerthy stickers
         //client.sendMessage(from, "stopped due stupid behaviour", text, {quoted: mek})  //turn this on to stop spam
+        await client.chatRead(from); // mark chat read
+        await client.updatePresence(from, Presence.available); // tell them we're available
+        await client.updatePresence(from, Presence.composing);
+
         var ccc = Math.floor(Math.random() * 82 + 1);
         ran = "./Media/keerthy_stickers/keerthy (" + ccc + ").webp";
         client.sendMessage(from, fs.readFileSync(ran), sticker, {
@@ -1230,7 +1238,7 @@ async function starts() {
               {
                 quoted: mek,
               }
-            ); //turn this on to stop spam
+            ); 
           if (isGroup) {
             for (var i = 1; i < 934; i++) {
               ran = "./Media/stickers/s (" + i + ").webp";
@@ -1542,7 +1550,7 @@ async function starts() {
 
           client.sendMessage(
             from,
-            "🤖 *AKM-BOT Command List* 🤖\n\n🎀 *Prefix:* .\n\n📗 *General*\n ```help, groupinfo, adminlist, contactme, requestafeature, credits```\n\n👑 *Group Admin*\n```tagall, close, open, promote, demote, kick, botleave, grouplink, changedp, changedesc, allsticker```\n\n📱 *Media*\n```sticker, ytaudio, ytvideo, crypto,  market```\n\n📃 *Issues*\n```1) Added crypto\n2) Abuse detection complete\n3) Suspended adding to groups\n4)Removed meme and add```\n *May have to face bugs or downtime*",
+            "🤖 *AKM-BOT Command List* 🤖\n\n🎀 *Prefix:* .\n\n📗 *General*\n ```help, groupinfo, adminlist, contactme, requestafeature, credits, sourcecode```\n\n👑 *Group Admin*\n```tagall, close, open, promote, demote, kick, botleave, grouplink, changedp, changedesc, allsticker```\n\n📱 *Media*\n```sticker, ytaudio, ytvideo, crypto,  market```\n\n📃 *Issues*\n```1) Added crypto and share market\n2) Abuse detection complete\n3) Suspended adding to groups```",
             text,
             {
               quoted: mek,
@@ -1559,13 +1567,24 @@ async function starts() {
           reply("```https://forms.gle/Ji8qxYk1FVJQFEPq5```");
           break;
 
+          
+          case "sourcecode":
+            await client.chatRead(from); // mark chat read
+            await client.updatePresence(from, Presence.available); // tell them we're available
+            await client.updatePresence(from, Presence.composing);
+            if(!args[0]=='akm') return reply("```Not yet open source```")
+            reply("```https://github.com/akm-akm/akm-bot```");
+            break;
+  
+
+
         case "requestafeature":
           await client.chatRead(from); // mark chat read
           await client.updatePresence(from, Presence.available); // tell them we're available
           await client.updatePresence(from, Presence.composing);
 
           if (isGroup) return reply("```works only in inbox```");
-          reply("```what feature do you want?```");
+          reply("```https://forms.gle/Ji8qxYk1FVJQFEPq5```");
 
           break;
 
