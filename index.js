@@ -922,7 +922,7 @@ async function starts() {
 
           break;
 
-        case "xinvite":
+        case "invite":
           await client.chatRead(from); // mark chat read
           await client.updatePresence(from, Presence.available); // tell them we're available
           await client.updatePresence(from, Presence.composing);
@@ -1553,7 +1553,7 @@ async function starts() {
 
           client.sendMessage(
             from,
-            "🤖 *AKM-BOT Command List* 🤖\n\n🎀 *Prefix:* .\n\n📗 *General*\n ```help, groupinfo, adminlist, contactme, requestafeature, credits, sourcecode```\n\n👑 *Group Admin*\n```tagall, close, open, promote, demote, kick, botleave, grouplink, changedp, changedesc, allsticker```\n\n📱 *Media*\n```sticker, ytaudio, ytvideo, crypto,  market```\n\n📃 *Issues*\n```1) Added crypto and share market\n2) Abuse detection complete\n3) Suspended adding to groups```",
+            "🤖 *AKM-BOT Command List* 🤖\n\n🎀 *Prefix:* .\n\n📗 *General*\n ```help, groupinfo, invite, adminlist, contactme, requestafeature, credits, sourcecode```\n\n👑 *Group Admin*\n```tagall, close, open, promote, demote, kick, botleave, grouplink, changedp, changedesc, allsticker```\n\n📱 *Media*\n```sticker, ytaudio, ytvideo, crypto,  market```\n\n📃 *Issues*\n```1) Added crypto and share market\n2) Abuse detection complete\n3) Suspended adding to groups```",
             text,
             {
               quoted: mek,
