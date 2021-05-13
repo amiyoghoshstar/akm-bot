@@ -45,7 +45,7 @@ const solenolyrics = require("solenolyrics");
 const yts = require("yt-search");
 const fbv = require("fb-video-downloader");
 const webp = require("webp-converter"); // this will grant 755 permission to webp executables
-webp.grant_permission();
+//webp.grant_permission();
 var YD = new YoutubeMp3Downloader({
   ffmpegPath: "node_modules/ffmpeg-static-electron/bin/linux/x64/ffmpeg", // FFmpeg binary location
   outputPath: "./Media", // Output file location (default: the home directory)
