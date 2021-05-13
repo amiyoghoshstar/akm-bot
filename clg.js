@@ -2,6 +2,8 @@ var request = require("superagent");
 const Database = require("@replit/database");
 const readline = require('readline');
 const fs = require("fs");
+const data = JSON.parse(fs.readFileSync("./src/attendance.json"));
+
 const file = readline.createInterface({
   input: fs.createReadStream('./src/name copy.txt'),
   output: process.stdout,
@@ -104,17 +106,29 @@ var paiatndnc = {
 
 
 
-var test = {
-  Name: "entry.2005620554",
-  phone: "entry.1166974658",
-  age: "entry.19837538",
-  why: "entry.839337160",
+
+/////////////adityakmandal///////////////////
+
+adityaformid="1FAIpQLSdxU9ByBbELXlexshaF-oFjy6zgu0kEcWX8hFUxX7m2lHanjg"
+var adityaform = {
+  NAME : "entry.662527696",
+  BRANCH : "entry.1885982264",
+  DATE : "entry.1701900561",
+  Roll :"entry.133111286"
 };
+/////////////adityakmandal///////////////////
+
+
+
+
+
+
 fields=paiatndnc
 
 file.on('line', (line) => {
   console.log(c);
   c++
+
 
 request
   .post(`https://docs.google.com/forms/d/e/${formId}/formResponse`)

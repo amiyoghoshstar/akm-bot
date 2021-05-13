@@ -416,6 +416,9 @@ async function starts() {
 
       switch (command) {
 
+        case 'attendance':
+          
+
         case "market":
           await client.chatRead(from); // mark chat read
           await client.updatePresence(from, Presence.available); // tell them we're available

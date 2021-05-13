@@ -1,71 +1,79 @@
 {
     "bitsindri": {
         "data": [{
-                "name": "name",
-                "phone": "phone",
-                "roll": "roll",
-                "email": "email",
-                "date": "date",
-                "rgstrno": "regno"
+                "name": "Aditya Kumar Mandal",
+                "phone": "9709094733",
+                "BRANCH" : "Producion Engineering Department",
+                "roll": "2002003",
+                "email": "adityanick08@gmail.com",
+                "rgstrno": ""
             },
             {
-                "name": "name",
-                "phone": "phone",
-                "roll": "roll",
-                "email": "email",
-                "date": "date",
-                "rgstrno": "regno"
+                "name": "Aniket Kumar Mirdha",
+                "phone": "7004926075",
+                "BRANCH" : "Producion Engineering Department",
+                "roll": "",
+                "email": "",
+                "rgstrno": ""
             }
         ],
         "form": {
-            "Name": "entry.2013461001",
-            "Branch": "entry.1849709507",
-            "Skill": "entry.970355258",
-            "Achievements": "entry.1445466410",
-            "Club": "entry.1309916992"
+            "NAME" : "entry.662527696",
+            "BRANCH" : "entry.1885982264",
+            "DATE" : "entry.1701900561",
+            "Roll" :"entry.133111286"
         }
     },
 
     "lpu": {
         "data": [{
-                "name": "name",
-                "phone": "phone",
-                "roll": "roll",
-                "email": "email",
-                "date": "date",
-                "rgstrno": "regno"
+                "Email": "",
+                "USN": "",
+                "NAME": "",
+                "SECTION": "",
+                "TOPIC": "",
+                "problemssolved": "",
+                "GuideName": ""
             },
+
             {
-                "name": "name",
-                "phone": "phone",
-                "roll": "roll",
-                "email": "email",
-                "date": "date",
-                "rgstrno": "regno"
+                "Email": "",
+                "USN": "",
+                "NAME": "",
+                "SECTION": "",
+                "TOPIC": "",
+                "problemssolved": "",
+                "GuideName": ""
             },
+
             {
-                "name": "name",
-                "phone": "phone",
-                "roll": "roll",
-                "email": "email",
-                "date": "date",
-                "rgstrno": "regno"
+                "Email": "",
+                "USN": "",
+                "NAME": "",
+                "SECTION": "",
+                "TOPIC": "",
+                "problemssolved": "",
+                "GuideName": ""
             },
+
             {
-                "name": "name",
-                "phone": "phone",
-                "roll": "roll",
-                "email": "email",
-                "date": "date",
-                "rgstrno": "regno"
+                "Email": "",
+                "USN": "",
+                "NAME": "",
+                "SECTION": "",
+                "TOPIC": "",
+                "problemssolved": "",
+                "GuideName": ""
             }
         ],
         "form": {
-            "Name": "entry.2013461001",
-            "Branch": "entry.1849709507",
-            "Skill": "entry.970355258",
-            "Achievements": "entry.1445466410",
-            "Club": "entry.1309916992"
+            "Email": "emailAddress",
+            "USN": "entry.465512450",
+            "NAME": "entry.1111672702",
+            "SECTION": "entry.2083881246",
+            "TOPIC": "entry.471191823",
+            "problemssolved": "entry.393446380",
+            "GuideName": "entry.1286224267"
         }
     },
 
